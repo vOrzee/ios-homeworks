@@ -9,45 +9,29 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    private lazy var actionButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Вернуться", for: .normal)
-        button.setTitleColor(.systemIndigo, for: .normal)
-        
-        return button
-    }()
+    var post: Post?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Выбранный пост"
-        view.backgroundColor = .systemGray
-        view.addSubview(actionButton)
+        title = post?.title
+        view.backgroundColor = .systemGray3
         
-        actionButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Информация",
+            style: .plain,
+            target: self,
+            action: #selector(openInfoViewController)
+        )
         
-        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20.0),
-            actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20.0),
-            actionButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
-            actionButton.heightAnchor.constraint(equalToConstant: 64.0),
-        ])
     }
     
-    @objc func buttonPressed(_ sender: UIButton) {
+    @objc func openInfoViewController() {
+        let infoViewController = InfoViewController()
         
-        dismiss(animated: true)
+        infoViewController.modalTransitionStyle = .flipHorizontal
+        infoViewController.modalPresentationStyle = .formSheet
+        
+        present(infoViewController, animated: true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

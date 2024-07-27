@@ -17,6 +17,7 @@
 		5931C0482C51779D009880F1 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C0472C51779D009880F1 /* PostViewController.swift */; };
 		5931C04B2C518066009880F1 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C04A2C518066009880F1 /* Post.swift */; };
 		5931C04D2C5182B8009880F1 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C04C2C5182B8009880F1 /* InfoViewController.swift */; };
+		59EA83C62C554C0000E812AA /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C52C554C0000E812AA /* ProfileHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		5931C0472C51779D009880F1 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		5931C04A2C518066009880F1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5931C04C2C5182B8009880F1 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		59EA83C52C554C0000E812AA /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +66,9 @@
 		5931C02D2C516EFA009880F1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				5931C0492C51804B009880F1 /* dto */,
-				5931C0422C517684009880F1 /* viewControllers */,
+				59EA83C22C554A9300E812AA /* Profile */,
+				5931C0492C51804B009880F1 /* DTO */,
+				5931C0422C517684009880F1 /* ViewControllers */,
 				5931C02E2C516EFA009880F1 /* AppDelegate.swift */,
 				5931C0302C516EFA009880F1 /* SceneDelegate.swift */,
 				5931C0372C516EFC009880F1 /* Assets.xcassets */,
@@ -75,24 +78,32 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
-		5931C0422C517684009880F1 /* viewControllers */ = {
+		5931C0422C517684009880F1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				5931C0322C516EFA009880F1 /* ViewController.swift */,
-				5931C0432C51774B009880F1 /* ProfileViewController.swift */,
 				5931C0452C517780009880F1 /* FeedViewController.swift */,
 				5931C0472C51779D009880F1 /* PostViewController.swift */,
 				5931C04C2C5182B8009880F1 /* InfoViewController.swift */,
 			);
-			path = viewControllers;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		5931C0492C51804B009880F1 /* dto */ = {
+		5931C0492C51804B009880F1 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
 				5931C04A2C518066009880F1 /* Post.swift */,
 			);
-			path = dto;
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		59EA83C22C554A9300E812AA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5931C0432C51774B009880F1 /* ProfileViewController.swift */,
+				59EA83C52C554C0000E812AA /* ProfileHeaderView.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +180,7 @@
 				5931C0332C516EFA009880F1 /* ViewController.swift in Sources */,
 				5931C02F2C516EFA009880F1 /* AppDelegate.swift in Sources */,
 				5931C0462C517780009880F1 /* FeedViewController.swift in Sources */,
+				59EA83C62C554C0000E812AA /* ProfileHeaderView.swift in Sources */,
 				5931C0442C51774B009880F1 /* ProfileViewController.swift in Sources */,
 				5931C04B2C518066009880F1 /* Post.swift in Sources */,
 				5931C04D2C5182B8009880F1 /* InfoViewController.swift in Sources */,

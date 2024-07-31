@@ -9,11 +9,34 @@ import UIKit
 
 class FeedViewController: UIViewController {
     
-    private lazy var btnToPost: UIButton = {
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 10.0
+        stackView.alignment = .fill
+        stackView.addArrangedSubview(topButton)
+        stackView.addArrangedSubview(bottomButton)
+        return stackView
+    }()
+    
+    private lazy var topButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Перейти", for: .normal)
+        button.backgroundColor = .blue
+        button.setTitle("Верхняя кнопка", for: .normal)
         button.setTitleColor(.systemTeal, for: .normal)
+        button.addTarget(self, action: #selector(buttonTopPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var bottomButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .red
+        button.setTitle("Нижняя кнопка", for: .normal)
+        button.setTitleColor(.systemTeal, for: .normal)
+        button.addTarget(self, action: #selector(buttonBottomPressed), for: .touchUpInside)
         return button
     }()
 
@@ -23,19 +46,22 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         self.title = "Лента"
         
-        view.addSubview(btnToPost)
-        let safeAreaLayoutGuide = view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            btnToPost.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 40.0),
-            btnToPost.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -40.0),
-            btnToPost.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
-            btnToPost.heightAnchor.constraint(equalToConstant: 24.0)
-        ])
+        view.addSubview(stackView)
         
-        btnToPost.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        let safeArea = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+        ])
     }
     
-    @objc func buttonPressed() {
+    @objc func buttonTopPressed() {
+        let postViewController = PostViewController(post: postInMemorySample)
+        
+        navigationController?.pushViewController(postViewController, animated: true)
+    }
+    
+    @objc func buttonBottomPressed() {
         let postViewController = PostViewController(post: postInMemorySample)
         
         navigationController?.pushViewController(postViewController, animated: true)

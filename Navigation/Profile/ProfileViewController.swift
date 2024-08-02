@@ -10,7 +10,19 @@ import UIKit
 class ProfileViewController: UIViewController {
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var changeStatusButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(changeTitleAction), for: .touchUpInside)
+        button.backgroundColor = .orange
+        button.setTitle("Изменить title", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.cornerRadius = 4.0
+        return button
     }()
 
     override func viewDidLoad() {
@@ -31,16 +43,26 @@ class ProfileViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.view.addSubview(profileHeaderView)
-        profileHeaderView.frame = CGRect(
-            origin: CGPoint(
-                x: 0.0,
-                y: self.view.safeAreaInsets.top
-            ),
-            size: CGSize(
-                width: self.view.frame.width,
-                height: self.view.frame.height - self.view.safeAreaInsets.top
-            )
-        )
+        view.addSubview(profileHeaderView)
+        view.addSubview(changeStatusButton)
+        let safeArea = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220.0),
+            profileHeaderView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            changeStatusButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            changeStatusButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            changeStatusButton.heightAnchor.constraint(equalToConstant: 40.0),
+            changeStatusButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+        ])
+    }
+    
+    @objc func changeTitleAction() {
+        if(self.title == "Профиль") {
+            self.title = "Изменённый title"
+        } else {
+            self.title = "Профиль"
+        }
     }
 }

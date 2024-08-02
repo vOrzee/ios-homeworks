@@ -20,10 +20,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         
         let feedViewController = FeedViewController()
-        let profileViewController = ProfileViewController()
+        let profileViewController = LogInViewController()
         
-        feedViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostRecent, tag: 0)
-        profileViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        feedViewController.tabBarItem = UITabBarItem(
+            title: "Лента", image: UIImage(systemName: "list.bullet"), tag: 0
+        )
+        profileViewController.tabBarItem = UITabBarItem(
+            title: "Профиль", image: UIImage(systemName: "person.circle"), tag: 1
+        )
         
         let controllers = [feedViewController, profileViewController]
         tabBarController.viewControllers = controllers.map {

@@ -39,12 +39,17 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.tintColor = .black
+        
+        addSubviews()
+        applyConstraints()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    func addSubviews() {
         view.addSubview(profileHeaderView)
         view.addSubview(changeStatusButton)
+    }
+    
+    func applyConstraints() {
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

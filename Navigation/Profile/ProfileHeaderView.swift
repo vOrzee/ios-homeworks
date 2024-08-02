@@ -62,6 +62,7 @@ class ProfileHeaderView: UIView {
         textField.leftViewMode = .always
         textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: textField.frame.height))
         textField.rightViewMode = .always
+        textField.delegate = self
         return textField
     }()
     
@@ -87,7 +88,7 @@ class ProfileHeaderView: UIView {
         self.addSubview(statusLabel)
         self.addSubview(statusTextField)
         self.addSubview(setStatusButton)
-        applyConstraints()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -99,11 +100,7 @@ class ProfileHeaderView: UIView {
         avatarImageView.circleCrop()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.endEditing(true)
-    }
-    
-    func applyConstraints(){
+    func setupConstraints(){
         NSLayoutConstraint.activate([
             // ImageView "Avatar"
             avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
@@ -135,5 +132,16 @@ class ProfileHeaderView: UIView {
 
     @objc func statusTextChanged(_ textField: UITextField) {
         statusText = statusTextField.text ?? ""
+    }
+}
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(
+        _ textField: UITextField
+    ) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
     }
 }

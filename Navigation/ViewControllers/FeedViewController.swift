@@ -40,7 +40,7 @@ class FeedViewController: UIViewController {
         return button
     }()
 
-    private let postInMemorySample = Post("Тест для примера")
+    private let postInMemorySample = posts[0]
     
     override func viewDidLoad() {
         super.viewDidLoad()

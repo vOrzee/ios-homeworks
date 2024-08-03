@@ -70,7 +70,7 @@ class ProfileHeaderView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .blue
-        button.setTitle("Show status", for: .normal)
+        button.setTitle("Set status", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 4.0
         button.layer.shadowColor = UIColor.black.cgColor
@@ -88,6 +88,7 @@ class ProfileHeaderView: UIView {
         self.addSubview(statusLabel)
         self.addSubview(statusTextField)
         self.addSubview(setStatusButton)
+        self.backgroundColor = .lightGray
         setupConstraints()
     }
     
@@ -98,6 +99,18 @@ class ProfileHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         avatarImageView.circleCrop()
+    }
+    
+    override var intrinsicContentSize: CGSize {
+//        let height = 16.0 // отступ сверху
+//                    + avatarImageView.bounds.height // высота аватарки
+//                    - 18.0 // смещение статуса
+//                    + 12.0 // отступ до смены статуса
+//                    + statusTextField.bounds.height // высота поля ввода
+//                    + 16.0 // отступ до кнопки
+//                    + setStatusButton.bounds.height // высота кнопки
+//                    + 16.0 // отступ после кнопки
+        return CGSize(width: UIView.noIntrinsicMetric, height: 252.0)
     }
     
     func setupConstraints(){

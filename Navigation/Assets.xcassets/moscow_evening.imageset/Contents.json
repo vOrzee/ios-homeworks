@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "moscow_evening.jpg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

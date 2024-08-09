@@ -62,6 +62,7 @@ class ProfileHeaderView: UIView {
         textField.leftViewMode = .always
         textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: textField.frame.height))
         textField.rightViewMode = .always
+        textField.delegate = self
         return textField
     }()
     
@@ -69,7 +70,7 @@ class ProfileHeaderView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .blue
-        button.setTitle("Show status", for: .normal)
+        button.setTitle("Set status", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 4.0
         button.layer.shadowColor = UIColor.black.cgColor
@@ -87,7 +88,8 @@ class ProfileHeaderView: UIView {
         self.addSubview(statusLabel)
         self.addSubview(statusTextField)
         self.addSubview(setStatusButton)
-        applyConstraints()
+        self.backgroundColor = .lightGray
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -99,11 +101,19 @@ class ProfileHeaderView: UIView {
         avatarImageView.circleCrop()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.endEditing(true)
+    override var intrinsicContentSize: CGSize {
+//        let height = 16.0 // отступ сверху
+//                    + avatarImageView.bounds.height // высота аватарки
+//                    - 18.0 // смещение статуса
+//                    + 12.0 // отступ до смены статуса
+//                    + statusTextField.bounds.height // высота поля ввода
+//                    + 16.0 // отступ до кнопки
+//                    + setStatusButton.bounds.height // высота кнопки
+//                    + 16.0 // отступ после кнопки
+        return CGSize(width: UIView.noIntrinsicMetric, height: 252.0)
     }
     
-    func applyConstraints(){
+    func setupConstraints(){
         NSLayoutConstraint.activate([
             // ImageView "Avatar"
             avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
@@ -135,5 +145,16 @@ class ProfileHeaderView: UIView {
 
     @objc func statusTextChanged(_ textField: UITextField) {
         statusText = statusTextField.text ?? ""
+    }
+}
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(
+        _ textField: UITextField
+    ) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
     }
 }

@@ -13,7 +13,7 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = post.title
+        self.title = "Информация"
         self.view.backgroundColor = .lightGray
         let barButtonItem = UIBarButtonItem(
             title: "Информация",

@@ -65,7 +65,7 @@ class ProfileTableViewCell: UITableViewCell {
             style: .subtitle,
             reuseIdentifier: reuseIdentifier
         )
-
+        contentView.backgroundColor = .white
         addSubviews()
         setupConstraints()
     }
@@ -94,7 +94,6 @@ class ProfileTableViewCell: UITableViewCell {
     }
     
     func bind(_ post: Post) {
-        contentView.backgroundColor = .white
         authorTextView.text = post.author
         pictureImageView.image = UIImage(named: post.image)
         descriptionTextView.text = post.description

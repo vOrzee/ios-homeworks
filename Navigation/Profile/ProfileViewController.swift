@@ -11,6 +11,8 @@ class ProfileViewController: UIViewController {
     
     private let data: [Post] = posts
     
+    private var avatarTapEvent: ((UIImageView) -> Void)?
+
     private lazy var profileTable: UITableView = {
         let table = UITableView.init(
             frame: .zero,
@@ -34,6 +36,14 @@ class ProfileViewController: UIViewController {
         addSubviews()
         setupConstraints()
         tuneTableView()
+        avatarTapEvent = { imageView in
+            let tap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(self.avatarTapped(_:))
+            )
+            imageView.isUserInteractionEnabled = true
+            imageView.addGestureRecognizer(tap)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,6 +97,75 @@ class ProfileViewController: UIViewController {
         profileTable.delegate = self
     }
     
+    @objc func avatarTapped(_ sender: UITapGestureRecognizer) {
+        guard let imageView = sender.view as? UIImageView else { return }
+        
+        let originalFrame = imageView.convert(imageView.bounds, to: self.view)
+        
+        let overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.0)
+        self.view.addSubview(overlayView)
+        
+        let closeButton = UIButton(type: .system)
+        closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        closeButton.tintColor = .white
+        closeButton.alpha = 0.0
+        closeButton.frame = CGRect(x: self.view.bounds.width - 48, y: 48, width: 32, height: 32)
+        closeButton.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
+        self.view.addSubview(closeButton)
+        
+        let animatedImageView = UIImageView(image: imageView.image)
+        animatedImageView.frame = originalFrame
+        animatedImageView.layer.cornerRadius = imageView.layer.cornerRadius
+        animatedImageView.clipsToBounds = true
+        self.view.addSubview(animatedImageView)
+        
+        imageView.isHidden = true
+
+        UIView.animate(withDuration: 0.5, animations: {
+            animatedImageView.frame = CGRect(
+                x: 0,
+                y: (self.view.frame.height - self.view.frame.width) / 2,
+                width: self.view.frame.width,
+                height: self.view.frame.width * (originalFrame.height / originalFrame.width)
+            )
+            animatedImageView.layer.cornerRadius = 0
+            
+            overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        }) { _ in
+            UIView.animate(withDuration: 0.3) {
+                closeButton.alpha = 1.0
+            }
+        }
+        
+        closeButton.tag = 100
+        animatedImageView.tag = 101
+        overlayView.tag = 102
+        imageView.tag = 103
+    }
+
+    @objc private func closeButtonTapped(_ sender: UIButton) {
+        guard let animatedImageView = self.view.viewWithTag(101) as? UIImageView,
+              let overlayView = self.view.viewWithTag(102),
+              let originalImageView = self.view.viewWithTag(103) as? UIImageView else {
+            return
+        }
+
+        UIView.animate(withDuration: 0.3, animations: {
+            sender.alpha = 0.0
+        }) { _ in
+            UIView.animate(withDuration: 0.5, animations: {
+                overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.0)
+                animatedImageView.frame = originalImageView.convert(originalImageView.bounds, to: self.view)
+                animatedImageView.layer.cornerRadius = originalImageView.layer.cornerRadius
+            }) { _ in
+                animatedImageView.removeFromSuperview()
+                overlayView.removeFromSuperview()
+                sender.removeFromSuperview()
+                originalImageView.isHidden = false
+            }
+        }
+    }
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -132,7 +211,8 @@ extension ProfileViewController: UITableViewDelegate {
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
-        ProfileHeaderView()
+        guard let avatarTapEvent = avatarTapEvent else {return nil}
+        return ProfileHeaderView(avatarTapEvent: avatarTapEvent)
     }
     
     func tableView(

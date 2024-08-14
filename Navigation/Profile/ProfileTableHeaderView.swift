@@ -81,8 +81,8 @@ class ProfileHeaderView: UIView {
         return button
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(avatarTapEvent: @escaping (UIImageView) -> Void) {
+        super.init(frame: .zero)
         self.addSubview(avatarImageView)
         self.addSubview(fullNameLabel)
         self.addSubview(statusLabel)
@@ -90,6 +90,11 @@ class ProfileHeaderView: UIView {
         self.addSubview(setStatusButton)
         self.backgroundColor = .lightGray
         setupConstraints()
+        avatarTapEvent(avatarImageView)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     required init?(coder: NSCoder) {

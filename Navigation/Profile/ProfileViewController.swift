@@ -23,10 +23,7 @@ class ProfileViewController: UIViewController {
     
     private enum CellReuseID: String {
         case post = "PostTableViewCell_ReuseID"
-    }
-    
-    private enum HeaderFooterReuseID: String {
-        case profileHeader = "ProfileHeader_TableSectionFooterHeaderView_ReuseID"
+        case photos = "PhotosTableViewCell_ReuseID"
     }
 
     override func viewDidLoad() {
@@ -80,10 +77,9 @@ class ProfileViewController: UIViewController {
             ProfileTableViewCell.self,
             forCellReuseIdentifier: CellReuseID.post.rawValue
         )
-        
         profileTable.register(
-            TableSectionFooterHeaderView.self,
-            forHeaderFooterViewReuseIdentifier: HeaderFooterReuseID.profileHeader.rawValue
+            PhotosTableViewCell.self,
+            forCellReuseIdentifier: CellReuseID.photos.rawValue
         )
         
         // 4. Указываем основные делегаты таблицы
@@ -95,23 +91,28 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource {
     
-    func numberOfSections(
-        in tableView: UITableView
-    ) -> Int {
-        1
-    }
-    
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        data.count
+        data.count + 1
     }
 
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
+        if indexPath.row == 0 {
+            guard let viewHolder = tableView.dequeueReusableCell(
+                withIdentifier: CellReuseID.photos.rawValue,
+                for: indexPath
+            ) as? PhotosTableViewCell else {
+                fatalError("could not dequeueReusableCell")
+            }
+            viewHolder.bind(photos: PhotosRepository.make())
+            return viewHolder
+        }
+        
         guard let viewHolder = tableView.dequeueReusableCell(
             withIdentifier: CellReuseID.post.rawValue,
             for: indexPath
@@ -119,7 +120,7 @@ extension ProfileViewController: UITableViewDataSource {
             fatalError("could not dequeueReusableCell")
         }
         
-        viewHolder.bind(data[indexPath.row])
+        viewHolder.bind(data[indexPath.row - 1])
         
         return viewHolder
     }
@@ -131,22 +132,16 @@ extension ProfileViewController: UITableViewDelegate {
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
-
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: HeaderFooterReuseID.profileHeader.rawValue
-        ) as? TableSectionFooterHeaderView else {
-            fatalError("could not dequeueReusableCell")
-        }
-
-        headerView.setView(ProfileHeaderView())
-
-        return headerView
+        ProfileHeaderView()
     }
     
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        print("Did select cell at \(indexPath)")
+        if indexPath.row == 0 {
+            let photosViewController = PhotosViewController(photos: PhotosRepository.make())
+            navigationController?.pushViewController(photosViewController, animated: true)
+        }
     }
 }

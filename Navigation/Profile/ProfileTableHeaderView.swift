@@ -101,18 +101,6 @@ class ProfileHeaderView: UIView {
         avatarImageView.circleCrop()
     }
     
-    override var intrinsicContentSize: CGSize {
-//        let height = 16.0 // отступ сверху
-//                    + avatarImageView.bounds.height // высота аватарки
-//                    - 18.0 // смещение статуса
-//                    + 12.0 // отступ до смены статуса
-//                    + statusTextField.bounds.height // высота поля ввода
-//                    + 16.0 // отступ до кнопки
-//                    + setStatusButton.bounds.height // высота кнопки
-//                    + 16.0 // отступ после кнопки
-        return CGSize(width: UIView.noIntrinsicMetric, height: 252.0)
-    }
-    
     func setupConstraints(){
         NSLayoutConstraint.activate([
             // ImageView "Avatar"
@@ -125,6 +113,7 @@ class ProfileHeaderView: UIView {
             setStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
             setStatusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0),
             setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16.0),
+            setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0),
             // Label "Username"
             fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 27.0),
             fullNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),

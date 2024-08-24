@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StorageService
 
 class FeedViewController: UIViewController {
     
@@ -40,7 +41,7 @@ class FeedViewController: UIViewController {
         return button
     }()
 
-    private let postInMemorySample = posts[0]
+    private let postInMemorySample = PostRepositoryInMemory.make()[0]
     
     override func viewDidLoad() {
         super.viewDidLoad()

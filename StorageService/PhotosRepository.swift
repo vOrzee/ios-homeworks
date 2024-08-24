@@ -7,8 +7,8 @@
 
 import UIKit
 
-enum PhotosRepository {
-    static func make() -> [UIImage?] {
+public enum PhotosRepository {
+    public static func make() -> [UIImage?] {
         return [
             UIImage(named: "IT_theme_square_image_1"),
             UIImage(named: "IT_theme_square_image_2"),

@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import StorageService
 
 class ProfileViewController: UIViewController {
     
-    private let data: [Post] = posts
+    private let data: [Post] = PostRepositoryInMemory.make()
     
     private var avatarTapEvent: ((UIImageView) -> Void)?
 
@@ -30,7 +31,11 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        #if DEBUG
+        view.backgroundColor = .systemGray2
+        #else
         view.backgroundColor = .lightGray
+        #endif
         navigationItem.title = "TableView example"
         navigationController?.navigationBar.prefersLargeTitles = false
         addSubviews()

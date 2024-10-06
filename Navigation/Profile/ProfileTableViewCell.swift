@@ -7,6 +7,7 @@
 
 import UIKit
 import StorageService
+import iOSIntPackage
 
 class ProfileTableViewCell: UITableViewCell {
     
@@ -96,10 +97,18 @@ class ProfileTableViewCell: UITableViewCell {
     
     func bind(_ post: Post) {
         authorTextView.text = post.author
-        pictureImageView.image = UIImage(named: post.image)
         descriptionTextView.text = post.description
         likesLabelView.text = "Likes: \(post.likes)"
         viewsLabelView.text = "View: \(post.views)"
+        
+        let processor = ImageProcessor()
+        
+        if let image = UIImage(named: post.image) {
+            // Применяем фильтр (например, Sepia)
+            processor.processImage(sourceImage: image, filter: .noir) { filteredImage in
+                pictureImageView.image = filteredImage
+            }
+        }
     }
     
     func addSubviews() {

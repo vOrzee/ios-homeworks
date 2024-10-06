@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ProfileHeaderView: UIView {
     
@@ -13,7 +14,6 @@ class ProfileHeaderView: UIView {
     
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.borderWidth = 3.0
         imageView.layer.borderColor = UIColor.white.cgColor
         
@@ -27,7 +27,6 @@ class ProfileHeaderView: UIView {
     
     lazy var fullNameLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18.0, weight: .bold)
         label.textColor = .black
         label.text = "Hipster Cat"
@@ -36,7 +35,6 @@ class ProfileHeaderView: UIView {
     
     lazy var statusLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
         label.textColor = .gray
         label.text = statusText
@@ -45,7 +43,6 @@ class ProfileHeaderView: UIView {
     
     lazy var statusTextField: UITextField = {
         let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addTarget(
             self,
             action: #selector(statusTextChanged),
@@ -68,7 +65,6 @@ class ProfileHeaderView: UIView {
     
     lazy var setStatusButton: UIButton = {
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .blue
         button.setTitle("Set status", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -93,10 +89,6 @@ class ProfileHeaderView: UIView {
         avatarTapEvent(avatarImageView)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -106,31 +98,37 @@ class ProfileHeaderView: UIView {
         avatarImageView.circleCrop()
     }
     
-    func setupConstraints(){
-        NSLayoutConstraint.activate([
-            // ImageView "Avatar"
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
-            avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 120.0),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 120.0),
-            // Button "Show Status"
-            setStatusButton.heightAnchor.constraint(equalToConstant: 50.0),
-            setStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
-            setStatusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0),
-            setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16.0),
-            setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0),
-            // Label "Username"
-            fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 27.0),
-            fullNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            // Label "Status"
-            statusLabel.bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: -18.0),
-            statusLabel.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
-            // UITextField "statusField"
-            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 12.0),
-            statusTextField.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
-            statusTextField.trailingAnchor.constraint(equalTo: setStatusButton.trailingAnchor),
-            statusTextField.heightAnchor.constraint(equalToConstant: 40.0),
-        ])
+    func setupConstraints() {
+        avatarImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16.0)
+            make.leading.equalToSuperview().offset(16.0)
+            make.width.height.equalTo(120.0)
+        }
+        
+        setStatusButton.snp.makeConstraints { make in
+            make.height.equalTo(50.0)
+            make.leading.equalToSuperview().offset(16.0)
+            make.trailing.equalToSuperview().inset(16.0)
+            make.top.equalTo(statusTextField.snp.bottom).offset(16.0)
+            make.bottom.equalToSuperview().inset(16.0)
+        }
+        
+        fullNameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(27.0)
+            make.centerX.equalToSuperview()
+        }
+        
+        statusLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(avatarImageView.snp.bottom).offset(-18.0)
+            make.leading.equalTo(fullNameLabel.snp.leading)
+        }
+        
+        statusTextField.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).offset(12.0)
+            make.leading.equalTo(statusLabel.snp.leading)
+            make.trailing.equalTo(setStatusButton.snp.trailing)
+            make.height.equalTo(40.0)
+        }
     }
     
     @objc func buttonPressed() {
@@ -144,11 +142,9 @@ class ProfileHeaderView: UIView {
 
 extension ProfileHeaderView: UITextFieldDelegate {
     
-    func textFieldShouldReturn(
-        _ textField: UITextField
-    ) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         return true
     }
 }
+

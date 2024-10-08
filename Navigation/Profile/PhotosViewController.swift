@@ -6,10 +6,15 @@
 //
 
 import UIKit
+import iOSIntPackage
 
-class PhotosViewController: UIViewController {
+class PhotosViewController: UIViewController, ImageLibrarySubscriber {
+    
+    private let imagePublisherFacade = ImagePublisherFacade()
     
     private var photos: [UIImage?] = []
+    
+    private var initialPhotos: [UIImage] = []
     
     private let collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
@@ -30,8 +35,9 @@ class PhotosViewController: UIViewController {
     }()
     
     init(photos: [UIImage?]) {
-        self.photos = photos
+        initialPhotos = photos.compactMap { $0 }
         super.init(nibName: nil, bundle: nil)
+        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: Int.max, userImages: initialPhotos)
     }
     
     required init?(coder: NSCoder) {
@@ -57,6 +63,7 @@ class PhotosViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        imagePublisherFacade.subscribe(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,6 +76,18 @@ class PhotosViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         navigationController?.navigationBar.isHidden = true
+        imagePublisherFacade.removeSubscription(for: self)
+    }
+    
+    func receive(images: [UIImage]) {
+        if photos.count == initialPhotos.count {
+            imagePublisherFacade.removeSubscription(for: self) // всё уже загружено
+            return
+        }
+        guard let lastImage = images.last else { return }
+        if photos.contains(lastImage) { return } // Повторы мне не нужны
+        photos.append(lastImage)
+        collectionView.reloadData()
     }
 }
 

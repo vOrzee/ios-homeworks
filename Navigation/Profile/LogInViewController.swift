@@ -54,6 +54,11 @@ class LogInViewController: UIViewController {
         textField.rightViewMode = .always
         textField.keyboardType = .emailAddress
         textField.delegate = self
+        #if DEBUG
+        textField.text = "user"
+        #else
+        textField.text = "jomarzka"
+        #endif
         return textField
     }()
     
@@ -77,6 +82,7 @@ class LogInViewController: UIViewController {
         textField.rightViewMode = .always
         textField.keyboardType = .default
         textField.delegate = self
+        textField.text = "12345"
         return textField
     }()
     

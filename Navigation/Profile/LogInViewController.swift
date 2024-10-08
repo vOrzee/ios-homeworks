@@ -9,6 +9,8 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    var loginDelegate: LoginViewControllerDelegate?
+    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
@@ -218,7 +220,14 @@ class LogInViewController: UIViewController {
         #else
         userService = CurrentUserService()
         #endif
-        guard let user = userService.getUser(byLogin: emailOrPhoneTextField.text ?? "") else {
+        if (loginDelegate?.check(login: emailOrPhoneTextField.text ?? "", password: passwordTextField.text ?? "") == true) {
+            guard let user = userService.getUser(byLogin: emailOrPhoneTextField.text ?? "") else {
+                return
+            }
+            
+            let profileViewController = ProfileViewController(user: user)
+            navigationController?.pushViewController(profileViewController, animated: true)
+        } else {
             let alert = UIAlertController(
                 title: "Ошибка",
                 message: "Пользователь не найден. Пожалуйста, проверьте введенные данные.",
@@ -231,9 +240,6 @@ class LogInViewController: UIViewController {
             
             return
         }
-        
-        let profileViewController = ProfileViewController(user: user)
-        navigationController?.pushViewController(profileViewController, animated: true)
     }
     
     @objc func buttonStateChanged(_ button: UIButton) {

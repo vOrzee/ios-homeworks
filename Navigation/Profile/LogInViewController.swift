@@ -212,8 +212,27 @@ class LogInViewController: UIViewController {
     }
     
     @objc func buttonPressed() {
-        let profileViewController = ProfileViewController()
+        let userService: UserService
+        #if DEBUG
+        userService = TestUserService()
+        #else
+        userService = CurrentUserService()
+        #endif
+        guard let user = userService.getUser(byLogin: emailOrPhoneTextField.text ?? "") else {
+            let alert = UIAlertController(
+                title: "Ошибка",
+                message: "Пользователь не найден. Пожалуйста, проверьте введенные данные.",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alert, animated: true, completion: nil)
+            
+            return
+        }
         
+        let profileViewController = ProfileViewController(user: user)
         navigationController?.pushViewController(profileViewController, animated: true)
     }
     

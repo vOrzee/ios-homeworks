@@ -20,6 +20,9 @@
 		593874572CB3E00800DE8A86 /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 593874562CB3E00800DE8A86 /* iOSIntPackage */; };
 		593874632CB5A51000DE8A86 /* UsersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874622CB5A50600DE8A86 /* UsersRepository.swift */; };
 		593874672CB5A5CC00DE8A86 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874662CB5A59F00DE8A86 /* User.swift */; };
+		5938746D2CB5B2DF00DE8A86 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5938746C2CB5B2DC00DE8A86 /* Checker.swift */; };
+		593874722CB5B47C00DE8A86 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874712CB5B47600DE8A86 /* LoginInspector.swift */; };
+		593874742CB5BE8E00DE8A86 /* LoginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874732CB5BE8800DE8A86 /* LoginFactory.swift */; };
 		5978BFA12C7A514A00C39F24 /* StorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = 5978BFA02C7A514A00C39F24 /* StorageService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5978BFA42C7A514A00C39F24 /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5978BF9E2C7A514A00C39F24 /* StorageService.framework */; };
 		5978BFA52C7A514A00C39F24 /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5978BF9E2C7A514A00C39F24 /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -74,6 +77,9 @@
 		5931C04C2C5182B8009880F1 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		593874622CB5A50600DE8A86 /* UsersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRepository.swift; sourceTree = "<group>"; };
 		593874662CB5A59F00DE8A86 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		5938746C2CB5B2DC00DE8A86 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
+		593874712CB5B47600DE8A86 /* LoginInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
+		593874732CB5BE8800DE8A86 /* LoginFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFactory.swift; sourceTree = "<group>"; };
 		5978BF9E2C7A514A00C39F24 /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5978BFA02C7A514A00C39F24 /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
 		5978BFAF2C7A59EE00C39F24 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ViewControllers/SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +135,7 @@
 		5931C02D2C516EFA009880F1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				5938746B2CB5B2D200DE8A86 /* Utils */,
 				593874582CB5A07100DE8A86 /* User */,
 				59EA83C72C559DE200E812AA /* Extensions */,
 				59EA83C22C554A9300E812AA /* Profile */,
@@ -150,6 +157,16 @@
 				5931C04C2C5182B8009880F1 /* InfoViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5938746B2CB5B2D200DE8A86 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				593874732CB5BE8800DE8A86 /* LoginFactory.swift */,
+				593874712CB5B47600DE8A86 /* LoginInspector.swift */,
+				5938746C2CB5B2DC00DE8A86 /* Checker.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		5978BF9F2C7A514A00C39F24 /* StorageService */ = {
@@ -309,12 +326,15 @@
 				5929D0B42C67589600A23407 /* PhotosViewController.swift in Sources */,
 				59EA83C92C559E0700E812AA /* UIImageView.swift in Sources */,
 				5931C0482C51779D009880F1 /* PostViewController.swift in Sources */,
+				593874722CB5B47C00DE8A86 /* LoginInspector.swift in Sources */,
 				59C5A72F2C5D5B5C00200942 /* LogInViewController.swift in Sources */,
 				5931C02F2C516EFA009880F1 /* AppDelegate.swift in Sources */,
+				5938746D2CB5B2DF00DE8A86 /* Checker.swift in Sources */,
 				5931C0462C517780009880F1 /* FeedViewController.swift in Sources */,
 				59EA83C62C554C0000E812AA /* ProfileTableHeaderView.swift in Sources */,
 				5978BFB02C7A59EE00C39F24 /* SceneDelegate.swift in Sources */,
 				5931C0442C51774B009880F1 /* ProfileViewController.swift in Sources */,
+				593874742CB5BE8E00DE8A86 /* LoginFactory.swift in Sources */,
 				59C5A7342C5D999B00200942 /* ProfileTableViewCell.swift in Sources */,
 				5931C04D2C5182B8009880F1 /* InfoViewController.swift in Sources */,
 				5929D0B62C6762F600A23407 /* PhotosCollectionViewCell.swift in Sources */,

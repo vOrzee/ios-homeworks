@@ -21,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let feedViewController = FeedViewController()
         let profileViewController = LogInViewController()
+        profileViewController.loginDelegate = MyLoginFactory().makeLoginInspector()
         
         feedViewController.tabBarItem = UITabBarItem(
             title: "Лента", image: UIImage(systemName: "list.bullet"), tag: 0

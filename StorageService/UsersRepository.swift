@@ -12,7 +12,7 @@ public enum UsersRepository {
     public static func make() -> [User] {
         return [
             User(login: "user", fullName: "Test User", avatar: UIImage(named: "TestUser")!, status: "Waiting for something..."),
-            User(login: "jomarzka", fullName: "Роман Лешин", avatar: UIImage(named: "Jomarzka")!, status: "Гриппую..."),            
+            User(login: "jomarzka", fullName: "Роман Лешин", avatar: UIImage(named: "Jomarzka")!, status: "Гриппую..."),
         ]
     }
 }

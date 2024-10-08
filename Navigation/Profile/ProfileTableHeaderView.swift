@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StorageService
 
 class ProfileHeaderView: UIView {
     
@@ -81,8 +82,11 @@ class ProfileHeaderView: UIView {
         return button
     }()
     
-    init(avatarTapEvent: @escaping (UIImageView) -> Void) {
+    init(avatarTapEvent: @escaping (UIImageView) -> Void, user: User) {
         super.init(frame: .zero)
+        avatarImageView.image = user.avatar
+        fullNameLabel.text = user.fullName
+        statusLabel.text = user.status
         self.addSubview(avatarImageView)
         self.addSubview(fullNameLabel)
         self.addSubview(statusLabel)

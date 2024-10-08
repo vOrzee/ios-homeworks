@@ -12,6 +12,8 @@ class ProfileViewController: UIViewController {
     
     private let data: [Post] = PostRepositoryInMemory.make()
     
+    private var user: User
+    
     private var avatarTapEvent: ((UIImageView) -> Void)?
 
     private lazy var profileTable: UITableView = {
@@ -27,6 +29,15 @@ class ProfileViewController: UIViewController {
     private enum CellReuseID: String {
         case post = "PostTableViewCell_ReuseID"
         case photos = "PhotosTableViewCell_ReuseID"
+    }
+    
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -217,7 +228,7 @@ extension ProfileViewController: UITableViewDelegate {
         viewForHeaderInSection section: Int
     ) -> UIView? {
         guard let avatarTapEvent = avatarTapEvent else {return nil}
-        return ProfileHeaderView(avatarTapEvent: avatarTapEvent)
+        return ProfileHeaderView(avatarTapEvent: avatarTapEvent, user: user)
     }
     
     func tableView(

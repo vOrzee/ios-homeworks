@@ -212,7 +212,13 @@ class LogInViewController: UIViewController {
     }
     
     @objc func buttonPressed() {
-        guard let user = CurrentUserService.getUser(byLogin: emailOrPhoneTextField.text ?? "") else {
+        let userService: UserService
+        #if DEBUG
+        userService = TestUserService()
+        #else
+        userService = CurrentUserService()
+        #endif
+        guard let user = userService.getUser(byLogin: emailOrPhoneTextField.text ?? "") else {
             let alert = UIAlertController(
                 title: "Ошибка",
                 message: "Пользователь не найден. Пожалуйста, проверьте введенные данные.",

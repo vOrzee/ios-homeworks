@@ -125,10 +125,12 @@ class ProfileHeaderView: UIView {
             setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0),
             // Label "Username"
             fullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 27.0),
-            fullNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
+            fullNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0),
             // Label "Status"
             statusLabel.bottomAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: -18.0),
             statusLabel.leadingAnchor.constraint(equalTo: fullNameLabel.leadingAnchor),
+            statusLabel.trailingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
             // UITextField "statusField"
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 12.0),
             statusTextField.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),

@@ -8,5 +8,5 @@
 import StorageService
 
 protocol UserService {
-    static func getUser(byLogin login: String) -> User?
+    func getUser(byLogin login: String) -> User?
 }

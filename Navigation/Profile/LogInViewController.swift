@@ -220,25 +220,25 @@ class LogInViewController: UIViewController {
         #else
         userService = CurrentUserService()
         #endif
-        if (loginDelegate?.check(login: emailOrPhoneTextField.text ?? "", password: passwordTextField.text ?? "") == true) {
-            guard let user = userService.getUser(byLogin: emailOrPhoneTextField.text ?? "") else {
+        
+        guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text else {
+            return
+        }
+
+        if loginDelegate?.check(login: login, password: password) == true {
+            guard let user = userService.getUser(byLogin: login) else {
                 return
             }
-            
             let profileViewController = ProfileViewController(user: user)
             navigationController?.pushViewController(profileViewController, animated: true)
         } else {
             let alert = UIAlertController(
                 title: "Ошибка",
-                message: "Пользователь не найден. Пожалуйста, проверьте введенные данные.",
+                message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
                 preferredStyle: .alert
             )
-            
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
             present(alert, animated: true, completion: nil)
-            
-            return
         }
     }
     

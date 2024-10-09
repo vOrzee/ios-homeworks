@@ -86,17 +86,45 @@ class LogInViewController: UIViewController {
         return textField
     }()
     
-    lazy var loginButton: UIButton = {
-        let button = UIButton()
+    lazy var loginButton: CustomButton = {
+        let button = CustomButton(
+            title: "Log In", titleColor: .white, backgroundColor: nil,
+            action: { [weak self] in
+                guard let self = self else {return}
+                let userService: UserService
+                #if DEBUG
+                userService = TestUserService()
+                #else
+                userService = CurrentUserService()
+                #endif
+                
+                guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text else {
+                    return
+                }
+
+                if loginDelegate?.check(login: login, password: password) == true {
+                    guard let user = userService.getUser(byLogin: login) else {
+                        return
+                    }
+                    let profileViewController = ProfileViewController(user: user)
+                    navigationController?.pushViewController(profileViewController, animated: true)
+                } else {
+                    let alert = UIAlertController(
+                        title: "Ошибка",
+                        message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
+                        preferredStyle: .alert
+                    )
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    present(alert, animated: true, completion: nil)
+                }
+            }
+        )
         button.translatesAutoresizingMaskIntoConstraints = false
         let backgroundImage = UIImage(named: "bluePixel")
         button.setBackgroundImage(backgroundImage, for: .normal)
-        button.setTitle("Log In", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         button.addTarget(self, action: #selector(buttonStateChanged(_:)), for: [.touchDown, .touchUpInside, .touchUpOutside, .touchCancel, .allEvents])
         return button
     }()
@@ -217,35 +245,6 @@ class LogInViewController: UIViewController {
     
     @objc func willHideKeyboard(_ notification: NSNotification) {
         scrollView.contentInset.bottom = 0.0
-    }
-    
-    @objc func buttonPressed() {
-        let userService: UserService
-        #if DEBUG
-        userService = TestUserService()
-        #else
-        userService = CurrentUserService()
-        #endif
-        
-        guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text else {
-            return
-        }
-
-        if loginDelegate?.check(login: login, password: password) == true {
-            guard let user = userService.getUser(byLogin: login) else {
-                return
-            }
-            let profileViewController = ProfileViewController(user: user)
-            navigationController?.pushViewController(profileViewController, animated: true)
-        } else {
-            let alert = UIAlertController(
-                title: "Ошибка",
-                message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-        }
     }
     
     @objc func buttonStateChanged(_ button: UIButton) {

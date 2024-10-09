@@ -8,7 +8,7 @@
 public class FeedModel {
     var secretWord: String
     
-    init(secretWord: String) {
+    init(secretWord: String = "гладиолус") {
         self.secretWord = secretWord
     }
 }

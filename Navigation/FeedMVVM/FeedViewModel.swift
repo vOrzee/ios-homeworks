@@ -16,7 +16,7 @@ class FeedViewModel: FeedViewOutput {
     
     var onRequestAction: (() -> Void)?
     
-    init(feedModel: FeedModel) {
+    init(feedModel: FeedModel = FeedModel()) {
         self.feedModel = feedModel
     }
     

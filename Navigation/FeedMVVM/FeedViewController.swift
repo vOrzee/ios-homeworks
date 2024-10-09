@@ -10,9 +10,9 @@ import StorageService
 
 class FeedViewController: UIViewController {
     
-    private let postInMemorySample = PostRepositoryInMemory.make()[0]
+    private var postViewModel: PostViewOutput
     
-    private var feedViewModel: FeedViewOutput?
+    private var feedViewModel: FeedViewOutput
     
     private lazy var entryField: UITextField = {
         let textField = UITextField()
@@ -57,9 +57,7 @@ class FeedViewController: UIViewController {
         let button = CustomButton(
             title: "Верхняя кнопка", titleColor: .systemTeal, backgroundColor: .blue,
             action: { [weak self] in
-                guard let self = self else {return}
-                let postViewController = PostViewController(post: postInMemorySample)
-                navigationController?.pushViewController(postViewController, animated: true)
+                self?.navigateToPost(withId: 0)
             }
         )
         return button
@@ -69,19 +67,18 @@ class FeedViewController: UIViewController {
         let button = CustomButton(
             title: "Нижняя кнопка", titleColor: .systemTeal, backgroundColor: .red,
             action: { [weak self] in
-                guard let self = self else {return}
-                let postViewController = PostViewController(post: postInMemorySample)
-                navigationController?.pushViewController(postViewController, animated: true)
+                self?.navigateToPost(withId: 1)
             }
         )
         return button
     }()
     
-    init(feedViewModel: FeedViewOutput) {
-        self.feedViewModel = feedViewModel
+    init(feedViewOutput: FeedViewOutput, postViewOutput: PostViewOutput) {
+        self.feedViewModel = feedViewOutput
+        self.postViewModel = postViewOutput
         super.init(nibName: nil, bundle: nil)
         
-        self.feedViewModel?.onRequestAction = { [weak self] in
+        self.feedViewModel.onRequestAction = { [weak self] in
             guard let self = self else { return }
             self.updateUI()
         }
@@ -119,18 +116,22 @@ class FeedViewController: UIViewController {
         ])
     }
     
+    private func navigateToPost(withId id: Int) {
+        guard let post = postViewModel.getPostById(id: id) else { return }
+        let postViewController = PostViewController(post: post)
+        navigationController?.pushViewController(postViewController, animated: true)
+    }
+    
     private func onTapCheckGuessButton() {
-        feedViewModel?.check(word: entryField.text)
+        feedViewModel.check(word: entryField.text)
     }
     
     private func updateUI() {
-        switch feedViewModel?.state {
+        switch feedViewModel.state {
         case .correct:
             answerLabel.textColor = .green
         case .uncorrect:
             answerLabel.textColor = .red
-        case .none:
-            print()
         }
         answerLabel.text = entryField.text?.uppercased()
     }

@@ -95,6 +95,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		593874582CB5A07100DE8A86 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
+		593874822CB6082E00DE8A86 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +140,7 @@
 		5931C02D2C516EFA009880F1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				593874822CB6082E00DE8A86 /* Models */,
 				5938746B2CB5B2D200DE8A86 /* Utils */,
 				593874582CB5A07100DE8A86 /* User */,
 				59EA83C72C559DE200E812AA /* Extensions */,
@@ -239,6 +241,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				593874582CB5A07100DE8A86 /* User */,
+				593874822CB6082E00DE8A86 /* Models */,
 			);
 			name = Navigation;
 			productName = Navigation;

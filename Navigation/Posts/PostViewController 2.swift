@@ -1,9 +1,10 @@
 //
-//  PostViewController.swift
+//  PostViewController 2.swift
 //  Navigation
 //
-//  Created by Роман Лешин on 24.07.2024.
+//  Created by Роман Лешин on 10.10.2024.
 //
+
 
 import UIKit
 import StorageService
@@ -56,23 +57,21 @@ class PostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Информация"
-        self.view.backgroundColor = .lightGray
-        let barButtonItem = UIBarButtonItem(
-            title: "Информация",
-            style: .plain,
-            target: self,
-            action: #selector(openInfoViewController)
-        )
-        self.navigationItem.rightBarButtonItem = barButtonItem
         
+        self.title = "Информация о посте"
+        self.view.backgroundColor = .white
+        
+        // Добавляем элементы на экран
         view.addSubview(authorLabel)
         view.addSubview(postImageView)
         view.addSubview(descriptionLabel)
         view.addSubview(likesLabel)
         view.addSubview(viewsLabel)
         
+        // Настраиваем констрейнты
         setupConstraints()
+        
+        // Устанавливаем данные из поста
         bindPostData()
     }
     
@@ -80,34 +79,34 @@ class PostViewController: UIViewController {
         self.post = post
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func openInfoViewController() {
-        let infoViewController = InfoViewController()
-        
-        infoViewController.modalTransitionStyle = .flipHorizontal
-        infoViewController.modalPresentationStyle = .pageSheet
-        
-        present(infoViewController, animated: true)
-    }
-
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            // Автор
             authorLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             authorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             authorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            // Картинка
             postImageView.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 16),
             postImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             postImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             postImageView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.75),
+            
+            // Описание
             descriptionLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 16),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            // Лайки
             likesLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
             likesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
+            // Просмотры
             viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
             viewsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])

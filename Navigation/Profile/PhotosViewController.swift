@@ -82,7 +82,7 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
     func receive(images: [UIImage]) {
         if photos.count == initialPhotos.count {
             imagePublisherFacade.removeSubscription(for: self) // всё уже загружено
-            let item = IndexPath(item: images.count - 1, section: 0)
+            let item = IndexPath(item: photos.count - 1, section: 0)
             collectionView.scrollToItem(at: item, at: .bottom, animated: true)
             return
         }

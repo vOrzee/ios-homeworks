@@ -19,8 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         
-        let feedViewController = FeedViewController()
+        let feedViewController = FeedViewController(
+            feedViewModel: FeedViewModel(
+                feedModel: FeedModel(
+                    secretWord: "гладиолус"))
+        )
         let profileViewController = LogInViewController()
+        profileViewController.loginDelegate = MyLoginFactory().makeLoginInspector()
         
         feedViewController.tabBarItem = UITabBarItem(
             title: "Лента", image: UIImage(systemName: "list.bullet"), tag: 0
@@ -72,4 +77,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-

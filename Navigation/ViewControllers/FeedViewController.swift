@@ -21,23 +21,27 @@ class FeedViewController: UIViewController {
         return stackView
     }()
     
-    private lazy var topButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .blue
-        button.setTitle("Верхняя кнопка", for: .normal)
-        button.setTitleColor(.systemTeal, for: .normal)
-        button.addTarget(self, action: #selector(buttonTopPressed), for: .touchUpInside)
+    private lazy var topButton: CustomButton = {
+        let button = CustomButton(
+            title: "Верхняя кнопка", titleColor: .systemTeal, backgroundColor: .blue,
+            action: { [weak self] in
+                guard let self = self else {return}
+                let postViewController = PostViewController(post: postInMemorySample)
+                navigationController?.pushViewController(postViewController, animated: true)
+            }
+        )
         return button
     }()
     
-    private lazy var bottomButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
-        button.setTitle("Нижняя кнопка", for: .normal)
-        button.setTitleColor(.systemTeal, for: .normal)
-        button.addTarget(self, action: #selector(buttonBottomPressed), for: .touchUpInside)
+    private lazy var bottomButton: CustomButton = {
+        let button = CustomButton(
+            title: "Нижняя кнопка", titleColor: .systemTeal, backgroundColor: .red,
+            action: { [weak self] in
+                guard let self = self else {return}
+                let postViewController = PostViewController(post: postInMemorySample)
+                navigationController?.pushViewController(postViewController, animated: true)
+            }
+        )
         return button
     }()
 
@@ -55,17 +59,4 @@ class FeedViewController: UIViewController {
             stackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
         ])
     }
-    
-    @objc func buttonTopPressed() {
-        let postViewController = PostViewController(post: postInMemorySample)
-        
-        navigationController?.pushViewController(postViewController, animated: true)
-    }
-    
-    @objc func buttonBottomPressed() {
-        let postViewController = PostViewController(post: postInMemorySample)
-        
-        navigationController?.pushViewController(postViewController, animated: true)
-    }
-
 }

@@ -24,6 +24,7 @@
 		593874722CB5B47C00DE8A86 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874712CB5B47600DE8A86 /* LoginInspector.swift */; };
 		593874742CB5BE8E00DE8A86 /* LoginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874732CB5BE8800DE8A86 /* LoginFactory.swift */; };
 		5938747F2CB5D1F300DE8A86 /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 5938747E2CB5D1F300DE8A86 /* iOSIntPackage */; };
+		593874812CB5FF0400DE8A86 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874802CB5FEFD00DE8A86 /* CustomButton.swift */; };
 		5978BFA12C7A514A00C39F24 /* StorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = 5978BFA02C7A514A00C39F24 /* StorageService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5978BFA42C7A514A00C39F24 /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5978BF9E2C7A514A00C39F24 /* StorageService.framework */; };
 		5978BFA52C7A514A00C39F24 /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5978BF9E2C7A514A00C39F24 /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -81,6 +82,7 @@
 		5938746C2CB5B2DC00DE8A86 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		593874712CB5B47600DE8A86 /* LoginInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
 		593874732CB5BE8800DE8A86 /* LoginFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFactory.swift; sourceTree = "<group>"; };
+		593874802CB5FEFD00DE8A86 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		5978BF9E2C7A514A00C39F24 /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5978BFA02C7A514A00C39F24 /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
 		5978BFAF2C7A59EE00C39F24 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ViewControllers/SceneDelegate.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		5938746B2CB5B2D200DE8A86 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				593874802CB5FEFD00DE8A86 /* CustomButton.swift */,
 				593874732CB5BE8800DE8A86 /* LoginFactory.swift */,
 				593874712CB5B47600DE8A86 /* LoginInspector.swift */,
 				5938746C2CB5B2DC00DE8A86 /* Checker.swift */,
@@ -331,6 +334,7 @@
 				593874722CB5B47C00DE8A86 /* LoginInspector.swift in Sources */,
 				59C5A72F2C5D5B5C00200942 /* LogInViewController.swift in Sources */,
 				5931C02F2C516EFA009880F1 /* AppDelegate.swift in Sources */,
+				593874812CB5FF0400DE8A86 /* CustomButton.swift in Sources */,
 				5938746D2CB5B2DF00DE8A86 /* Checker.swift in Sources */,
 				5931C0462C517780009880F1 /* FeedViewController.swift in Sources */,
 				59EA83C62C554C0000E812AA /* ProfileTableHeaderView.swift in Sources */,

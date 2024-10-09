@@ -67,18 +67,21 @@ class ProfileHeaderView: UIView {
         return textField
     }()
     
-    lazy var setStatusButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .blue
-        button.setTitle("Set status", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+    lazy var setStatusButton: CustomButton = {
+        let button = CustomButton(
+            title: "Set status",
+            titleColor: .white,
+            backgroundColor: .blue,
+            action: { [weak self] in
+                guard let self = self else {return}
+                self.statusLabel.text = self.statusText
+            }
+        )
         button.layer.cornerRadius = 4.0
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowRadius = 4.0
         button.layer.shadowOffset = CGSize(width: 4.0, height: 4.0)
         button.layer.shadowOpacity = 0.7
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         return button
     }()
     
@@ -137,10 +140,6 @@ class ProfileHeaderView: UIView {
             statusTextField.trailingAnchor.constraint(equalTo: setStatusButton.trailingAnchor),
             statusTextField.heightAnchor.constraint(equalToConstant: 40.0),
         ])
-    }
-    
-    @objc func buttonPressed() {
-        statusLabel.text = statusText
     }
 
     @objc func statusTextChanged(_ textField: UITextField) {

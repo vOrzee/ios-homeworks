@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         
-        let feedViewController = FeedViewController()
+        let feedViewController = FeedViewController(feedViewModel: FeedViewModel(feedModel: FeedModel(secretWord: "гладиолус")))
         let profileViewController = LogInViewController()
         profileViewController.loginDelegate = MyLoginFactory().makeLoginInspector()
         

@@ -6,13 +6,9 @@
 //
 
 public class FeedModel {
-    private var secretWord: String
+    var secretWord: String
     
     init(secretWord: String) {
         self.secretWord = secretWord
-    }
-    
-    public func check(word: String) -> Bool {
-        word.uppercased() == secretWord.uppercased()
     }
 }

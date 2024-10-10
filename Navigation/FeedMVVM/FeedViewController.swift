@@ -10,6 +10,8 @@ import StorageService
 
 class FeedViewController: UIViewController {
     
+    var coordinator: FeedCoordinator?
+    
     private var postViewModel: PostViewOutput
     
     private var feedViewModel: FeedViewOutput
@@ -118,8 +120,7 @@ class FeedViewController: UIViewController {
     
     private func navigateToPost(withId id: Int) {
         guard let post = postViewModel.getPostById(id: id) else { return }
-        let postViewController = PostViewController(post: post)
-        navigationController?.pushViewController(postViewController, animated: true)
+        coordinator?.showPostDetails(post: post)
     }
     
     private func onTapCheckGuessButton() {

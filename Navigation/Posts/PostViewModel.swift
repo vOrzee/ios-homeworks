@@ -7,7 +7,7 @@
 import StorageService
 
 class PostViewModel: PostViewOutput {
-    internal var repository: PostRepository = PostRepositoryInMemory()
+    var repository: PostRepository = PostRepositoryInMemory()
     
     var data: [Post] {
         return repository.data

@@ -10,7 +10,11 @@ import StorageService
 
 class ProfileViewController: UIViewController {
     
-    private let data: [Post] = PostRepositoryInMemoryStorage.make()
+    var coordinator: ProfileCoordinator?
+    
+    private var postViewModel: PostViewOutput
+    
+    private var data: [Post]
     
     private var user: User
     
@@ -31,8 +35,10 @@ class ProfileViewController: UIViewController {
         case photos = "PhotosTableViewCell_ReuseID"
     }
     
-    init(user: User) {
+    init(user: User, postViewOutput: PostViewOutput) {
         self.user = user
+        self.postViewModel = postViewOutput
+        self.data = postViewModel.getAllPosts()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -236,8 +242,7 @@ extension ProfileViewController: UITableViewDelegate {
         didSelectRowAt indexPath: IndexPath
     ) {
         if indexPath.row == 0 {
-            let photosViewController = PhotosViewController(photos: PhotosRepository.make())
-            navigationController?.pushViewController(photosViewController, animated: true)
+            coordinator?.showPhotos(photos: PhotosRepository.make())
         }
     }
 }

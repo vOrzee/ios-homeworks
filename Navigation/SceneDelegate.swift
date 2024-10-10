@@ -11,38 +11,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    var appCoordinator: AppCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: scene)
         
-        let tabBarController = UITabBarController()
+        let appCoordinator = AppCoordinator()
         
-        let feedViewController = FeedViewController(
-            feedViewOutput: FeedViewModel(), postViewOutput: PostViewModel()
-        )
-        let profileViewController = LogInViewController()
-        profileViewController.loginDelegate = MyLoginFactory().makeLoginInspector()
+        appCoordinator.start()
         
-        feedViewController.tabBarItem = UITabBarItem(
-            title: "Лента", image: UIImage(systemName: "list.bullet"), tag: 0
-        )
-        profileViewController.tabBarItem = UITabBarItem(
-            title: "Профиль", image: UIImage(systemName: "person.circle"), tag: 1
-        )
-        
-        let controllers = [feedViewController, profileViewController]
-        tabBarController.viewControllers = controllers.map {
-            UINavigationController(rootViewController: $0)
-        }
-        
-        tabBarController.selectedIndex = 1
-        
-        window.rootViewController = tabBarController
+        window.rootViewController = appCoordinator.tabBarController
         window.makeKeyAndVisible()
         
         self.window = window
+        self.appCoordinator = appCoordinator
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

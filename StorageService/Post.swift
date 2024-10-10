@@ -8,6 +8,7 @@
 import Foundation
 
 public struct Post {
+    public let id: Int
     public let author: String
     public let description: String
     public let image: String

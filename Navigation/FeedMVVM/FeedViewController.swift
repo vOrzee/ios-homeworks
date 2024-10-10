@@ -10,9 +10,9 @@ import StorageService
 
 class FeedViewController: UIViewController {
     
-    private let postInMemorySample = PostRepositoryInMemory.make()[0]
+    private var postViewModel: PostViewOutput
     
-    private var feedModel = FeedModel(secretWord: "гладиолус")
+    private var feedViewModel: FeedViewOutput
     
     private lazy var entryField: UITextField = {
         let textField = UITextField()
@@ -27,7 +27,7 @@ class FeedViewController: UIViewController {
             title: "Проверить", titleColor: .white, backgroundColor: .orange,
             action: { [weak self] in
                 guard let self = self else {return}
-                self.check()
+                self.onTapCheckGuessButton()
             }
         )
         return button
@@ -57,9 +57,7 @@ class FeedViewController: UIViewController {
         let button = CustomButton(
             title: "Верхняя кнопка", titleColor: .systemTeal, backgroundColor: .blue,
             action: { [weak self] in
-                guard let self = self else {return}
-                let postViewController = PostViewController(post: postInMemorySample)
-                navigationController?.pushViewController(postViewController, animated: true)
+                self?.navigateToPost(withId: 0)
             }
         )
         return button
@@ -69,13 +67,26 @@ class FeedViewController: UIViewController {
         let button = CustomButton(
             title: "Нижняя кнопка", titleColor: .systemTeal, backgroundColor: .red,
             action: { [weak self] in
-                guard let self = self else {return}
-                let postViewController = PostViewController(post: postInMemorySample)
-                navigationController?.pushViewController(postViewController, animated: true)
+                self?.navigateToPost(withId: 1)
             }
         )
         return button
     }()
+    
+    init(feedViewOutput: FeedViewOutput, postViewOutput: PostViewOutput) {
+        self.feedViewModel = feedViewOutput
+        self.postViewModel = postViewOutput
+        super.init(nibName: nil, bundle: nil)
+        
+        self.feedViewModel.onRequestAction = { [weak self] in
+            guard let self = self else { return }
+            self.updateUI()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,13 +116,23 @@ class FeedViewController: UIViewController {
         ])
     }
     
-    private func check() {
-        let result = feedModel.check(word: entryField.text ?? "")
-        answerLabel.text = entryField.text?.uppercased()
-        if result {
+    private func navigateToPost(withId id: Int) {
+        guard let post = postViewModel.getPostById(id: id) else { return }
+        let postViewController = PostViewController(post: post)
+        navigationController?.pushViewController(postViewController, animated: true)
+    }
+    
+    private func onTapCheckGuessButton() {
+        feedViewModel.check(word: entryField.text)
+    }
+    
+    private func updateUI() {
+        switch feedViewModel.state {
+        case .correct:
             answerLabel.textColor = .green
-        } else {
+        case .uncorrect:
             answerLabel.textColor = .red
         }
+        answerLabel.text = entryField.text?.uppercased()
     }
 }

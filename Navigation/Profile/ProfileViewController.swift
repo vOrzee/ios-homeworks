@@ -10,7 +10,7 @@ import StorageService
 
 class ProfileViewController: UIViewController {
     
-    private let data: [Post] = PostRepositoryInMemory.make()
+    private let data: [Post] = PostRepositoryInMemoryStorage.make()
     
     private var user: User
     

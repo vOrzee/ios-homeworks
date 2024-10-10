@@ -9,6 +9,8 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    var coordinator: LoginCoordinator?
+    
     var loginDelegate: LoginViewControllerDelegate?
     
     private lazy var scrollView: UIScrollView = {
@@ -106,8 +108,7 @@ class LogInViewController: UIViewController {
                     guard let user = userService.getUser(byLogin: login) else {
                         return
                     }
-                    let profileViewController = ProfileViewController(user: user)
-                    navigationController?.pushViewController(profileViewController, animated: true)
+                    coordinator?.showProfileAfterLogin(user: user)
                 } else {
                     let alert = UIAlertController(
                         title: "Ошибка",

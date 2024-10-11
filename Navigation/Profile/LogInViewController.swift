@@ -97,7 +97,7 @@ class LogInViewController: UIViewController {
         let button = CustomButton(
             title: "Log In", titleColor: .white, backgroundColor: nil,
             action: { [weak self] in
-                guard let self = self else {return}
+                guard let self else {return}
                 let userService: UserService
                 #if DEBUG
                 userService = TestUserService()
@@ -148,7 +148,8 @@ class LogInViewController: UIViewController {
         let button = CustomButton(
             title: "Подобрать пароль", titleColor: .systemGray, backgroundColor: .orange,
             action: { [weak self] in
-                guard let self = self, let workItem = workItem else {return}
+                guard let self, let workItem = workItem else {return}
+                self.crackPasswordButton.isEnabled = false
                 let allowedCharacters = String().letters
                 self.generatedPassword = String((0..<4).map { _ in allowedCharacters.randomElement()! })
                 print(self.generatedPassword)
@@ -177,7 +178,10 @@ class LogInViewController: UIViewController {
             while crackPassword != self.generatedPassword {
                 crackPassword = BruteForce.shared.generateBruteForce(crackPassword, fromArray: String().letters.map{String($0)})
                 if self.workItem?.isCancelled == true {
-                    self.activityIndicator.stopAnimating()
+                    DispatchQueue.main.async {
+                        self.activityIndicator.stopAnimating()
+                        self.crackPasswordButton.isEnabled = true
+                    }
                     print("Брутфорс был отменен.")
                     return
                 }
@@ -187,6 +191,7 @@ class LogInViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
                 self.passwordTextField.isSecureTextEntry = false
                 self.passwordTextField.text = crackPassword
+                self.crackPasswordButton.isEnabled = true
             }
         }
         setupView()

@@ -13,4 +13,6 @@ protocol PostViewOutput {
     var repository: PostRepository { get }
     func getAllPosts() -> [Post]
     func getPostById(id: Int) -> Post?
+    func subscribeNewPosts(uiAction: @escaping (([Post])->Void))
+    func invalidateSubscribeNewPosts()
 }

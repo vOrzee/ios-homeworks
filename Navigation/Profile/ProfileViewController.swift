@@ -14,8 +14,6 @@ class ProfileViewController: UIViewController {
     
     private var postViewModel: PostViewOutput
     
-    private var data: [Post]
-    
     private var user: User
     
     private var avatarTapEvent: ((UIImageView) -> Void)?
@@ -38,7 +36,6 @@ class ProfileViewController: UIViewController {
     init(user: User, postViewOutput: PostViewOutput) {
         self.user = user
         self.postViewModel = postViewOutput
-        self.data = postViewModel.getAllPosts()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,6 +63,10 @@ class ProfileViewController: UIViewController {
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(tap)
         }
+        postViewModel.onDataChanged = { [weak self] updatedPosts in // Своеобразная лайвдата
+            guard let self else {return}
+            self.profileTable.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +78,33 @@ class ProfileViewController: UIViewController {
                 animated: animated
             )
         }
+        postViewModel.subscribeNewPosts { [weak self] newPosts in
+            guard !newPosts.isEmpty else { return }
+            guard let self else { return }
+            
+            let alert = UIAlertController(
+                title: "Новые посты",
+                message: "Появились новые посты. Хотите обновить список?",
+                preferredStyle: .alert
+            )
+            
+            let refreshAction = UIAlertAction(title: "Обновить", style: .default) { [weak self] _ in
+                guard let self else { return }
+                print(self.postViewModel.getAllPosts())
+            }
+            
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+            
+            alert.addAction(refreshAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        postViewModel.invalidateSubscribeNewPosts()
     }
     
     func addSubviews() {
@@ -196,7 +224,7 @@ extension ProfileViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        data.count + 1
+        postViewModel.data.count + 1
     }
 
     func tableView(
@@ -221,7 +249,7 @@ extension ProfileViewController: UITableViewDataSource {
             fatalError("could not dequeueReusableCell")
         }
         
-        viewHolder.bind(data[indexPath.row - 1])
+        viewHolder.bind(postViewModel.data[indexPath.row - 1])
         
         return viewHolder
     }

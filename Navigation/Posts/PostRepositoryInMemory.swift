@@ -13,7 +13,7 @@ class PostRepositoryInMemory: PostRepository {
         return _data
     }
     
-    private var _data: [Post] {
+    private var _data: [Post] = [] {
         didSet {
             onDataChanged?(_data)
         }
@@ -21,12 +21,19 @@ class PostRepositoryInMemory: PostRepository {
     
     var onDataChanged: (([Post]) -> Void)?
     
+    private var timer: Timer?
+    
     init() {
-        _data = PostRepositoryInMemoryStorage.make()
+        getAll()
     }
     
     func getAll() {
-        _data = PostRepositoryInMemoryStorage.make()
+        DispatchQueue.global(qos: .background).async {
+            let posts = PostRepositoryInMemoryStorage.make()
+            DispatchQueue.main.async {
+                self._data = posts
+            }
+        }
     }
     
     func getById(id: Int) -> Post? {
@@ -42,5 +49,29 @@ class PostRepositoryInMemory: PostRepository {
     func delete(id: Int) {
         //This mock
         print("Not yet implemented")
+    }
+    
+    func getNewerPosts(completion: @escaping ([Post]) -> Void) {
+        DispatchQueue.global().async {
+            self.timer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) {_ in
+                print("Запрос на получение постов отправлен")
+                let newPosts = PostRepositoryInMemoryStorage.make()
+                    .filter { post in
+                        !self.data.contains(where: { $0.id == post.id })
+                    }
+                DispatchQueue.main.async {
+                    print("Новые посты переданы в замыкание")
+                    completion(newPosts)
+                }
+            }
+            RunLoop.current.add(self.timer!, forMode: .default)
+            RunLoop.current.run()
+        }
+    }
+    
+    func stopSubscribeNewPosts() {
+        timer?.invalidate()
+        timer = nil
+        print("Подписка отменена")
     }
 }

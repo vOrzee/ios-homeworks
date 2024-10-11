@@ -8,13 +8,9 @@
 import UIKit
 import iOSIntPackage
 
-class PhotosViewController: UIViewController, ImageLibrarySubscriber {
+class PhotosViewController: UIViewController {
     
-    private let imagePublisherFacade = ImagePublisherFacade()
-    
-    private var photos: [UIImage?] = []
-    
-    private var initialPhotos: [UIImage] = []
+    private var photos: [UIImage] = []
     
     private let collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
@@ -35,10 +31,30 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
     }()
     
     init(photos: [UIImage?]) {
-        initialPhotos = photos.compactMap { $0 }
+        let imageProcessor = ImageProcessor()
+        self.photos = photos.compactMap { $0 }
         super.init(nibName: nil, bundle: nil)
-        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: Int.max, userImages: initialPhotos)
+        let qos: QualityOfService = .userInteractive
+        let startTime = DispatchTime.now().uptimeNanoseconds / 1_000_000
+        imageProcessor.processImagesOnThread(
+            sourceImages: self.photos,
+            filter: .chrome,
+            qos: qos,
+            completion:  { [weak self] photosWithFilterTypedCGImages in
+                guard let self = self else { return }
+                let photosWithFilter = photosWithFilterTypedCGImages.compactMap { cgImage in
+                    cgImage.map { UIImage(cgImage: $0) }
+                }
+                DispatchQueue.main.async {
+                    self.photos = photosWithFilter
+                    self.collectionView.reloadData()
+                    let completionTime = DispatchTime.now().uptimeNanoseconds / 1_000_000 - startTime
+                    print("Применение фильтров с qos \(qos.rawValue) заняло \(completionTime) мс")
+                }
+            }
+        )
     }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -63,7 +79,6 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        imagePublisherFacade.subscribe(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,20 +91,6 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
         super.viewWillDisappear(animated)
         
         navigationController?.navigationBar.isHidden = true
-        imagePublisherFacade.removeSubscription(for: self)
-    }
-    
-    func receive(images: [UIImage]) {
-        if photos.count == initialPhotos.count {
-            imagePublisherFacade.removeSubscription(for: self) // всё уже загружено
-            let item = IndexPath(item: photos.count - 1, section: 0)
-            collectionView.scrollToItem(at: item, at: .bottom, animated: true)
-            return
-        }
-        guard let lastImage = images.last else { return }
-        if photos.contains(lastImage) { return } // Повторы мне не нужны
-        photos.append(lastImage)
-        collectionView.reloadData()
     }
 }
 

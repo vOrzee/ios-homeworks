@@ -26,6 +26,10 @@ class FeedViewModel: FeedViewOutput {
             return
         }
         
+        guard word.lowercased() != "ркн" else {
+            preconditionFailure("Приложение завершилось аварийно из-за ввода запрещённого слова")
+        }
+        
         let result = word.lowercased() == feedModel.secretWord.lowercased()
         state = result ? .correct : .uncorrect
     }

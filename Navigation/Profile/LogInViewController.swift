@@ -16,7 +16,7 @@ class LogInViewController: UIViewController {
     // mock just from homework
     private var generatedPassword: String = ""
     
-    private var workItem: DispatchWorkItem?
+    private var brutForceJob: DispatchWorkItem?
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -105,26 +105,36 @@ class LogInViewController: UIViewController {
                 userService = CurrentUserService()
                 #endif
                 
-                guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text else {
+                guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text, let loginDelegate else {
                     return
                 }
+                var authorizationSuccess = false
+                do {
+                    authorizationSuccess = try loginDelegate.check(login: login, password: password)
+                } catch let error as AppError {
+                    switch error {
+                    case .unauthorized:
+                        let alert = UIAlertController(
+                            title: "Ошибка",
+                            message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
+                            preferredStyle: .alert
+                        )
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        present(alert, animated: true, completion: nil)
+                    default:
+                        print("Другая известная ошибка: \(error)")
+                    }
+                } catch {
+                    print("Произошла неизвестная ошибка: \(error)")
+                    return // Данная ветка не должна отрабатывать никогда
+                }
 
-                if loginDelegate?.check(login: login, password: password) == true
+                if authorizationSuccess
                     || password == generatedPassword // mock
                 {
-                    guard let user = userService.getUser(byLogin: login) else {
-                        return
-                    }
-                    workItem?.cancel()
+                    guard let user = userService.getUser(byLogin: login) else {return}
+                    brutForceJob?.cancel()
                     coordinator?.showProfileAfterLogin(user: user)
-                } else {
-                    let alert = UIAlertController(
-                        title: "Ошибка",
-                        message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
-                        preferredStyle: .alert
-                    )
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    present(alert, animated: true, completion: nil)
                 }
             }
         )
@@ -148,15 +158,15 @@ class LogInViewController: UIViewController {
         let button = CustomButton(
             title: "Подобрать пароль", titleColor: .systemGray, backgroundColor: .orange,
             action: { [weak self] in
-                guard let self, let workItem = workItem else {return}
+                guard let self, let brutForceJob = brutForceJob else {return}
                 self.crackPasswordButton.isEnabled = false
                 let allowedCharacters = String().letters
                 self.generatedPassword = String((0..<4).map { _ in allowedCharacters.randomElement()! })
                 print(self.generatedPassword)
                 self.activityIndicator.startAnimating()
                 let timer = Timer.scheduledTimer(withTimeInterval: 90.0, repeats: false) { _ in
-                    guard workItem.isCancelled == false else { return }
-                    workItem.cancel()
+                    guard brutForceJob.isCancelled == false else { return }
+                    brutForceJob.cancel()
                     DispatchQueue.main.async {
                         self.activityIndicator.stopAnimating()
                         self.crackPasswordButton.isEnabled = true
@@ -164,7 +174,7 @@ class LogInViewController: UIViewController {
                     }
                 }
                 timer.tolerance = 3.0
-                DispatchQueue.global(qos: .userInitiated).async(execute: workItem)
+                DispatchQueue.global(qos: .userInitiated).async(execute: brutForceJob)
             }
         )
         button.layer.cornerRadius = 10.0
@@ -182,12 +192,12 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        workItem = DispatchWorkItem { [weak self] in
+        brutForceJob = DispatchWorkItem { [weak self] in
             guard let self = self else {return}
             var crackPassword = ""
             while crackPassword != self.generatedPassword {
                 crackPassword = BruteForce.shared.generateBruteForce(crackPassword, fromArray: String().letters.map{String($0)})
-                if self.workItem?.isCancelled == true {
+                if self.brutForceJob?.isCancelled == true {
                     DispatchQueue.main.async {
                         self.activityIndicator.stopAnimating()
                         self.crackPasswordButton.isEnabled = true
@@ -219,7 +229,7 @@ class LogInViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        workItem?.cancel()
+        brutForceJob?.cancel()
         removeKeyboardObservers()
     }
     

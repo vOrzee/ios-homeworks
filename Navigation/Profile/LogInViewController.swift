@@ -154,6 +154,16 @@ class LogInViewController: UIViewController {
                 self.generatedPassword = String((0..<4).map { _ in allowedCharacters.randomElement()! })
                 print(self.generatedPassword)
                 self.activityIndicator.startAnimating()
+                let timer = Timer.scheduledTimer(withTimeInterval: 90.0, repeats: false) { _ in
+                    guard workItem.isCancelled == false else { return }
+                    workItem.cancel()
+                    DispatchQueue.main.async {
+                        self.activityIndicator.stopAnimating()
+                        self.crackPasswordButton.isEnabled = true
+                        print("Процесс завершен по таймауту")
+                    }
+                }
+                timer.tolerance = 3.0
                 DispatchQueue.global(qos: .userInitiated).async(execute: workItem)
             }
         )

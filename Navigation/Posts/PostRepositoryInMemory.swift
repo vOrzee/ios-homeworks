@@ -64,6 +64,7 @@ class PostRepositoryInMemory: PostRepository {
                     completion(newPosts)
                 }
             }
+            self.timer?.tolerance = 3.0
             RunLoop.current.add(self.timer!, forMode: .default)
             RunLoop.current.run()
         }

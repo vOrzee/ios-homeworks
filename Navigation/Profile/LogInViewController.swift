@@ -13,6 +13,11 @@ class LogInViewController: UIViewController {
     
     var loginDelegate: LoginViewControllerDelegate?
     
+    // mock just from homework
+    private var generatedPassword: String = ""
+    
+    private var workItem: DispatchWorkItem?
+    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
@@ -104,10 +109,13 @@ class LogInViewController: UIViewController {
                     return
                 }
 
-                if loginDelegate?.check(login: login, password: password) == true {
+                if loginDelegate?.check(login: login, password: password) == true
+                    || password == generatedPassword // mock
+                {
                     guard let user = userService.getUser(byLogin: login) else {
                         return
                     }
+                    workItem?.cancel()
                     coordinator?.showProfileAfterLogin(user: user)
                 } else {
                     let alert = UIAlertController(
@@ -120,13 +128,35 @@ class LogInViewController: UIViewController {
                 }
             }
         )
-        button.translatesAutoresizingMaskIntoConstraints = false
         let backgroundImage = UIImage(named: "bluePixel")
         button.setBackgroundImage(backgroundImage, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         button.layer.cornerRadius = 10.0
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(buttonStateChanged(_:)), for: [.touchDown, .touchUpInside, .touchUpOutside, .touchCancel, .allEvents])
+        return button
+    }()
+    
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
+    private lazy var crackPasswordButton: CustomButton = {
+        let button = CustomButton(
+            title: "Подобрать пароль", titleColor: .systemGray, backgroundColor: .orange,
+            action: { [weak self] in
+                guard let self = self, let workItem = workItem else {return}
+                let allowedCharacters = String().letters
+                self.generatedPassword = String((0..<4).map { _ in allowedCharacters.randomElement()! })
+                print(self.generatedPassword)
+                self.activityIndicator.startAnimating()
+                DispatchQueue.global(qos: .userInitiated).async(execute: workItem)
+            }
+        )
+        button.layer.cornerRadius = 10.0
         return button
     }()
     
@@ -141,6 +171,24 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        workItem = DispatchWorkItem { [weak self] in
+            guard let self = self else {return}
+            var crackPassword = ""
+            while crackPassword != self.generatedPassword {
+                crackPassword = BruteForce.shared.generateBruteForce(crackPassword, fromArray: String().letters.map{String($0)})
+                if self.workItem?.isCancelled == true {
+                    self.activityIndicator.stopAnimating()
+                    print("Брутфорс был отменен.")
+                    return
+                }
+            }
+            DispatchQueue.main.async {
+                print("Пароль подобран: \(crackPassword)")
+                self.activityIndicator.stopAnimating()
+                self.passwordTextField.isSecureTextEntry = false
+                self.passwordTextField.text = crackPassword
+            }
+        }
         setupView()
         addSubviews()
         setupConstraints()
@@ -156,7 +204,7 @@ class LogInViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        workItem?.cancel()
         removeKeyboardObservers()
     }
     
@@ -191,6 +239,8 @@ class LogInViewController: UIViewController {
         pageAutorizationView.addSubview(emailOrPhoneTextField)
         pageAutorizationView.addSubview(passwordTextField)
         pageAutorizationView.addSubview(loginButton)
+        pageAutorizationView.addSubview(crackPasswordButton)
+        pageAutorizationView.addSubview(activityIndicator)
     }
     
     private func setupConstraintsIntoPageAutorizationView() {
@@ -211,6 +261,14 @@ class LogInViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 50.0),
             loginButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
             loginButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
+            crackPasswordButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 16.0),
+            crackPasswordButton.heightAnchor.constraint(equalToConstant: 50.0),
+            crackPasswordButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
+            crackPasswordButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
+            activityIndicator.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
+            activityIndicator.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 50.0)
         ])
     }
     

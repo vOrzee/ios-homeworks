@@ -20,7 +20,8 @@ class Checker {
         #endif
     }
     
-    func check(login: String, password: String) -> Bool {
-        return login == self.login && password == self.password
+    func check(login: String, password: String) throws -> Bool {
+        if !(login == self.login && password == self.password) {throw AppError.unauthorized}
+        return true
     }
 }

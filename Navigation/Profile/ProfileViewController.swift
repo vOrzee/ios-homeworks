@@ -28,6 +28,15 @@ class ProfileViewController: UIViewController {
         return table
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.color = .black
+        indicator.style = .medium
+        return indicator
+    }()
+    
     private enum CellReuseID: String {
         case post = "PostTableViewCell_ReuseID"
         case photos = "PhotosTableViewCell_ReuseID"
@@ -63,10 +72,6 @@ class ProfileViewController: UIViewController {
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(tap)
         }
-        postViewModel.onDataChanged = { [weak self] updatedPosts in // Своеобразная лайвдата
-            guard let self else {return}
-            self.profileTable.reloadData()
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,6 +83,12 @@ class ProfileViewController: UIViewController {
                 animated: animated
             )
         }
+        
+        postViewModel.onDataChanged = { [weak self] updatedPosts in // Своеобразная лайвдата
+            guard let self else {return}
+            self.profileTable.reloadData()
+        }
+        
         postViewModel.subscribeNewPosts { [weak self] newPosts in
             guard !newPosts.isEmpty else { return }
             guard let self else { return }
@@ -100,11 +111,36 @@ class ProfileViewController: UIViewController {
             
             self.present(alert, animated: true, completion: nil)
         }
+        
+        postViewModel.onStateChange = { [weak self] state in
+            guard let self else {return}
+            switch state {
+            case .loading:
+                self.activityIndicator.startAnimating()
+            case .idle:
+                self.activityIndicator.stopAnimating()
+            case .error(let message, let error):
+                self.activityIndicator.stopAnimating()
+                if error == .dataNotFound {
+                    print(message)
+                    break
+                }
+                let alert = UIAlertController(
+                    title: "Ошибка",
+                    message: message,
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         postViewModel.invalidateSubscribeNewPosts()
+        postViewModel.onDataChanged = nil
+        postViewModel.onStateChange = nil
     }
     
     func addSubviews() {

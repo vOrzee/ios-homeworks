@@ -18,7 +18,7 @@ class FeedCoordinator: Coordinator {
     func start() {
         let feedViewController = FeedViewController(
             feedViewOutput: FeedViewModel(),
-            postViewOutput: PostViewModel()
+            postViewOutput: PostViewModel.shared
         )
         feedViewController.coordinator = self
         navigationController.pushViewController(feedViewController, animated: false)

@@ -23,7 +23,7 @@ class ProfileCoordinator: Coordinator {
     
     func start() {
         guard let user = user else {return}
-        let profileViewController = ProfileViewController(user: user, postViewOutput: PostViewModel())
+        let profileViewController = ProfileViewController(user: user, postViewOutput: PostViewModel.shared)
         profileViewController.coordinator = self
         navigationController.pushViewController(profileViewController, animated: false)
     }

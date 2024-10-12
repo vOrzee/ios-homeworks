@@ -75,6 +75,15 @@ class FeedViewController: UIViewController {
         return button
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.color = .green
+        indicator.style = .large
+        return indicator
+    }()
+    
     init(feedViewOutput: FeedViewOutput, postViewOutput: PostViewOutput) {
         self.feedViewModel = feedViewOutput
         self.postViewModel = postViewOutput
@@ -98,6 +107,7 @@ class FeedViewController: UIViewController {
         view.addSubview(entryField)
         view.addSubview(checkGuessButton)
         view.addSubview(answerLabel)
+        view.addSubview(activityIndicator)
         
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
@@ -115,12 +125,43 @@ class FeedViewController: UIViewController {
             answerLabel.topAnchor.constraint(equalTo: checkGuessButton.bottomAnchor, constant: 8.0),
             answerLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 24.0),
             answerLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -24.0),
+            activityIndicator.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
         ])
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        postViewModel.onStateChange = { [weak self] state in
+            guard let self else {return}
+            switch state {
+            case .loading:
+                self.activityIndicator.startAnimating()
+            case .idle:
+                self.activityIndicator.stopAnimating()
+            case .error(let message, _):
+                self.activityIndicator.stopAnimating()
+                let alert = UIAlertController(
+                    title: "Ошибка",
+                    message: message,
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        postViewModel.onStateChange = nil
+    }
+    
     private func navigateToPost(withId id: Int) {
-        guard let post = postViewModel.getPostById(id: id) else { return }
-        coordinator?.showPostDetails(post: post)
+        postViewModel.getPostById(id: id) { [weak self] post in
+            guard let post, let self else {return}
+            self.coordinator?.showPostDetails(post: post)
+        }
     }
     
     private func onTapCheckGuessButton() {

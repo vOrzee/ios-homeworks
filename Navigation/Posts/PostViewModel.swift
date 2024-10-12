@@ -34,4 +34,12 @@ class PostViewModel: PostViewOutput {
         return repository.getById(id: id)
     }
     
+    func subscribeNewPosts(uiAction: @escaping (([Post])->Void)) {
+        repository.getNewerPosts(completion: uiAction)
+    }
+    
+    func invalidateSubscribeNewPosts() {
+        repository.stopSubscribeNewPosts()
+    }
+    
 }

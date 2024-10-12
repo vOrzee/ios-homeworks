@@ -14,4 +14,6 @@ protocol PostRepository {
     func getById(id: Int) -> Post?
     func save(post: Post)
     func delete(id: Int)
+    func getNewerPosts(completion: @escaping ([Post]) -> Void)
+    func stopSubscribeNewPosts()
 }

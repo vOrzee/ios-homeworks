@@ -108,6 +108,12 @@ class LogInViewController: UIViewController {
                 guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text, let loginDelegate else {
                     return
                 }
+                if password == generatedPassword { // mock for brutforce
+                    guard let user = userService.getUser(byLogin: login) else {return}
+                    brutForceJob?.cancel()
+                    coordinator?.showProfileAfterLogin(user: user)
+                    return
+                }
                 var authorizationSuccess = false
                 do {
                     authorizationSuccess = try loginDelegate.check(login: login, password: password)
@@ -127,14 +133,6 @@ class LogInViewController: UIViewController {
                 } catch {
                     print("Произошла неизвестная ошибка: \(error)")
                     return // Данная ветка не должна отрабатывать никогда
-                }
-
-                if authorizationSuccess
-                    || password == generatedPassword // mock
-                {
-                    guard let user = userService.getUser(byLogin: login) else {return}
-                    brutForceJob?.cancel()
-                    coordinator?.showProfileAfterLogin(user: user)
                 }
             }
         )

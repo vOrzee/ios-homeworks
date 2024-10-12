@@ -6,7 +6,7 @@
 //
 
 protocol FeedViewOutput {
-    var state: FeedStateWordCheck { get }
+    var state: FeedStateSecretWordCheck { get }
     var onRequestAction: (() -> Void)? { get set }
     func check(word: String?)
 }

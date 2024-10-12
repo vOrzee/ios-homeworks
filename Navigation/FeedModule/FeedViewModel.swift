@@ -8,7 +8,7 @@
 class FeedViewModel: FeedViewOutput {
     private var feedModel: FeedModel
     
-    var state: FeedStateWordCheck = .uncorrect {
+    var state: FeedStateSecretWordCheck = .uncorrect {
         didSet {
             onRequestAction?()
         }
@@ -24,10 +24,6 @@ class FeedViewModel: FeedViewOutput {
         guard let word = word, !word.isEmpty else {
             state = .uncorrect
             return
-        }
-        
-        guard word.lowercased() != "ркн" else {
-            preconditionFailure("Приложение завершилось аварийно из-за ввода запрещённого слова")
         }
         
         let result = word.lowercased() == feedModel.secretWord.lowercased()

@@ -9,8 +9,8 @@ import StorageService
 
 protocol PostViewOutput {
     var data: [Post] { get }
-    var state: ViewModelState { get }
-    var onStateChange: ((ViewModelState) -> Void)? { get set }
+    var state: FeedViewModelState { get }
+    var onStateChange: ((FeedViewModelState) -> Void)? { get set }
     var onDataChanged: (([Post]) -> Void)? { get set }
     var repository: PostRepository { get }
     func getAllPosts()

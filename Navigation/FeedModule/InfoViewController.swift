@@ -9,31 +9,14 @@ import UIKit
 
 class InfoViewController: UIViewController {
     
+    var coordinator: InfoCoordinator?
+    
     private lazy var actionButton: CustomButton = {
         let button = CustomButton(
             title: "Вызвать предупреждение", titleColor: .white, backgroundColor: .orange,
             action: { [weak self] in
-                guard let self = self else {return}
-                let alertController = UIAlertController(title: "Заголовок предупреждения", message: "Текст предупреждения", preferredStyle: .alert)
-                alertController.addAction(
-                    UIAlertAction(
-                        title: "Первое действие",
-                        style: .default,
-                        handler: { _ in
-                            print("Выбрано первое действие")
-                        }
-                    )
-                )
-                alertController.addAction(
-                    UIAlertAction(
-                        title: "Второе действие",
-                        style: .default,
-                        handler: { _ in
-                            print("Выбрано второе действие")
-                        }
-                    )
-                )
-                self.present(alertController, animated: true)
+                guard let self else { return }
+                self.coordinator?.showAlert()
             }
         )
         return button
@@ -43,6 +26,7 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         view.addSubview(actionButton)
+        
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 40.0),
@@ -51,5 +35,4 @@ class InfoViewController: UIViewController {
             actionButton.heightAnchor.constraint(equalToConstant: 24.0)
         ])
     }
-    
 }

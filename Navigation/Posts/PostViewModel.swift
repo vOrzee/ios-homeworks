@@ -15,11 +15,11 @@ class PostViewModel: PostViewOutput {
         return repository.data
     }
     
-    var state: ViewModelState {
+    var state: FeedViewModelState {
         return _state
     }
     
-    private var _state: ViewModelState = .idle {
+    private var _state: FeedViewModelState = .idle {
         didSet {
             onStateChange?(_state)
             if _state != .loading {
@@ -33,7 +33,7 @@ class PostViewModel: PostViewOutput {
             repository.onDataChanged = onDataChanged
         }
     }
-    var onStateChange: ((ViewModelState) -> Void)?
+    var onStateChange: ((FeedViewModelState) -> Void)?
     
     private init() {
         getAllPosts()

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -50,6 +50,14 @@
 		5978BFAC2C7A517A00C39F24 /* PostRepositoryInMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A7312C5D939600200942 /* PostRepositoryInMemoryStorage.swift */; };
 		59C5A72F2C5D5B5C00200942 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */; };
 		59C5A7342C5D999B00200942 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A7332C5D999B00200942 /* ProfileTableViewCell.swift */; };
+		59E9FD392CBAF67A00960DFE /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD382CBAF67300960DFE /* NetworkService.swift */; };
+		59E9FD3E2CBAF85400960DFE /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD3A2CBAF85400960DFE /* AppConfiguration.swift */; };
+		59E9FD3F2CBAF85400960DFE /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD3B2CBAF85400960DFE /* FeedModel.swift */; };
+		59E9FD402CBAF85400960DFE /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD3C2CBAF85400960DFE /* ViewModelState.swift */; };
+		59E9FD462CBAF85900960DFE /* CurrentUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD412CBAF85900960DFE /* CurrentUserService.swift */; };
+		59E9FD472CBAF85900960DFE /* LoginViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD422CBAF85900960DFE /* LoginViewControllerDelegate.swift */; };
+		59E9FD482CBAF85900960DFE /* TestUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD432CBAF85900960DFE /* TestUserService.swift */; };
+		59E9FD492CBAF85900960DFE /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD442CBAF85900960DFE /* UserService.swift */; };
 		59EA83C62C554C0000E812AA /* ProfileTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */; };
 		59EA83C92C559E0700E812AA /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C82C559E0700E812AA /* UIImageView.swift */; };
 /* End PBXBuildFile section */
@@ -120,14 +128,17 @@
 		59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		59C5A7312C5D939600200942 /* PostRepositoryInMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositoryInMemoryStorage.swift; sourceTree = "<group>"; };
 		59C5A7332C5D999B00200942 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		59E9FD382CBAF67300960DFE /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		59E9FD3A2CBAF85400960DFE /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		59E9FD3B2CBAF85400960DFE /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
+		59E9FD3C2CBAF85400960DFE /* ViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelState.swift; sourceTree = "<group>"; };
+		59E9FD412CBAF85900960DFE /* CurrentUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserService.swift; sourceTree = "<group>"; };
+		59E9FD422CBAF85900960DFE /* LoginViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerDelegate.swift; sourceTree = "<group>"; };
+		59E9FD432CBAF85900960DFE /* TestUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserService.swift; sourceTree = "<group>"; };
+		59E9FD442CBAF85900960DFE /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableHeaderView.swift; sourceTree = "<group>"; };
 		59EA83C82C559E0700E812AA /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		593874582CB5A07100DE8A86 /* User */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = User; sourceTree = "<group>"; };
-		593874822CB6082E00DE8A86 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5931C0282C516EFA009880F1 /* Frameworks */ = {
@@ -172,6 +183,7 @@
 		5931C02D2C516EFA009880F1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				59E9FD372CBAF66800960DFE /* API */,
 				593874AA2CB75FB700DE8A86 /* Coordinators */,
 				5938749D2CB725DF00DE8A86 /* Posts */,
 				5931C03C2C516EFC009880F1 /* Info.plist */,
@@ -181,9 +193,9 @@
 				59EA83C72C559DE200E812AA /* Extensions */,
 				593874902CB710EA00DE8A86 /* FeedMVVM */,
 				5931C0392C516EFC009880F1 /* LaunchScreen.storyboard */,
-				593874822CB6082E00DE8A86 /* Models */,
+				59E9FD3D2CBAF85400960DFE /* Models */,
 				59EA83C22C554A9300E812AA /* Profile */,
-				593874582CB5A07100DE8A86 /* User */,
+				59E9FD452CBAF85900960DFE /* User */,
 				5938746B2CB5B2D200DE8A86 /* Utils */,
 				5931C0422C517684009880F1 /* ViewControllers */,
 			);
@@ -257,6 +269,35 @@
 			path = StorageService;
 			sourceTree = "<group>";
 		};
+		59E9FD372CBAF66800960DFE /* API */ = {
+			isa = PBXGroup;
+			children = (
+				59E9FD382CBAF67300960DFE /* NetworkService.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		59E9FD3D2CBAF85400960DFE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				59E9FD3A2CBAF85400960DFE /* AppConfiguration.swift */,
+				59E9FD3B2CBAF85400960DFE /* FeedModel.swift */,
+				59E9FD3C2CBAF85400960DFE /* ViewModelState.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		59E9FD452CBAF85900960DFE /* User */ = {
+			isa = PBXGroup;
+			children = (
+				59E9FD412CBAF85900960DFE /* CurrentUserService.swift */,
+				59E9FD422CBAF85900960DFE /* LoginViewControllerDelegate.swift */,
+				59E9FD432CBAF85900960DFE /* TestUserService.swift */,
+				59E9FD442CBAF85900960DFE /* UserService.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		59EA83C22C554A9300E812AA /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,10 +350,6 @@
 			);
 			dependencies = (
 				5978BFA32C7A514A00C39F24 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				593874582CB5A07100DE8A86 /* User */,
-				593874822CB6082E00DE8A86 /* Models */,
 			);
 			name = Navigation;
 			productName = Navigation;
@@ -411,6 +448,11 @@
 				59EA83C92C559E0700E812AA /* UIImageView.swift in Sources */,
 				593874A12CB7268400DE8A86 /* PostViewOutput.swift in Sources */,
 				593874722CB5B47C00DE8A86 /* LoginInspector.swift in Sources */,
+				59E9FD392CBAF67A00960DFE /* NetworkService.swift in Sources */,
+				59E9FD462CBAF85900960DFE /* CurrentUserService.swift in Sources */,
+				59E9FD472CBAF85900960DFE /* LoginViewControllerDelegate.swift in Sources */,
+				59E9FD482CBAF85900960DFE /* TestUserService.swift in Sources */,
+				59E9FD492CBAF85900960DFE /* UserService.swift in Sources */,
 				59C5A72F2C5D5B5C00200942 /* LogInViewController.swift in Sources */,
 				5931C02F2C516EFA009880F1 /* AppDelegate.swift in Sources */,
 				593874BD2CB9ABA100DE8A86 /* AppError.swift in Sources */,
@@ -431,6 +473,9 @@
 				593874A72CB72C8B00DE8A86 /* PostViewModel.swift in Sources */,
 				593874982CB711DA00DE8A86 /* FeedStateWordCheck.swift in Sources */,
 				5938749C2CB7238A00DE8A86 /* FeedViewController.swift in Sources */,
+				59E9FD3E2CBAF85400960DFE /* AppConfiguration.swift in Sources */,
+				59E9FD3F2CBAF85400960DFE /* FeedModel.swift in Sources */,
+				59E9FD402CBAF85400960DFE /* ViewModelState.swift in Sources */,
 				5931C04D2C5182B8009880F1 /* InfoViewController.swift in Sources */,
 				5929D0B62C6762F600A23407 /* PhotosCollectionViewCell.swift in Sources */,
 			);

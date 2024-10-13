@@ -8,8 +8,8 @@ import Foundation
 import UIKit
 
 struct NetworkService {
-    static func request(for configuration: AppConfiguration) {
-        guard let url = URL(string: configuration.rawValue) else { return }
+    static func request(with url: URL?) async {
+        guard let url else { return }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error {
                 print("Error: \(error.localizedDescription)")
@@ -25,7 +25,7 @@ struct NetworkService {
         }.resume()
     }
     
-    static func getToDoTask(withId id: Int, completion: @escaping (Result<TodoTask, AppError>) -> Void) {
+    static func getToDoTask(withId id: Int, completion: @escaping (Result<TodoTask, AppError>) -> Void) async {
         let urlString = "https://jsonplaceholder.typicode.com/todos/\(id)"
         guard let url = URL(string: urlString) else {return}
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -66,7 +66,7 @@ struct NetworkService {
         }.resume()
     }
     
-    static func getTatooinePlanetInfo(completion: @escaping (Result<PlanetModel, AppError>) -> Void) {
+    static func getTatooinePlanetInfo(completion: @escaping (Result<PlanetModel, AppError>) -> Void) async {
         let urlString = "https://swapi.dev/api/planets/1"
         guard let url = URL(string: urlString) else {return}
         URLSession.shared.dataTask(with: url) { (data, response, error) in

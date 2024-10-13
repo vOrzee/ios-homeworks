@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum PhotosRepository {
+public enum PhotosRepositoryInMemoryStorage {
     public static func make() -> [UIImage?] {
         return (1...10).map {
             UIImage(named: "IT_theme_square_image_\($0)")

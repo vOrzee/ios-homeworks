@@ -82,46 +82,50 @@ class InfoViewController: UIViewController {
     }
     
     func tapActionButtonTaskOne() {
-        NetworkService.getToDoTask(withId: (1...200).randomElement() ?? 34) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let task):
-                self.infoLabel.text = "Поставлена цель:"
-                self.responseLabel.text = task.title
-            case .failure(let error):
-                switch error {
-                case .networkUnavailable(let code):
-                    self.responseLabel.text = "Ошибка сети. Код: \(code)"
-                case .dataNotFound:
-                    self.responseLabel.text = "Задача не найдена"
-                default:
-                    self.responseLabel.text = "Что-то пошло не так"
+        Task {
+            await NetworkService.getToDoTask(withId: (1...200).randomElement() ?? 34) { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .success(let task):
+                    self.infoLabel.text = "Поставлена цель:"
+                    self.responseLabel.text = task.title
+                case .failure(let error):
+                    switch error {
+                    case .networkUnavailable(let code):
+                        self.responseLabel.text = "Ошибка сети. Код: \(code)"
+                    case .dataNotFound:
+                        self.responseLabel.text = "Задача не найдена"
+                    default:
+                        self.responseLabel.text = "Что-то пошло не так"
+                    }
                 }
             }
         }
     }
     
     func tapActionButtonTaskTwo() {
-        NetworkService.getTatooinePlanetInfo(completion: { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let planet):
-                if planet.name == "Tatooine" {
-                    self.infoLabel.text = "Период обращения планеты Татуин:"
-                    self.responseLabel.text = planet.orbitalPeriod
-                } else {
-                    self.responseLabel.text = "Мы попали не на ту планету"
+        Task {
+            await NetworkService.getTatooinePlanetInfo(completion: { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .success(let planet):
+                    if planet.name == "Tatooine" {
+                        self.infoLabel.text = "Период обращения планеты Татуин:"
+                        self.responseLabel.text = planet.orbitalPeriod
+                    } else {
+                        self.responseLabel.text = "Мы попали не на ту планету"
+                    }
+                case .failure(let error):
+                    switch error {
+                    case .networkUnavailable(let code):
+                        self.responseLabel.text = "Ошибка сети. Код: \(code)"
+                    case .dataNotFound:
+                        self.responseLabel.text = "Задача не найдена"
+                    default:
+                        self.responseLabel.text = "Что-то пошло не так"
+                    }
                 }
-            case .failure(let error):
-                switch error {
-                case .networkUnavailable(let code):
-                    self.responseLabel.text = "Ошибка сети. Код: \(code)"
-                case .dataNotFound:
-                    self.responseLabel.text = "Задача не найдена"
-                default:
-                    self.responseLabel.text = "Что-то пошло не так"
-                }
-            }
-        })
+            })
+        }
     }
 }

@@ -14,9 +14,9 @@ class Checker {
     
     private init() {
         #if DEBUG
-        login = UsersRepository.make()[0].login
+        login = UsersRepositoryInMemoryStorage.make()[0].login
         #else
-        login = UsersRepository.make()[1].login
+        login = UsersRepositoryInMemoryStorage.make()[1].login
         #endif
     }
     

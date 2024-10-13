@@ -23,7 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator.start()
         
         if let appConfig = AppConfiguration.allCases.randomElement() {
-            NetworkService.request(for: appConfig)
+            Task {
+                await NetworkService.request(with: appConfig.url)
+            }
         }
         
         window.rootViewController = appCoordinator.tabBarController

@@ -274,7 +274,7 @@ extension ProfileViewController: UITableViewDataSource {
             ) as? PhotosTableViewCell else {
                 fatalError("could not dequeueReusableCell")
             }
-            viewHolder.bind(photos: PhotosRepository.make())
+            viewHolder.bind(photos: PhotosRepositoryInMemoryStorage.make())
             return viewHolder
         }
         
@@ -306,7 +306,7 @@ extension ProfileViewController: UITableViewDelegate {
         didSelectRowAt indexPath: IndexPath
     ) {
         if indexPath.row == 0 {
-            coordinator?.showPhotos(photos: PhotosRepository.make())
+            coordinator?.showPhotos(photos: PhotosRepositoryInMemoryStorage.make())
         }
     }
 }

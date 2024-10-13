@@ -8,7 +8,11 @@
 import Foundation
 
 enum AppConfiguration: String, CaseIterable {
-    case firstUrlString = "https://swapi.dev/api/people/8"
-    case secondUrlString = "https://swapi.dev/api/starships/3"
-    case thirdUrlString = "https://swapi.dev/api/planets/5"
+    case people = "https://swapi.dev/api/people"
+    case starships = "https://swapi.dev/api/starships"
+    case planets = "https://swapi.dev/api/planets"
+    
+    var url: URL? {
+        URL(string: self.rawValue)
+    }
 }

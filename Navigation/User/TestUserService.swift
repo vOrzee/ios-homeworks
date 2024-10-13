@@ -8,5 +8,5 @@
 import StorageService
 
 class TestUserService: UserService {
-    internal var currentUser: User = UsersRepository.make()[0]
+    internal var currentUser: User = UsersRepositoryInMemoryStorage.make()[0]
 }

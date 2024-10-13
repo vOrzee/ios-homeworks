@@ -108,8 +108,7 @@ class LogInViewController: UIViewController {
                 guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text, let loginDelegate else {
                     return
                 }
-                if password == generatedPassword { // mock for brutforce
-                    guard let user = userService.getUser(byLogin: login) else {return}
+                if password == generatedPassword, let user = userService.getUser(byLogin: login) { // mock for brutforce
                     brutForceJob?.cancel()
                     coordinator?.showProfileAfterLogin(user: user)
                     return
@@ -117,6 +116,9 @@ class LogInViewController: UIViewController {
                 var authorizationSuccess = false
                 do {
                     authorizationSuccess = try loginDelegate.check(login: login, password: password)
+                    if authorizationSuccess, let user = userService.getUser(byLogin: login) {
+                        coordinator?.showProfileAfterLogin(user: user)
+                    }
                 } catch let error as AppError {
                     switch error {
                     case .unauthorized:

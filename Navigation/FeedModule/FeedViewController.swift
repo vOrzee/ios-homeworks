@@ -32,6 +32,7 @@ class FeedViewController: UIViewController {
                 self.onTapCheckGuessButton()
             }
         )
+        button.layer.cornerRadius = 8.0
         return button
     }()
     
@@ -62,6 +63,7 @@ class FeedViewController: UIViewController {
                 self?.navigateToPost(withId: 0)
             }
         )
+        button.layer.cornerRadius = 8.0
         return button
     }()
     
@@ -72,6 +74,7 @@ class FeedViewController: UIViewController {
                 self?.navigateToPost(withId: 1)
             }
         )
+        button.layer.cornerRadius = 8.0
         return button
     }()
     
@@ -102,6 +105,7 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Лента"
+        self.view.backgroundColor = .systemGray
         
         view.addSubview(stackView)
         view.addSubview(entryField)
@@ -155,6 +159,7 @@ class FeedViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         postViewModel.onStateChange = nil
+        activityIndicator.stopAnimating()
     }
     
     private func navigateToPost(withId id: Int) {

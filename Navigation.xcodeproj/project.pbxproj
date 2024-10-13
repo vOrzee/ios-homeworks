@@ -60,6 +60,8 @@
 		59E9FD492CBAF85900960DFE /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD442CBAF85900960DFE /* UserService.swift */; };
 		59E9FD4F2CBB20FB00960DFE /* PostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD4E2CBB20F300960DFE /* PostCoordinator.swift */; };
 		59E9FD512CBB249600960DFE /* InfoCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD502CBB248D00960DFE /* InfoCoordinator.swift */; };
+		59E9FD542CBB3FBB00960DFE /* TodoTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD532CBB3F7100960DFE /* TodoTask.swift */; };
+		59E9FD562CBB50A400960DFE /* PlanetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD552CBB509B00960DFE /* PlanetModel.swift */; };
 		59EA83C62C554C0000E812AA /* ProfileTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */; };
 		59EA83C92C559E0700E812AA /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C82C559E0700E812AA /* UIImageView.swift */; };
 /* End PBXBuildFile section */
@@ -140,6 +142,8 @@
 		59E9FD442CBAF85900960DFE /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		59E9FD4E2CBB20F300960DFE /* PostCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCoordinator.swift; sourceTree = "<group>"; };
 		59E9FD502CBB248D00960DFE /* InfoCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCoordinator.swift; sourceTree = "<group>"; };
+		59E9FD532CBB3F7100960DFE /* TodoTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTask.swift; sourceTree = "<group>"; };
+		59E9FD552CBB509B00960DFE /* PlanetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetModel.swift; sourceTree = "<group>"; };
 		59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableHeaderView.swift; sourceTree = "<group>"; };
 		59EA83C82C559E0700E812AA /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,10 +193,10 @@
 			children = (
 				59E9FD372CBAF66800960DFE /* API */,
 				593874AA2CB75FB700DE8A86 /* Coordinators */,
-				5938749D2CB725DF00DE8A86 /* Posts */,
-				59E9FD452CBAF85900960DFE /* User */,
+				5938749D2CB725DF00DE8A86 /* PostsModule */,
 				59EA83C22C554A9300E812AA /* ProfileModule */,
 				593874902CB710EA00DE8A86 /* FeedModule */,
+				59E9FD452CBAF85900960DFE /* User */,
 				59E9FD3D2CBAF85400960DFE /* Models */,
 				5938746B2CB5B2D200DE8A86 /* Utils */,
 				59EA83C72C559DE200E812AA /* Extensions */,
@@ -225,7 +229,7 @@
 			path = FeedModule;
 			sourceTree = "<group>";
 		};
-		5938749D2CB725DF00DE8A86 /* Posts */ = {
+		5938749D2CB725DF00DE8A86 /* PostsModule */ = {
 			isa = PBXGroup;
 			children = (
 				5938749E2CB7260000DE8A86 /* PostViewController.swift */,
@@ -234,7 +238,7 @@
 				593874A22CB7269100DE8A86 /* PostRepository.swift */,
 				593874A42CB7281C00DE8A86 /* PostRepositoryInMemory.swift */,
 			);
-			path = Posts;
+			path = PostsModule;
 			sourceTree = "<group>";
 		};
 		593874AA2CB75FB700DE8A86 /* Coordinators */ = {
@@ -275,6 +279,7 @@
 		59E9FD3D2CBAF85400960DFE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				59E9FD522CBB3F6700960DFE /* API */,
 				59E9FD4C2CBB1DB000960DFE /* App */,
 				59E9FD4B2CBB1CD900960DFE /* Feed */,
 			);
@@ -329,6 +334,15 @@
 				59E9FD422CBAF85900960DFE /* LoginViewControllerDelegate.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		59E9FD522CBB3F6700960DFE /* API */ = {
+			isa = PBXGroup;
+			children = (
+				59E9FD552CBB509B00960DFE /* PlanetModel.swift */,
+				59E9FD532CBB3F7100960DFE /* TodoTask.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		59EA83C22C554A9300E812AA /* ProfileModule */ = {
@@ -481,6 +495,7 @@
 				59E9FD392CBAF67A00960DFE /* NetworkService.swift in Sources */,
 				59E9FD462CBAF85900960DFE /* CurrentUserService.swift in Sources */,
 				59E9FD472CBAF85900960DFE /* LoginViewControllerDelegate.swift in Sources */,
+				59E9FD562CBB50A400960DFE /* PlanetModel.swift in Sources */,
 				59E9FD482CBAF85900960DFE /* TestUserService.swift in Sources */,
 				59E9FD492CBAF85900960DFE /* UserService.swift in Sources */,
 				59C5A72F2C5D5B5C00200942 /* LogInViewController.swift in Sources */,
@@ -489,6 +504,7 @@
 				593874A52CB7282900DE8A86 /* PostRepositoryInMemory.swift in Sources */,
 				593874812CB5FF0400DE8A86 /* CustomButton.swift in Sources */,
 				59E9FD512CBB249600960DFE /* InfoCoordinator.swift in Sources */,
+				59E9FD542CBB3FBB00960DFE /* TodoTask.swift in Sources */,
 				593874962CB7118400DE8A86 /* FeedViewModel.swift in Sources */,
 				593874BB2CB8BDEB00DE8A86 /* BruteForce.swift in Sources */,
 				5938746D2CB5B2DF00DE8A86 /* Checker.swift in Sources */,

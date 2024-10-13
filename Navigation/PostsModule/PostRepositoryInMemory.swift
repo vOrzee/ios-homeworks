@@ -28,7 +28,7 @@ class PostRepositoryInMemory: PostRepository {
             sleep(3)
             if Int.random(in: 1...100) <= 20 {
                 DispatchQueue.main.async {
-                    completion(.failure(.networkUnavailable))
+                    completion(.failure(.networkUnavailable("Сеть недоступна")))
                 }
                 return
             }
@@ -42,7 +42,7 @@ class PostRepositoryInMemory: PostRepository {
     
     func getById(id: Int, completion: @escaping (Result<Post, AppError>) -> Void) {
         DispatchQueue.global(qos: .background).async{
-            sleep(3)
+            sleep(1)
             guard let post = self._data.first(where: { $0.id == id }) else {
                 DispatchQueue.main.async {
                     completion(.failure(.dataNotFound))
@@ -52,7 +52,7 @@ class PostRepositoryInMemory: PostRepository {
             // Просто для демонстрации так как этот метод проще вызвать в текущей реализации:
             if Int.random(in: 1...100) <= 30 {
                 DispatchQueue.main.async {
-                    completion(.failure(.networkUnavailable))
+                    completion(.failure(.networkUnavailable("503")))
                 }
                 return
             }
@@ -65,7 +65,7 @@ class PostRepositoryInMemory: PostRepository {
     func save(post: Post, completion: @escaping (Result<Void, AppError>) -> Void) {
         //This mock
         if Int.random(in: 1...100) <= 25 {
-            return completion(.failure(.networkUnavailable))
+            return completion(.failure(.networkUnavailable("500")))
         }
         print("Not yet implemented")
     }
@@ -73,7 +73,7 @@ class PostRepositoryInMemory: PostRepository {
     func delete(id: Int, completion: @escaping (Result<Bool, AppError>) -> Void) {
         //This mock
         if Int.random(in: 1...100) <= 40 {
-            return completion(.failure(.networkUnavailable))
+            return completion(.failure(.networkUnavailable("502")))
         }
         print("Not yet implemented")
         return completion(.success(true))

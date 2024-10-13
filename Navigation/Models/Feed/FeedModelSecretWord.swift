@@ -6,7 +6,7 @@
 //
 
 public class FeedModel {
-    var secretWord: String
+    let secretWord: String
     
     init(secretWord: String = "гладиолус") {
         self.secretWord = secretWord

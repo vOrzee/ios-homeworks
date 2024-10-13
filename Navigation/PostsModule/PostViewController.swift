@@ -10,6 +10,8 @@ import StorageService
 
 class PostViewController: UIViewController {
     
+    var coordinator: PostCoordinator?
+    
     private let post: Post
     
     private lazy var authorLabel: UILabel = {
@@ -86,12 +88,7 @@ class PostViewController: UIViewController {
     }
     
     @objc func openInfoViewController() {
-        let infoViewController = InfoViewController()
-        
-        infoViewController.modalTransitionStyle = .flipHorizontal
-        infoViewController.modalPresentationStyle = .pageSheet
-        
-        present(infoViewController, animated: true)
+        coordinator?.showInfo()
     }
 
     private func setupConstraints() {

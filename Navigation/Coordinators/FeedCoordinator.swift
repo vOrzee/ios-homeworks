@@ -29,7 +29,7 @@ class FeedCoordinator: Coordinator {
     }
     
     func showPostDetails(post: Post) {
-        let postViewController = PostViewController(post: post)
-        navigationController.pushViewController(postViewController, animated: true)
+        let postCoordinator = PostCoordinator(navigationController: navigationController, post: post)
+        postCoordinator.start()
     }
 }

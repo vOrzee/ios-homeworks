@@ -18,7 +18,7 @@ class LoginCoordinator: Coordinator {
     func start() {
         let loginViewController = LogInViewController()
         loginViewController.coordinator = self
-        loginViewController.loginDelegate = MyLoginFactory().makeLoginInspector()
+        loginViewController.setDelegate(MyLoginFactory().makeLoginInspector())
         navigationController.pushViewController(loginViewController, animated: false)
         
         loginViewController.tabBarItem = UITabBarItem(

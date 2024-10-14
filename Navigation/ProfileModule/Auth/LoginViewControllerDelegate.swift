@@ -5,6 +5,4 @@
 //  Created by Роман Лешин on 08.10.2024.
 //
 
-protocol LoginViewControllerDelegate: AnyObject {
-    func check(login: String, password: String) throws -> Bool
-}
+protocol LoginViewControllerDelegate: AnyObject, CheckerServiceProtocol {}

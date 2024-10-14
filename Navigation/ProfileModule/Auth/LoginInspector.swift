@@ -6,7 +6,13 @@
 //
 
 class LoginInspector: LoginViewControllerDelegate {
-    func check(login: String, password: String) throws -> Bool {
-        return try Checker.shared.check(login: login, password: password)
+    private let checkerService = CheckerService()
+    
+    func checkCredentials(withEmail: String, password: String, completion: @escaping (() -> Void)) {
+        checkerService.checkCredentials(withEmail: withEmail, password: password, completion: completion)
+    }
+    
+    func signUp(withEmail: String, password: String, completion: @escaping (() -> Void)) {
+        checkerService.signUp(withEmail: withEmail, password: password, completion: completion)
     }
 }

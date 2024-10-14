@@ -13,7 +13,7 @@ public class User {
     public let avatar: UIImage
     public let status: String
     
-    init(login: String, fullName: String, avatar: UIImage, status: String) {
+    public init(login: String, fullName: String, avatar: UIImage, status: String) {
         self.login = login
         self.fullName = fullName
         self.avatar = avatar

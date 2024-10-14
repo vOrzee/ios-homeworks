@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StorageService
 import FirebaseAuth
 
 class LogInViewController: UIViewController {
@@ -59,11 +60,7 @@ class LogInViewController: UIViewController {
         textField.rightViewMode = .always
         textField.keyboardType = .emailAddress
         textField.delegate = self
-        #if DEBUG
-        textField.text = "user"
-        #else
-        textField.text = "jomarzka"
-        #endif
+        textField.text = "joma@email.ru"
         return textField
     }()
     
@@ -96,36 +93,70 @@ class LogInViewController: UIViewController {
             title: "Log In", titleColor: .white, backgroundColor: nil,
             action: { [weak self] in
                 guard let self else {return}
-                let userService: UserService
-                #if DEBUG
-                userService = TestUserService()
-                #else
-                userService = CurrentUserService()
-                #endif
-                
-                guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text, let delegate else {
+                guard let login = self.emailOrPhoneTextField.text, let password = self.passwordTextField.text else {
                     return
                 }
-                do {
-                    delegate.checkCredentials(withEmail: login, password: password) {
-                        //coordinator?.showProfileAfterLogin(user: user)
+                if login.isEmpty {
+                    self.emailOrPhoneTextField.backgroundColor = .red
+                    coordinator?.showAuthAlert(message: "Введите email")
+                    return
+                } else {
+                    self.emailOrPhoneTextField.backgroundColor = .systemGray6
+                }
+                if password.isEmpty {
+                    self.passwordTextField.backgroundColor = .red
+                    coordinator?.showAuthAlert(message: "Введите пароль")
+                    return
+                } else {
+                    self.passwordTextField.backgroundColor = .systemGray6
+                }
+                guard let delegate = self.delegate else { return }
+                delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
+                    guard let self else {return}
+                    switch result {
+                    case .success(let userFb):
+                        guard let email = userFb.email else {return}
+                        let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
+                        coordinator?.showProfileAfterLogin(user: user)
+                    case .failure(let error):
+                        print(error)
+                        switch error {
+                        //case .userNotFound(message: let message):
+                            // Пока не ловится, но здесь самое место для delegate.signUp
+                        case .unknownError(message: let message):
+                            delegate.signUp(withEmail: login, password: password) { [weak self] result in
+                                guard let self else {return}
+                                switch result {
+                                case .success(let userFb):
+                                    delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
+                                        switch result {
+                                        case .success(let userFb):
+                                            guard let email = userFb.email else {return}
+                                            let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
+                                            self?.coordinator?.showProfileAfterLogin(user: user)
+                                        case .failure(let error):
+                                            break
+                                        }
+                                    }
+                                case .failure(let error):
+                                    switch error {
+                                    case .wrongPassword(message: let message):
+                                        // И тут в случае короткого пароль приходит 17004
+                                        coordinator?.showAuthAlert(message: message)
+                                    default:
+                                        coordinator?.showAuthAlert(message: "Введён неверный пароль")
+                                    }
+                                }
+                            }
+                        case .invalidEmail(message: let message):
+                            coordinator?.showAuthAlert(message: message)
+                        case .wrongPassword(message: let message):
+                            // В этом случае тоже 17004...
+                            coordinator?.showAuthAlert(message: message)
+                        default:
+                            break
+                        }
                     }
-                } catch let error as AppError {
-                    switch error {
-                    case .unauthorized:
-                        let alert = UIAlertController(
-                            title: "Ошибка",
-                            message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
-                            preferredStyle: .alert
-                        )
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        present(alert, animated: true, completion: nil)
-                    default:
-                        print("Другая известная ошибка: \(error)")
-                    }
-                } catch {
-                    print("Произошла неизвестная ошибка: \(error)")
-                    return // Данная ветка не должна отрабатывать никогда
                 }
             }
         )

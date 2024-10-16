@@ -6,17 +6,16 @@
 //
 
 import UIKit
+import StorageService
+import FirebaseAuth
 
 class LogInViewController: UIViewController {
     
     var coordinator: LoginCoordinator?
     
-    var loginDelegate: LoginViewControllerDelegate?
+    private weak var delegate: LoginViewControllerDelegate?
     
-    // mock just from homework
-    private var generatedPassword: String = ""
-    
-    private var brutForceJob: DispatchWorkItem?
+    private var handle: NSObjectProtocol?
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -61,11 +60,7 @@ class LogInViewController: UIViewController {
         textField.rightViewMode = .always
         textField.keyboardType = .emailAddress
         textField.delegate = self
-        #if DEBUG
-        textField.text = "user"
-        #else
-        textField.text = "jomarzka"
-        #endif
+        textField.text = "joma@email.ru"
         return textField
     }()
     
@@ -89,7 +84,7 @@ class LogInViewController: UIViewController {
         textField.rightViewMode = .always
         textField.keyboardType = .default
         textField.delegate = self
-        textField.text = "12345"
+        textField.text = "123456"
         return textField
     }()
     
@@ -98,43 +93,70 @@ class LogInViewController: UIViewController {
             title: "Log In", titleColor: .white, backgroundColor: nil,
             action: { [weak self] in
                 guard let self else {return}
-                let userService: UserService
-                #if DEBUG
-                userService = TestUserService()
-                #else
-                userService = CurrentUserService()
-                #endif
-                
-                guard let login = emailOrPhoneTextField.text, let password = passwordTextField.text, let loginDelegate else {
+                guard let login = self.emailOrPhoneTextField.text, let password = self.passwordTextField.text else {
                     return
                 }
-                if password == generatedPassword, let user = userService.getUser(byLogin: login) { // mock for brutforce
-                    brutForceJob?.cancel()
-                    coordinator?.showProfileAfterLogin(user: user)
+                if login.isEmpty {
+                    self.emailOrPhoneTextField.backgroundColor = .red
+                    coordinator?.showAuthAlert(message: "Введите email")
                     return
+                } else {
+                    self.emailOrPhoneTextField.backgroundColor = .systemGray6
                 }
-                var authorizationSuccess = false
-                do {
-                    authorizationSuccess = try loginDelegate.check(login: login, password: password)
-                    if authorizationSuccess, let user = userService.getUser(byLogin: login) {
+                if password.isEmpty {
+                    self.passwordTextField.backgroundColor = .red
+                    coordinator?.showAuthAlert(message: "Введите пароль")
+                    return
+                } else {
+                    self.passwordTextField.backgroundColor = .systemGray6
+                }
+                guard let delegate = self.delegate else { return }
+                delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
+                    guard let self else {return}
+                    switch result {
+                    case .success(let userFb):
+                        guard let email = userFb.email else {return}
+                        let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
                         coordinator?.showProfileAfterLogin(user: user)
+                    case .failure(let error):
+                        print(error)
+                        switch error {
+                        //case .userNotFound(message: let message):
+                            // Пока не ловится, но здесь самое место для delegate.signUp
+                        case .unknownError(message: let message):
+                            delegate.signUp(withEmail: login, password: password) { [weak self] result in
+                                guard let self else {return}
+                                switch result {
+                                case .success(let userFb):
+                                    delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
+                                        switch result {
+                                        case .success(let userFb):
+                                            guard let email = userFb.email else {return}
+                                            let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
+                                            self?.coordinator?.showProfileAfterLogin(user: user)
+                                        case .failure(let error):
+                                            break
+                                        }
+                                    }
+                                case .failure(let error):
+                                    switch error {
+                                    case .wrongPassword(message: let message):
+                                        // И тут в случае короткого пароль приходит 17004
+                                        coordinator?.showAuthAlert(message: message)
+                                    default:
+                                        coordinator?.showAuthAlert(message: "Введён неверный пароль")
+                                    }
+                                }
+                            }
+                        case .invalidEmail(message: let message):
+                            coordinator?.showAuthAlert(message: message)
+                        case .wrongPassword(message: let message):
+                            // В этом случае тоже 17004...
+                            coordinator?.showAuthAlert(message: message)
+                        default:
+                            break
+                        }
                     }
-                } catch let error as AppError {
-                    switch error {
-                    case .unauthorized:
-                        let alert = UIAlertController(
-                            title: "Ошибка",
-                            message: "Неверный логин или пароль. Пожалуйста, проверьте введенные данные.",
-                            preferredStyle: .alert
-                        )
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        present(alert, animated: true, completion: nil)
-                    default:
-                        print("Другая известная ошибка: \(error)")
-                    }
-                } catch {
-                    print("Произошла неизвестная ошибка: \(error)")
-                    return // Данная ветка не должна отрабатывать никогда
                 }
             }
         )
@@ -154,33 +176,6 @@ class LogInViewController: UIViewController {
         return indicator
     }()
     
-    private lazy var crackPasswordButton: CustomButton = {
-        let button = CustomButton(
-            title: "Подобрать пароль", titleColor: .systemGray, backgroundColor: .orange,
-            action: { [weak self] in
-                guard let self, let brutForceJob = brutForceJob else {return}
-                self.crackPasswordButton.isEnabled = false
-                let allowedCharacters = String().letters
-                self.generatedPassword = String((0..<4).map { _ in allowedCharacters.randomElement()! })
-                print(self.generatedPassword)
-                self.activityIndicator.startAnimating()
-                let timer = Timer.scheduledTimer(withTimeInterval: 90.0, repeats: false) { _ in
-                    guard brutForceJob.isCancelled == false else { return }
-                    brutForceJob.cancel()
-                    DispatchQueue.main.async {
-                        self.activityIndicator.stopAnimating()
-                        self.crackPasswordButton.isEnabled = true
-                        print("Процесс завершен по таймауту")
-                    }
-                }
-                timer.tolerance = 3.0
-                DispatchQueue.global(qos: .userInitiated).async(execute: brutForceJob)
-            }
-        )
-        button.layer.cornerRadius = 10.0
-        return button
-    }()
-    
     private lazy var pageAutorizationView: UIView = {
         let contentView = UIView()
         
@@ -192,28 +187,6 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        brutForceJob = DispatchWorkItem { [weak self] in
-            guard let self = self else {return}
-            var crackPassword = ""
-            while crackPassword != self.generatedPassword {
-                crackPassword = BruteForce.shared.generateBruteForce(crackPassword, fromArray: String().letters.map{String($0)})
-                if self.brutForceJob?.isCancelled == true {
-                    DispatchQueue.main.async {
-                        self.activityIndicator.stopAnimating()
-                        self.crackPasswordButton.isEnabled = true
-                    }
-                    print("Брутфорс был отменен.")
-                    return
-                }
-            }
-            DispatchQueue.main.async {
-                print("Пароль подобран: \(crackPassword)")
-                self.activityIndicator.stopAnimating()
-                self.passwordTextField.isSecureTextEntry = false
-                self.passwordTextField.text = crackPassword
-                self.crackPasswordButton.isEnabled = true
-            }
-        }
         setupView()
         addSubviews()
         setupConstraints()
@@ -223,14 +196,20 @@ class LogInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        handle = Auth.auth().addStateDidChangeListener { auth, user in
+            guard let user else { return }
+        }
         setupKeyboardObservers()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        brutForceJob?.cancel()
+        Auth.auth().removeStateDidChangeListener(handle!)
         removeKeyboardObservers()
+    }
+    
+    func setDelegate(_ delegate: LoginViewControllerDelegate) {
+        self.delegate = delegate
     }
     
     private func setupView() {
@@ -264,7 +243,6 @@ class LogInViewController: UIViewController {
         pageAutorizationView.addSubview(emailOrPhoneTextField)
         pageAutorizationView.addSubview(passwordTextField)
         pageAutorizationView.addSubview(loginButton)
-        pageAutorizationView.addSubview(crackPasswordButton)
         pageAutorizationView.addSubview(activityIndicator)
     }
     
@@ -286,10 +264,6 @@ class LogInViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 50.0),
             loginButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
             loginButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
-            crackPasswordButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 16.0),
-            crackPasswordButton.heightAnchor.constraint(equalToConstant: 50.0),
-            crackPasswordButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
-            crackPasswordButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
             activityIndicator.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             activityIndicator.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
             activityIndicator.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),

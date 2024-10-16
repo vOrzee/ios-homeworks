@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -23,7 +24,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appCoordinator.start()
         
         if let appConfig = AppConfiguration.allCases.randomElement() {
-            NetworkService.request(for: appConfig)
+            Task {
+                await NetworkService.request(with: appConfig.url)
+            }
         }
         
         window.rootViewController = appCoordinator.tabBarController
@@ -38,6 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+        try? Auth.auth().signOut()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {

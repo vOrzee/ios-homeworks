@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public enum UsersRepository {
+public enum UsersRepositoryInMemoryStorage {
     public static func make() -> [User] {
         return [
             User(login: "user", fullName: "Test User", avatar: UIImage(named: "TestUser")!, status: "Waiting for something..."),

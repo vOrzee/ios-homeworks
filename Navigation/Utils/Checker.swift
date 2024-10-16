@@ -10,13 +10,13 @@ class Checker {
     static let shared = Checker()
     
     private let login: String
-    private let password = "12345"
+    private let password = "123456"
     
     private init() {
         #if DEBUG
-        login = UsersRepository.make()[0].login
+        login = UsersRepositoryInMemoryStorage.make()[0].login
         #else
-        login = UsersRepository.make()[1].login
+        login = UsersRepositoryInMemoryStorage.make()[1].login
         #endif
     }
     

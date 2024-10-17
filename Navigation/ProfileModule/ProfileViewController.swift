@@ -72,6 +72,12 @@ class ProfileViewController: UIViewController {
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(tap)
         }
+        // Для демонстрации:
+        let logoutButton = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 60, y: 40, width: 40, height: 40))
+        logoutButton.setImage(UIImage(systemName: "rectangle.portrait.and.arrow.right"), for: .normal)
+        logoutButton.tintColor = .systemBlue
+        logoutButton.addTarget(self, action: #selector(logoutTapped), for: .touchUpInside)
+        view.addSubview(logoutButton)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -181,6 +187,12 @@ class ProfileViewController: UIViewController {
         // 4. Указываем основные делегаты таблицы
         profileTable.dataSource = self
         profileTable.delegate = self
+    }
+    
+    // HomeworkDemo
+    @objc func logoutTapped() {
+        AuthService().clearCredentials()
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func avatarTapped(_ sender: UITapGestureRecognizer) {

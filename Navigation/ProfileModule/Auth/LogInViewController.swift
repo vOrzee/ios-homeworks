@@ -17,6 +17,8 @@ class LogInViewController: UIViewController {
     
     private var handle: NSObjectProtocol?
     
+    private let authService = AuthService()
+    
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
@@ -93,73 +95,8 @@ class LogInViewController: UIViewController {
             title: "Log In", titleColor: .white, backgroundColor: nil,
             action: { [weak self] in
                 guard let self else {return}
-                guard let login = self.emailOrPhoneTextField.text, let password = self.passwordTextField.text else {
-                    return
-                }
-                if login.isEmpty {
-                    self.emailOrPhoneTextField.backgroundColor = .red
-                    coordinator?.showAuthAlert(message: "Введите email")
-                    return
-                } else {
-                    self.emailOrPhoneTextField.backgroundColor = .systemGray6
-                }
-                if password.isEmpty {
-                    self.passwordTextField.backgroundColor = .red
-                    coordinator?.showAuthAlert(message: "Введите пароль")
-                    return
-                } else {
-                    self.passwordTextField.backgroundColor = .systemGray6
-                }
-                guard let delegate = self.delegate else { return }
-                delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
-                    guard let self else {return}
-                    switch result {
-                    case .success(let userFb):
-                        guard let email = userFb.email else {return}
-                        let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
-                        coordinator?.showProfileAfterLogin(user: user)
-                    case .failure(let error):
-                        print(error)
-                        switch error {
-                        //case .userNotFound(message: let message):
-                            // Пока не ловится, но здесь самое место для delegate.signUp
-                        case .unknownError(message: let message):
-                            delegate.signUp(withEmail: login, password: password) { [weak self] result in
-                                guard let self else {return}
-                                switch result {
-                                case .success(let userFb):
-                                    delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
-                                        switch result {
-                                        case .success(let userFb):
-                                            guard let email = userFb.email else {return}
-                                            let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
-                                            self?.coordinator?.showProfileAfterLogin(user: user)
-                                        case .failure(let error):
-                                            break
-                                        }
-                                    }
-                                case .failure(let error):
-                                    switch error {
-                                    case .wrongPassword(message: let message):
-                                        // И тут в случае короткого пароль приходит 17004
-                                        coordinator?.showAuthAlert(message: message)
-                                    default:
-                                        coordinator?.showAuthAlert(message: "Введён неверный пароль")
-                                    }
-                                }
-                            }
-                        case .invalidEmail(message: let message):
-                            coordinator?.showAuthAlert(message: message)
-                        case .wrongPassword(message: let message):
-                            // В этом случае тоже 17004...
-                            coordinator?.showAuthAlert(message: message)
-                        default:
-                            break
-                        }
-                    }
-                }
-            }
-        )
+                auth()
+            })
         let backgroundImage = UIImage(named: "bluePixel")
         button.setBackgroundImage(backgroundImage, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
@@ -192,12 +129,18 @@ class LogInViewController: UIViewController {
         setupConstraints()
         addSubviewsOnPageAutorizationView()
         setupConstraintsIntoPageAutorizationView()
+        
+        if let authState = authService.getCredentials() {
+            emailOrPhoneTextField.text = authState.email
+            passwordTextField.text = authState.password
+            auth() // Можно прятать вью пока идёт авторизация в FB, или индикатор показывать, но пока не стал
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        handle = Auth.auth().addStateDidChangeListener { auth, user in
-            guard let user else { return }
+        handle = Auth.auth().addStateDidChangeListener { _, _ in
+            
         }
         setupKeyboardObservers()
     }
@@ -315,6 +258,77 @@ class LogInViewController: UIViewController {
             button.alpha = 0.8
         default:
             button.alpha = 1.0
+        }
+    }
+    
+    func auth() {
+        guard let login = self.emailOrPhoneTextField.text, let password = self.passwordTextField.text else {
+            return
+        }
+        if login.isEmpty {
+            self.emailOrPhoneTextField.backgroundColor = .red
+            coordinator?.showAuthAlert(message: "Введите email")
+            return
+        } else {
+            self.emailOrPhoneTextField.backgroundColor = .systemGray6
+        }
+        if password.isEmpty {
+            self.passwordTextField.backgroundColor = .red
+            coordinator?.showAuthAlert(message: "Введите пароль")
+            return
+        } else {
+            self.passwordTextField.backgroundColor = .systemGray6
+        }
+        guard let delegate = self.delegate else { return }
+        delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
+            guard let self else {return}
+            switch result {
+            case .success(let userFb):
+                guard let email = userFb.email else {return}
+                let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
+                authService.saveCredentials(email: email, password: password)
+                coordinator?.showProfileAfterLogin(user: user)
+            case .failure(let error):
+                print(error)
+                switch error {
+                //case .userNotFound(message: let message):
+                    // Пока не ловится, но здесь самое место для delegate.signUp
+                case .unknownError(message: let message):
+                    delegate.signUp(withEmail: login, password: password) { [weak self] result in
+                        guard let self else {return}
+                        switch result {
+                        case .success(let userFb):
+                            delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
+                                guard let self else {return}
+                                switch result {
+                                case .success(let userFb):
+                                    guard let email = userFb.email else {return}
+                                    let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
+                                    authService.saveCredentials(email: email, password: password)
+                                    coordinator?.showProfileAfterLogin(user: user)
+                                case .failure(_):
+                                    break
+                                }
+                            }
+                        case .failure(let error):
+                            switch error {
+                            case .wrongPassword(message: let message):
+                                // И тут в случае короткого пароль приходит 17004
+                                coordinator?.showAuthAlert(message: message)
+                            default:
+                                coordinator?.showAuthAlert(message: "Введён неверный пароль")
+                            }
+                        }
+                    }
+                case .invalidEmail(message: let message):
+                    coordinator?.showAuthAlert(message: message)
+                case .wrongPassword(message: let message):
+                    // В этом случае тоже 17004...
+                    coordinator?.showAuthAlert(message: message)
+                default:
+                    break
+                }
+            }
         }
     }
 }

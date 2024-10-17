@@ -47,16 +47,19 @@
 		5978BFA12C7A514A00C39F24 /* StorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = 5978BFA02C7A514A00C39F24 /* StorageService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5978BFA42C7A514A00C39F24 /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5978BF9E2C7A514A00C39F24 /* StorageService.framework */; };
 		5978BFA52C7A514A00C39F24 /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5978BF9E2C7A514A00C39F24 /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5978BFAA2C7A517300C39F24 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C04A2C518066009880F1 /* Post.swift */; };
 		5978BFAB2C7A517700C39F24 /* PhotosRepositoryInMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0B12C6739B700A23407 /* PhotosRepositoryInMemoryStorage.swift */; };
 		5978BFAC2C7A517A00C39F24 /* PostRepositoryInMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A7312C5D939600200942 /* PostRepositoryInMemoryStorage.swift */; };
+		599CE67B2CC1878D00EE50E2 /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599CE67A2CC1878D00EE50E2 /* FavoriteViewController.swift */; };
+		599CE67D2CC18F7000EE50E2 /* FavoritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599CE67C2CC18F6500EE50E2 /* FavoritesCoordinator.swift */; };
+		599CE6802CC1956B00EE50E2 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599CE67F2CC1956400EE50E2 /* CoreDataService.swift */; };
+		599CE6832CC1961900EE50E2 /* Navigation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 599CE6812CC1961900EE50E2 /* Navigation.xcdatamodeld */; };
 		59A4D8BF2CBCC06F0006D4D7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 59A4D8BE2CBCC06F0006D4D7 /* FirebaseAuth */; };
 		59A4D8C12CBCC06F0006D4D7 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 59A4D8C02CBCC06F0006D4D7 /* FirebaseCore */; };
 		59A4D8C32CBCCEA70006D4D7 /* CheckerServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4D8C22CBCCE9E0006D4D7 /* CheckerServiceProtocol.swift */; };
 		59A4D8C52CBCCEB00006D4D7 /* CheckerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4D8C42CBCCEAB0006D4D7 /* CheckerService.swift */; };
 		59A4D8C72CBD399D0006D4D7 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4D8C62CBD39980006D4D7 /* AuthError.swift */; };
 		59C5A72F2C5D5B5C00200942 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */; };
-		59C5A7342C5D999B00200942 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A7332C5D999B00200942 /* ProfileTableViewCell.swift */; };
+		59C5A7342C5D999B00200942 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C5A7332C5D999B00200942 /* PostTableViewCell.swift */; };
 		59D49A7A2CC09600006D1B40 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 59D49A792CC09600006D1B40 /* RealmSwift */; };
 		59D49A7C2CC09628006D1B40 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D49A7B2CC0961D006D1B40 /* AuthState.swift */; };
 		59D49A7E2CC09664006D1B40 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D49A7D2CC0965D006D1B40 /* AuthService.swift */; };
@@ -76,6 +79,8 @@
 		59E9FD562CBB50A400960DFE /* PlanetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD552CBB509B00960DFE /* PlanetModel.swift */; };
 		59EA83C62C554C0000E812AA /* ProfileTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */; };
 		59EA83C92C559E0700E812AA /* UIImageViewExrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EA83C82C559E0700E812AA /* UIImageViewExrension.swift */; };
+		59EF8F052CC199E0001098CE /* PostMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EF8F042CC199DA001098CE /* PostMapper.swift */; };
+		59EF8F072CC1A2A1001098CE /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C04A2C518066009880F1 /* Post.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,12 +148,16 @@
 		596492292CBCBCA50055E348 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5978BF9E2C7A514A00C39F24 /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5978BFA02C7A514A00C39F24 /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
+		599CE67A2CC1878D00EE50E2 /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
+		599CE67C2CC18F6500EE50E2 /* FavoritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCoordinator.swift; sourceTree = "<group>"; };
+		599CE67F2CC1956400EE50E2 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
+		599CE6822CC1961900EE50E2 /* Navigation.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Navigation.xcdatamodel; sourceTree = "<group>"; };
 		59A4D8C22CBCCE9E0006D4D7 /* CheckerServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckerServiceProtocol.swift; sourceTree = "<group>"; };
 		59A4D8C42CBCCEAB0006D4D7 /* CheckerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckerService.swift; sourceTree = "<group>"; };
 		59A4D8C62CBD39980006D4D7 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		59C5A7312C5D939600200942 /* PostRepositoryInMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositoryInMemoryStorage.swift; sourceTree = "<group>"; };
-		59C5A7332C5D999B00200942 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		59C5A7332C5D999B00200942 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		59D49A7B2CC0961D006D1B40 /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		59D49A7D2CC0965D006D1B40 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		59E9FD382CBAF67300960DFE /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -165,6 +174,7 @@
 		59E9FD552CBB509B00960DFE /* PlanetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetModel.swift; sourceTree = "<group>"; };
 		59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableHeaderView.swift; sourceTree = "<group>"; };
 		59EA83C82C559E0700E812AA /* UIImageViewExrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExrension.swift; sourceTree = "<group>"; };
+		59EF8F042CC199DA001098CE /* PostMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +224,9 @@
 		5931C02D2C516EFA009880F1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				59EF8F032CC199D0001098CE /* Mappers */,
+				599CE67E2CC1953500EE50E2 /* DAO */,
+				599CE6772CC1874700EE50E2 /* FavoriteModule */,
 				59E9FD372CBAF66800960DFE /* API */,
 				593874AA2CB75FB700DE8A86 /* Coordinators */,
 				5938749D2CB725DF00DE8A86 /* PostsModule */,
@@ -229,6 +242,7 @@
 				5931C03C2C516EFC009880F1 /* Info.plist */,
 				5931C0372C516EFC009880F1 /* Assets.xcassets */,
 				596492292CBCBCA50055E348 /* GoogleService-Info.plist */,
+				599CE6812CC1961900EE50E2 /* Navigation.xcdatamodeld */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -261,6 +275,7 @@
 				593874A62CB72C8500DE8A86 /* PostViewModel.swift */,
 				593874A22CB7269100DE8A86 /* PostRepository.swift */,
 				593874A42CB7281C00DE8A86 /* PostRepositoryInMemory.swift */,
+				59C5A7332C5D999B00200942 /* PostTableViewCell.swift */,
 			);
 			path = PostsModule;
 			sourceTree = "<group>";
@@ -268,6 +283,7 @@
 		593874AA2CB75FB700DE8A86 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				599CE67C2CC18F6500EE50E2 /* FavoritesCoordinator.swift */,
 				593874AB2CB75FC500DE8A86 /* Coordinator.swift */,
 				593874AD2CB75FE500DE8A86 /* AppCoordinator.swift */,
 				593874B32CB7601600DE8A86 /* LoginCoordinator.swift */,
@@ -288,6 +304,23 @@
 				5978BFA02C7A514A00C39F24 /* StorageService.h */,
 			);
 			path = StorageService;
+			sourceTree = "<group>";
+		};
+		599CE6772CC1874700EE50E2 /* FavoriteModule */ = {
+			isa = PBXGroup;
+			children = (
+				599CE67A2CC1878D00EE50E2 /* FavoriteViewController.swift */,
+			);
+			path = FavoriteModule;
+			sourceTree = "<group>";
+		};
+		599CE67E2CC1953500EE50E2 /* DAO */ = {
+			isa = PBXGroup;
+			children = (
+				599CE67F2CC1956400EE50E2 /* CoreDataService.swift */,
+				59D49A7D2CC0965D006D1B40 /* AuthService.swift */,
+			);
+			path = DAO;
 			sourceTree = "<group>";
 		};
 		59E9FD372CBAF66800960DFE /* API */ = {
@@ -353,7 +386,6 @@
 		59E9FD4D2CBB1E1D00960DFE /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				59D49A7D2CC0965D006D1B40 /* AuthService.swift */,
 				59A4D8C42CBCCEAB0006D4D7 /* CheckerService.swift */,
 				59A4D8C22CBCCE9E0006D4D7 /* CheckerServiceProtocol.swift */,
 				59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */,
@@ -380,7 +412,6 @@
 				59E9FD4D2CBB1E1D00960DFE /* Auth */,
 				5931C0432C51774B009880F1 /* ProfileViewController.swift */,
 				59EA83C52C554C0000E812AA /* ProfileTableHeaderView.swift */,
-				59C5A7332C5D999B00200942 /* ProfileTableViewCell.swift */,
 				59E9FD4A2CBB1BE700960DFE /* Photos */,
 			);
 			path = ProfileModule;
@@ -394,6 +425,14 @@
 				593874802CB5FEFD00DE8A86 /* CustomButton.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		59EF8F032CC199D0001098CE /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				59EF8F042CC199DA001098CE /* PostMapper.swift */,
+			);
+			path = Mappers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -521,6 +560,7 @@
 				593874AC2CB75FCA00DE8A86 /* Coordinator.swift in Sources */,
 				593874AE2CB75FE900DE8A86 /* AppCoordinator.swift in Sources */,
 				593874B02CB75FFA00DE8A86 /* FeedCoordinator.swift in Sources */,
+				599CE6832CC1961900EE50E2 /* Navigation.xcdatamodeld in Sources */,
 				5929D0B42C67589600A23407 /* PhotosViewController.swift in Sources */,
 				593874942CB7117400DE8A86 /* FeedViewOutput.swift in Sources */,
 				59EA83C92C559E0700E812AA /* UIImageViewExrension.swift in Sources */,
@@ -530,6 +570,7 @@
 				59E9FD462CBAF85900960DFE /* CurrentUserService.swift in Sources */,
 				59E9FD472CBAF85900960DFE /* LoginViewControllerDelegate.swift in Sources */,
 				59D49A7C2CC09628006D1B40 /* AuthState.swift in Sources */,
+				599CE67B2CC1878D00EE50E2 /* FavoriteViewController.swift in Sources */,
 				59E9FD562CBB50A400960DFE /* PlanetModel.swift in Sources */,
 				59E9FD482CBAF85900960DFE /* TestUserService.swift in Sources */,
 				59E9FD492CBAF85900960DFE /* UserService.swift in Sources */,
@@ -555,15 +596,18 @@
 				59A4D8C32CBCCEA70006D4D7 /* CheckerServiceProtocol.swift in Sources */,
 				593874742CB5BE8E00DE8A86 /* LoginFactory.swift in Sources */,
 				5938749A2CB7232B00DE8A86 /* SceneDelegate.swift in Sources */,
-				59C5A7342C5D999B00200942 /* ProfileTableViewCell.swift in Sources */,
+				599CE6802CC1956B00EE50E2 /* CoreDataService.swift in Sources */,
+				59C5A7342C5D999B00200942 /* PostTableViewCell.swift in Sources */,
 				593874A72CB72C8B00DE8A86 /* PostViewModel.swift in Sources */,
 				593874982CB711DA00DE8A86 /* FeedStateWordSecretCheck.swift in Sources */,
 				5938749C2CB7238A00DE8A86 /* FeedViewController.swift in Sources */,
 				59E9FD3E2CBAF85400960DFE /* AppConfiguration.swift in Sources */,
 				59E9FD3F2CBAF85400960DFE /* FeedModelSecretWord.swift in Sources */,
+				59EF8F052CC199E0001098CE /* PostMapper.swift in Sources */,
 				59E9FD402CBAF85400960DFE /* FeedViewModelState.swift in Sources */,
 				5931C04D2C5182B8009880F1 /* InfoViewController.swift in Sources */,
 				5929D0B62C6762F600A23407 /* PhotosCollectionViewCell.swift in Sources */,
+				599CE67D2CC18F7000EE50E2 /* FavoritesCoordinator.swift in Sources */,
 				59D49A7E2CC09664006D1B40 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -576,7 +620,7 @@
 				5978BFAC2C7A517A00C39F24 /* PostRepositoryInMemoryStorage.swift in Sources */,
 				593874632CB5A51000DE8A86 /* UsersRepositoryInMemoryStorage.swift in Sources */,
 				593874672CB5A5CC00DE8A86 /* User.swift in Sources */,
-				5978BFAA2C7A517300C39F24 /* Post.swift in Sources */,
+				59EF8F072CC1A2A1001098CE /* Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -978,6 +1022,19 @@
 			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		599CE6812CC1961900EE50E2 /* Navigation.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				599CE6822CC1961900EE50E2 /* Navigation.xcdatamodel */,
+			);
+			currentVersion = 599CE6822CC1961900EE50E2 /* Navigation.xcdatamodel */;
+			path = Navigation.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5931C0232C516EFA009880F1 /* Project object */;
 }

@@ -61,6 +61,7 @@
 		59D49A7C2CC09628006D1B40 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D49A7B2CC0961D006D1B40 /* AuthState.swift */; };
 		59D49A7E2CC09664006D1B40 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D49A7D2CC0965D006D1B40 /* AuthService.swift */; };
 		59D49A7F2CC09792006D1B40 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 59D49A792CC09600006D1B40 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		59D49A822CC0B95D006D1B40 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 59D49A812CC0B95D006D1B40 /* KeychainSwift */; };
 		59E9FD392CBAF67A00960DFE /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD382CBAF67300960DFE /* NetworkService.swift */; };
 		59E9FD3E2CBAF85400960DFE /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD3A2CBAF85400960DFE /* AppConfiguration.swift */; };
 		59E9FD3F2CBAF85400960DFE /* FeedModelSecretWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E9FD3B2CBAF85400960DFE /* FeedModelSecretWord.swift */; };
@@ -177,6 +178,7 @@
 				5978BFA42C7A514A00C39F24 /* StorageService.framework in Frameworks */,
 				593874572CB3E00800DE8A86 /* iOSIntPackage in Frameworks */,
 				59A4D8C12CBCC06F0006D4D7 /* FirebaseCore in Frameworks */,
+				59D49A822CC0B95D006D1B40 /* KeychainSwift in Frameworks */,
 				593874B72CB87C5200DE8A86 /* iOSIntPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -476,6 +478,7 @@
 				593874B52CB87C5200DE8A86 /* XCRemoteSwiftPackageReference "iOSIntPackage" */,
 				59A4D8BD2CBCC06F0006D4D7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				59D49A782CC09600006D1B40 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				59D49A802CC0B95D006D1B40 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = 5931C02C2C516EFA009880F1 /* Products */;
 			projectDirPath = "";
@@ -928,6 +931,14 @@
 				kind = branch;
 			};
 		};
+		59D49A802CC0B95D006D1B40 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -960,6 +971,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 59D49A782CC09600006D1B40 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		59D49A812CC0B95D006D1B40 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 59D49A802CC0B95D006D1B40 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

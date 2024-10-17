@@ -17,7 +17,7 @@ class LogInViewController: UIViewController {
     
     private var handle: NSObjectProtocol?
     
-    private let authService = AuthService()
+    private let authService = AuthService.shared
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()

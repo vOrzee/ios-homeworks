@@ -6,16 +6,33 @@
 //
 
 import RealmSwift
+import Foundation
+import KeychainSwift
 
 class AuthService {
-    let realm: Realm
+    static let shared = AuthService()
     
-    init() {
-        let config = Realm.Configuration(schemaVersion: 4, deleteRealmIfMigrationNeeded: true)
-        Realm.Configuration.defaultConfiguration = config
+    private let realm: Realm
+    
+    private let keyChain = KeychainSwift()
+
+    private init() {
+        if let keyData = keyChain.getData("realmEncryptionKey") {
+            Realm.Configuration.defaultConfiguration = Realm.Configuration(encryptionKey: keyData, schemaVersion: 7)
+        } else {
+            var key = Data(count: 64)
+            _ = key.withUnsafeMutableBytes { (pointer: UnsafeMutableRawBufferPointer) in
+                SecRandomCopyBytes(kSecRandomDefault, 64, pointer.baseAddress!)
+            }
+
+            keyChain.set(key, forKey: "realmEncryptionKey")
+            Realm.Configuration.defaultConfiguration = Realm.Configuration(encryptionKey: key, schemaVersion: 7) //, deleteRealmIfMigrationNeeded: true)
+        }
+//        let realmURL = Realm.Configuration.defaultConfiguration.fileURL!
+//        try? FileManager.default.removeItem(at: realmURL)
         realm = try! Realm()
     }
-
+    
     func saveCredentials(email: String, password: String) {
         let credentials = AuthState()
         credentials.email = email

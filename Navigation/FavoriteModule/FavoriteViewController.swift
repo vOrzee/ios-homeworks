@@ -17,6 +17,7 @@ class FavoriteViewController: UITableViewController {
     private var authorFilterFavorite: String = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? "" {
         didSet {
             UserDefaults.standard.set(authorFilterFavorite, forKey: "authorFilterFavorite")
+            clearBarButtonItem.isHidden = authorFilterFavorite.isEmpty
             Task {
                 postsEntity = await CoreDataService.shared.fetchPosts()
                 tableView.reloadData()
@@ -32,15 +33,19 @@ class FavoriteViewController: UITableViewController {
     private enum CellReuseID: String {
         case post = "PostTableViewCell_ReuseID"
     }
-
+    
+    private var clearBarButtonItem: UIBarButtonItem = UIBarButtonItem()
+    
+    private var searchBarButtonItem: UIBarButtonItem = UIBarButtonItem()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Сохранённое"
         view.backgroundColor = .systemGray6
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
-        let clearBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), style: .done, target: self, action: #selector(clearFilter))
-        let searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(applyFilter))
-        
+        clearBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), style: .done, target: self, action: #selector(clearFilter))
+        searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(applyFilter))
+        clearBarButtonItem.isHidden = authorFilterFavorite.isEmpty
         navigationItem.rightBarButtonItems = [clearBarButtonItem, searchBarButtonItem]
     }
     

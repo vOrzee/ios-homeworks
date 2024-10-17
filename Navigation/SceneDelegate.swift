@@ -23,11 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         appCoordinator.start()
         
-        if let appConfig = AppConfiguration.allCases.randomElement() {
-            Task {
-                await NetworkService.request(with: appConfig.url)
-            }
-        }
+        let appConfig = AppConfiguration.allCases.randomElement()
         
         window.rootViewController = appCoordinator.tabBarController
         window.makeKeyAndVisible()

@@ -12,9 +12,15 @@ class FavoriteViewController: UITableViewController {
     
     var coordinator: FavoritesCoordinator?
     
-    private var postsEntity: [PostEntity] = [] // Пока оставлю так, потому что для удаления мне потребуется контекст вроде как, хотя потом всё равно можно будет поместить "под капот"
+    private var postsEntity: [PostEntity] = []
+    private var authorFilterFavorite: String = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
+    private var filtredPostsEntity: [PostEntity] {
+        postsEntity.filter {
+            $0.author?.contains(authorFilterFavorite) ?? false
+        }
+    }
     private var posts: [Post] {
-        postsEntity.map { postEntity in
+        (authorFilterFavorite.isEmpty ? postsEntity : filtredPostsEntity).map { postEntity in
             PostMapper.mapFromEntityToModel(postEntity)
         }
     }
@@ -26,12 +32,18 @@ class FavoriteViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Сохранённое"
+        view.backgroundColor = .systemGray6
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
+        let clearBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), style: .done, target: self, action: #selector(clearFilter))
+        let searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(applyFilter))
+        
+        navigationItem.rightBarButtonItems = [clearBarButtonItem, searchBarButtonItem]
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         postsEntity = CoreDataService.shared.fetchPosts()
+        authorFilterFavorite = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
         tableView.reloadData()
     }
 
@@ -67,5 +79,30 @@ class FavoriteViewController: UITableViewController {
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         return configuration
     }
-
+    
+    @objc func clearFilter() {
+        authorFilterFavorite = ""
+        UserDefaults.standard.set("", forKey: "authorFilterFavorite")
+        tableView.reloadData()
+    }
+    
+    @objc func applyFilter() {
+        let alertController = UIAlertController(title: "Поиск по автору", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Введите имя автора"
+        }
+        let searchAction = UIAlertAction(title: "Применить", style: .default) { [weak self] _ in
+            guard let self = self, let authorName = alertController.textFields?.first?.text, !authorName.isEmpty else {
+                return
+            }
+            authorFilterFavorite = authorName
+            UserDefaults.standard.set(authorFilterFavorite, forKey: "authorFilterFavorite")
+            tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        alertController.addAction(searchAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
 }

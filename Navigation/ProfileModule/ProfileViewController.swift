@@ -191,7 +191,7 @@ class ProfileViewController: UIViewController {
     
     // HomeworkDemo
     @objc func logoutTapped() {
-        AuthService().clearCredentials()
+        AuthService.shared.clearCredentials()
         navigationController?.popViewController(animated: true)
     }
     

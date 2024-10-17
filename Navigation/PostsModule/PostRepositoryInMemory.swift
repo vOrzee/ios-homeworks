@@ -5,6 +5,7 @@
 //  Created by Роман Лешин on 10.10.2024.
 //
 
+import Foundation
 import StorageService
 
 class PostRepositoryInMemory: PostRepository {
@@ -25,13 +26,13 @@ class PostRepositoryInMemory: PostRepository {
     
     func loadPosts(completion: @escaping (Result<Void, AppError>) -> Void) {
         DispatchQueue.global(qos: .background).async {
-            sleep(3)
-            if Int.random(in: 1...100) <= 20 {
-                DispatchQueue.main.async {
-                    completion(.failure(.networkUnavailable("Сеть недоступна")))
-                }
-                return
-            }
+//            sleep(3)
+//            if Int.random(in: 1...100) <= 20 {
+//                DispatchQueue.main.async {
+//                    completion(.failure(.networkUnavailable("Сеть недоступна")))
+//                }
+//                return
+//            }
             
             let posts = PostRepositoryInMemoryStorage.make()
             DispatchQueue.main.async {
@@ -42,7 +43,7 @@ class PostRepositoryInMemory: PostRepository {
     
     func getById(id: Int, completion: @escaping (Result<Post, AppError>) -> Void) {
         DispatchQueue.global(qos: .background).async{
-            sleep(1)
+//            sleep(1)
             guard let post = self._data.first(where: { $0.id == id }) else {
                 DispatchQueue.main.async {
                     completion(.failure(.dataNotFound))
@@ -50,12 +51,12 @@ class PostRepositoryInMemory: PostRepository {
                 return
             }
             // Просто для демонстрации так как этот метод проще вызвать в текущей реализации:
-            if Int.random(in: 1...100) <= 30 {
-                DispatchQueue.main.async {
-                    completion(.failure(.networkUnavailable("503")))
-                }
-                return
-            }
+//            if Int.random(in: 1...100) <= 30 {
+//                DispatchQueue.main.async {
+//                    completion(.failure(.networkUnavailable("503")))
+//                }
+//                return
+//            }
             DispatchQueue.main.async {
                 completion(.success(post))
             }
@@ -64,17 +65,17 @@ class PostRepositoryInMemory: PostRepository {
     
     func save(post: Post, completion: @escaping (Result<Void, AppError>) -> Void) {
         //This mock
-        if Int.random(in: 1...100) <= 25 {
-            return completion(.failure(.networkUnavailable("500")))
-        }
+//        if Int.random(in: 1...100) <= 25 {
+//            return completion(.failure(.networkUnavailable("500")))
+//        }
         print("Not yet implemented")
     }
     
     func delete(id: Int, completion: @escaping (Result<Bool, AppError>) -> Void) {
         //This mock
-        if Int.random(in: 1...100) <= 40 {
-            return completion(.failure(.networkUnavailable("502")))
-        }
+//        if Int.random(in: 1...100) <= 40 {
+//            return completion(.failure(.networkUnavailable("502")))
+//        }
         print("Not yet implemented")
         return completion(.success(true))
     }
@@ -82,15 +83,17 @@ class PostRepositoryInMemory: PostRepository {
     func getNewerPosts(completion: @escaping (Result<[Post], AppError>) -> Void) {
         DispatchQueue.global().async {
             self.timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) {_ in
-                print("Запрос на получение постов отправлен")
-                sleep(1)
+//                print("Запрос на получение постов отправлен")
+//                sleep(1)
                 let newPosts = PostRepositoryInMemoryStorage.make()
                     .filter { post in
                         !self.data.contains(where: { $0.id == post.id })
                     }
                 DispatchQueue.main.async {
-                    print("Новые посты переданы в замыкание")
-                    !newPosts.isEmpty ? completion(.success(newPosts)) : completion(.failure(.dataNotFound))
+                    if !newPosts.isEmpty {
+                        print("Новые посты переданы в замыкание")
+                        completion(.success(newPosts))
+                    } else { completion(.failure(.dataNotFound)) }
                 }
             }
             self.timer?.tolerance = 3.0
@@ -102,6 +105,6 @@ class PostRepositoryInMemory: PostRepository {
     func stopSubscribeNewPosts() {
         timer?.invalidate()
         timer = nil
-        print("Подписка отменена")
+//        print("Подписка отменена")
     }
 }

@@ -201,7 +201,9 @@ class ProfileViewController: UIViewController {
         if let tappedIndexPath = profileTable.indexPathForRow(at: tapLocation) {
             print("Double tapped row: \(tappedIndexPath.row)")
             let post = postViewModel.data[tappedIndexPath.row - 1]
-            CoreDataService.shared.addPost(post: post)
+            Task {
+                await CoreDataService.shared.addPost(post: post)
+            }
         }
     }
     

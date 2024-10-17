@@ -12,15 +12,19 @@ class FavoriteViewController: UITableViewController {
     
     var coordinator: FavoritesCoordinator?
     
+    private var shadowUpdate = false
     private var postsEntity: [PostEntity] = []
-    private var authorFilterFavorite: String = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
-    private var filtredPostsEntity: [PostEntity] {
-        postsEntity.filter {
-            $0.author?.contains(authorFilterFavorite) ?? false
+    private var authorFilterFavorite: String = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? "" {
+        didSet {
+            UserDefaults.standard.set(authorFilterFavorite, forKey: "authorFilterFavorite")
+            Task {
+                postsEntity = await CoreDataService.shared.fetchPosts()
+                tableView.reloadData()
+            }
         }
     }
     private var posts: [Post] {
-        (authorFilterFavorite.isEmpty ? postsEntity : filtredPostsEntity).map { postEntity in
+        postsEntity.map { postEntity in
             PostMapper.mapFromEntityToModel(postEntity)
         }
     }
@@ -42,9 +46,10 @@ class FavoriteViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        postsEntity = CoreDataService.shared.fetchPosts()
-        authorFilterFavorite = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
-        tableView.reloadData()
+        Task {
+            postsEntity = await CoreDataService.shared.fetchPosts()
+            tableView.reloadData()
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,11 +73,12 @@ class FavoriteViewController: UITableViewController {
         let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             let postToDelete = self.postsEntity[indexPath.row]
-            CoreDataService.shared.deletePost(post: postToDelete)
-            
-            self.postsEntity.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
+            Task {
+                await CoreDataService.shared.deletePost(post: postToDelete)
+                self.postsEntity.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+
             completionHandler(true)
         }
 
@@ -82,8 +88,6 @@ class FavoriteViewController: UITableViewController {
     
     @objc func clearFilter() {
         authorFilterFavorite = ""
-        UserDefaults.standard.set("", forKey: "authorFilterFavorite")
-        tableView.reloadData()
     }
     
     @objc func applyFilter() {
@@ -96,8 +100,6 @@ class FavoriteViewController: UITableViewController {
                 return
             }
             authorFilterFavorite = authorName
-            UserDefaults.standard.set(authorFilterFavorite, forKey: "authorFilterFavorite")
-            tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
         alertController.addAction(searchAction)

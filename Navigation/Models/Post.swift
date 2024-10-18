@@ -14,4 +14,12 @@ public struct Post {
     public let image: String
     public var likes: String
     public var views: String
+    public init(id: Int, author: String, description: String, image: String, likes: String, views: String) {
+        self.id = id
+        self.author = author
+        self.description = description
+        self.image = image
+        self.likes = likes
+        self.views = views
+    }
 }

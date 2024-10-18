@@ -9,10 +9,10 @@ import UIKit
 import StorageService
 import CoreData
 
-class FavoriteViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class FavoriteViewController: UITableViewController {
     
     var coordinator: FavoritesCoordinator?
-    private var fetchedResultsController = {
+    private lazy var fetchedResultsController = {
         let request = PostEntity.fetchRequest()
         
         let authorFilter = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
@@ -31,7 +31,6 @@ class FavoriteViewController: UITableViewController, NSFetchedResultsControllerD
         
         return fetchedResultsController
     }()
-    private var shadowUpdate = false
     private var authorFilterFavorite: String = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? "" {
         didSet {
             UserDefaults.standard.set(authorFilterFavorite, forKey: "authorFilterFavorite")
@@ -43,23 +42,17 @@ class FavoriteViewController: UITableViewController, NSFetchedResultsControllerD
     private enum CellReuseID: String {
         case post = "PostTableViewCell_ReuseID"
     }
-    
     private var clearBarButtonItem: UIBarButtonItem = UIBarButtonItem()
-    
     private var searchBarButtonItem: UIBarButtonItem = UIBarButtonItem()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Сохранённое"
-        view.backgroundColor = .systemGray6
-        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
-        clearBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), style: .done, target: self, action: #selector(clearFilter))
-        searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(applyFilter))
-        clearBarButtonItem.isHidden = authorFilterFavorite.isEmpty
-        navigationItem.rightBarButtonItems = [clearBarButtonItem, searchBarButtonItem]
+        setupUI()
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
     }
+    
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultsController.sections?.first?.numberOfObjects ?? 0
@@ -94,6 +87,66 @@ class FavoriteViewController: UITableViewController, NSFetchedResultsControllerD
         return configuration
     }
     
+    
+    private func setupUI() {
+        title = "Сохранённое"
+        view.backgroundColor = .systemGray6
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
+        
+        clearBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), style: .done, target: self, action: #selector(clearFilter))
+        searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(applyFilter))
+        clearBarButtonItem.isHidden = authorFilterFavorite.isEmpty
+        
+        navigationItem.rightBarButtonItems = [clearBarButtonItem, searchBarButtonItem]
+    }
+    
+    
+    private func setupFetchedResultsController() {
+        let fetchRequest: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
+        
+        if !authorFilterFavorite.isEmpty {
+            fetchRequest.predicate = NSPredicate(format: "author CONTAINS[c] %@", authorFilterFavorite)
+        }
+
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        
+        fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataService.shared.persistentContainer.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
+        tableView.reloadData()
+    }
+    
+    
+    @objc func clearFilter() {
+        authorFilterFavorite = ""
+    }
+    @objc func applyFilter() {
+        let alertController = UIAlertController(title: "Поиск по автору", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Введите имя автора"
+        }
+        let searchAction = UIAlertAction(title: "Применить", style: .default) { [weak self] _ in
+            guard let self = self, let authorName = alertController.textFields?.first?.text, !authorName.isEmpty else {
+                return
+            }
+            authorFilterFavorite = authorName
+        }
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        alertController.addAction(searchAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+}
+
+
+extension FavoriteViewController: NSFetchedResultsControllerDelegate {
+    
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
@@ -119,47 +172,5 @@ class FavoriteViewController: UITableViewController, NSFetchedResultsControllerD
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-    }
-    
-    private func setupFetchedResultsController() {
-        let fetchRequest: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
-        
-        if !authorFilterFavorite.isEmpty {
-            fetchRequest.predicate = NSPredicate(format: "author CONTAINS[c] %@", authorFilterFavorite)
-        }
-
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
-        
-        fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: CoreDataService.shared.persistentContainer.viewContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        fetchedResultsController.delegate = self
-        try? fetchedResultsController.performFetch()
-        tableView.reloadData()
-    }
-    
-    @objc func clearFilter() {
-        authorFilterFavorite = ""
-    }
-    
-    @objc func applyFilter() {
-        let alertController = UIAlertController(title: "Поиск по автору", message: nil, preferredStyle: .alert)
-        alertController.addTextField { textField in
-            textField.placeholder = "Введите имя автора"
-        }
-        let searchAction = UIAlertAction(title: "Применить", style: .default) { [weak self] _ in
-            guard let self = self, let authorName = alertController.textFields?.first?.text, !authorName.isEmpty else {
-                return
-            }
-            authorFilterFavorite = authorName
-        }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
-        alertController.addAction(searchAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
     }
 }

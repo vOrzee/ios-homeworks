@@ -7,26 +7,36 @@
 
 import UIKit
 import StorageService
+import CoreData
 
-class FavoriteViewController: UITableViewController {
+class FavoriteViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
     var coordinator: FavoritesCoordinator?
-    
+    private var fetchedResultsController = {
+        let request = PostEntity.fetchRequest()
+        
+        let authorFilter = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
+        if !authorFilter.isEmpty {
+            request.predicate = NSPredicate(format: "author CONTAINS[c] %@", authorFilter)
+        }
+
+        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        
+        let fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: CoreDataService.shared.persistentContainer.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        
+        return fetchedResultsController
+    }()
     private var shadowUpdate = false
-    private var postsEntity: [PostEntity] = []
     private var authorFilterFavorite: String = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? "" {
         didSet {
             UserDefaults.standard.set(authorFilterFavorite, forKey: "authorFilterFavorite")
             clearBarButtonItem.isHidden = authorFilterFavorite.isEmpty
-            Task {
-                postsEntity = await CoreDataService.shared.fetchPosts()
-                tableView.reloadData()
-            }
-        }
-    }
-    private var posts: [Post] {
-        postsEntity.map { postEntity in
-            PostMapper.mapFromEntityToModel(postEntity)
+            setupFetchedResultsController()
         }
     }
     
@@ -47,18 +57,12 @@ class FavoriteViewController: UITableViewController {
         searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .done, target: self, action: #selector(applyFilter))
         clearBarButtonItem.isHidden = authorFilterFavorite.isEmpty
         navigationItem.rightBarButtonItems = [clearBarButtonItem, searchBarButtonItem]
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Task {
-            postsEntity = await CoreDataService.shared.fetchPosts()
-            tableView.reloadData()
-        }
+        fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        return fetchedResultsController.sections?.first?.numberOfObjects ?? 0
     }
 
     
@@ -69,7 +73,8 @@ class FavoriteViewController: UITableViewController {
         ) as? PostTableViewCell else {
             fatalError("could not dequeueReusableCell")
         }
-        viewHolder.bind(posts[indexPath.row])
+        let postEntity = fetchedResultsController.object(at: indexPath)
+        viewHolder.bind(PostMapper.mapFromEntityToModel(postEntity))
         
         return viewHolder
     }
@@ -77,11 +82,9 @@ class FavoriteViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
-            let postToDelete = self.postsEntity[indexPath.row]
+            let postToDelete = self.fetchedResultsController.object(at: indexPath)
             Task {
                 await CoreDataService.shared.deletePost(post: postToDelete)
-                self.postsEntity.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
             }
 
             completionHandler(true)
@@ -89,6 +92,53 @@ class FavoriteViewController: UITableViewController {
 
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         return configuration
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            if let newIndexPath = newIndexPath {
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath {
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        default:
+            break
+        }
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    private func setupFetchedResultsController() {
+        let fetchRequest: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
+        
+        if !authorFilterFavorite.isEmpty {
+            fetchRequest.predicate = NSPredicate(format: "author CONTAINS[c] %@", authorFilterFavorite)
+        }
+
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        
+        fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataService.shared.persistentContainer.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
+        tableView.reloadData()
     }
     
     @objc func clearFilter() {

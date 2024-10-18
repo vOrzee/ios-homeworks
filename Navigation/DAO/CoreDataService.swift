@@ -16,10 +16,10 @@ final class CoreDataService {
         let container = NSPersistentContainer(name: "Navigation") 
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        container.viewContext.automaticallyMergesChangesFromParent = true
         return container
     }()
     
@@ -30,18 +30,6 @@ final class CoreDataService {
     }()
     
     private init() {}
-    
-    func fetchPosts() async -> [PostEntity] {
-        let request = PostEntity.fetchRequest()
-        let authorFilter = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
-        if !authorFilter.isEmpty {
-            let predicate = NSPredicate(format: "author CONTAINS[c] %@", authorFilter)
-            request.predicate = predicate
-        }
-        return await backgroundContext.perform {
-            (try? self.backgroundContext.fetch(request)) ?? []
-        }
-    }
     
     func addPost(post: Post) async {
         let postEntity = PostEntity(context: backgroundContext)

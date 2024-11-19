@@ -64,7 +64,8 @@ class ProfileViewController: UIViewController {
         addSubviews()
         setupConstraints()
         tuneTableView()
-        avatarTapEvent = { imageView in
+        avatarTapEvent = { [weak self] imageView in
+            guard let self else {return}
             let tap = UITapGestureRecognizer(
                 target: self,
                 action: #selector(self.avatarTapped(_:))
@@ -176,7 +177,7 @@ class ProfileViewController: UIViewController {
         // 3. Указываем, с какими классами ячеек и кастомных футеров / хэдеров
         //    будет работать таблица
         profileTable.register(
-            ProfileTableViewCell.self,
+            PostTableViewCell.self,
             forCellReuseIdentifier: CellReuseID.post.rawValue
         )
         profileTable.register(
@@ -193,6 +194,15 @@ class ProfileViewController: UIViewController {
     @objc func logoutTapped() {
         AuthService.shared.clearCredentials()
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleDoubleTapOnPost(_ gestureRecognizer: UITapGestureRecognizer) {
+        let tapLocation = gestureRecognizer.location(in: profileTable)
+        if let tappedIndexPath = profileTable.indexPathForRow(at: tapLocation) {
+            print("Double tapped row: \(tappedIndexPath.row)")
+            let post = postViewModel.data[tappedIndexPath.row - 1]
+            CoreDataService.shared.addPost(post: post)
+        }
     }
     
     @objc func avatarTapped(_ sender: UITapGestureRecognizer) {
@@ -293,10 +303,12 @@ extension ProfileViewController: UITableViewDataSource {
         guard let viewHolder = tableView.dequeueReusableCell(
             withIdentifier: CellReuseID.post.rawValue,
             for: indexPath
-        ) as? ProfileTableViewCell else {
+        ) as? PostTableViewCell else {
             fatalError("could not dequeueReusableCell")
         }
-        
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapOnPost))
+        doubleTapGesture.numberOfTapsRequired = 2
+        viewHolder.addGestureRecognizer(doubleTapGesture)
         viewHolder.bind(postViewModel.data[indexPath.row - 1])
         
         return viewHolder
@@ -319,6 +331,9 @@ extension ProfileViewController: UITableViewDelegate {
     ) {
         if indexPath.row == 0 {
             coordinator?.showPhotos(photos: PhotosRepositoryInMemoryStorage.make())
+        } else {
+            let post = postViewModel.data[indexPath.row - 1]
+            
         }
     }
 }

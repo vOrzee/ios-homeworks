@@ -26,7 +26,7 @@ class LoginCoordinator: Coordinator {
         navigationController.pushViewController(loginViewController, animated: false)
         
         loginViewController.tabBarItem = UITabBarItem(
-            title: "Профиль", image: UIImage(systemName: "person.circle"), tag: 1
+            title: "Профиль", image: UIImage(systemName: "person.circle"), tag: 2
         )
     }
     

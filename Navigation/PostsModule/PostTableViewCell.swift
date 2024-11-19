@@ -1,5 +1,5 @@
 //
-//  ProfileTableViewCell.swift
+//  PostTableViewCell.swift
 //  Navigation
 //
 //  Created by Роман Лешин on 03.08.2024.
@@ -8,7 +8,7 @@
 import UIKit
 import StorageService
 
-class ProfileTableViewCell: UITableViewCell {
+class PostTableViewCell: UITableViewCell {
     
     private lazy var authorTextView: UITextView = {
         let textView = UITextView()

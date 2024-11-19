@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		592287F12CECB87600607BBA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592287F02CECB86C00607BBA /* MapViewController.swift */; };
 		592287F32CECBAA700607BBA /* MapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592287F22CECBAA100607BBA /* MapCoordinator.swift */; };
+		592287F62CECD99900607BBA /* UserMapPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592287F42CECD8A600607BBA /* UserMapPointAnnotation.swift */; };
 		5929D0B02C6731F800A23407 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0AF2C6731F800A23407 /* PhotosTableViewCell.swift */; };
 		5929D0B42C67589600A23407 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0B32C67589600A23407 /* PhotosViewController.swift */; };
 		5929D0B62C6762F600A23407 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0B52C6762F600A23407 /* PhotosCollectionViewCell.swift */; };
@@ -113,6 +114,7 @@
 /* Begin PBXFileReference section */
 		592287F02CECB86C00607BBA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		592287F22CECBAA100607BBA /* MapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinator.swift; sourceTree = "<group>"; };
+		592287F42CECD8A600607BBA /* UserMapPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMapPointAnnotation.swift; sourceTree = "<group>"; };
 		5929D0AF2C6731F800A23407 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		5929D0B12C6739B700A23407 /* PhotosRepositoryInMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosRepositoryInMemoryStorage.swift; sourceTree = "<group>"; };
 		5929D0B32C67589600A23407 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 		59E9FD3D2CBAF85400960DFE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				592287F42CECD8A600607BBA /* UserMapPointAnnotation.swift */,
 				59E9FD522CBB3F6700960DFE /* API */,
 				59E9FD4C2CBB1DB000960DFE /* App */,
 				59E9FD4B2CBB1CD900960DFE /* Feed */,
@@ -618,6 +621,7 @@
 				593874982CB711DA00DE8A86 /* FeedStateWordSecretCheck.swift in Sources */,
 				5938749C2CB7238A00DE8A86 /* FeedViewController.swift in Sources */,
 				59E9FD3E2CBAF85400960DFE /* AppConfiguration.swift in Sources */,
+				592287F62CECD99900607BBA /* UserMapPointAnnotation.swift in Sources */,
 				59E9FD3F2CBAF85400960DFE /* FeedModelSecretWord.swift in Sources */,
 				59EF8F052CC199E0001098CE /* PostMapper.swift in Sources */,
 				59E9FD402CBAF85400960DFE /* FeedViewModelState.swift in Sources */,
@@ -792,7 +796,7 @@
 				DEVELOPMENT_TEAM = 9JFZ7SN6JA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Разрешите использовать информации о вашей геолокации";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -826,7 +830,7 @@
 				DEVELOPMENT_TEAM = 9JFZ7SN6JA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Разрешите использовать информации о вашей геолокации";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";

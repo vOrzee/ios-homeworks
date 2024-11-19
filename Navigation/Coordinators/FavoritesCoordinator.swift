@@ -21,7 +21,7 @@ class FavoritesCoordinator: Coordinator {
         navigationController.pushViewController(favoritesViewController, animated: false)
         
         favoritesViewController.tabBarItem = UITabBarItem(
-            title: "Сохранённое", image: UIImage(systemName: "externaldrive"), tag: 1
+            title: "Сохранённое", image: UIImage(systemName: "externaldrive"), tag: 2
         )
     }
 }

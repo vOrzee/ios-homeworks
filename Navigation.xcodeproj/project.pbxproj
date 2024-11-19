@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		592287F12CECB87600607BBA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592287F02CECB86C00607BBA /* MapViewController.swift */; };
+		592287F32CECBAA700607BBA /* MapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592287F22CECBAA100607BBA /* MapCoordinator.swift */; };
 		5929D0B02C6731F800A23407 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0AF2C6731F800A23407 /* PhotosTableViewCell.swift */; };
 		5929D0B42C67589600A23407 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0B32C67589600A23407 /* PhotosViewController.swift */; };
 		5929D0B62C6762F600A23407 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5929D0B52C6762F600A23407 /* PhotosCollectionViewCell.swift */; };
@@ -109,6 +111,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		592287F02CECB86C00607BBA /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		592287F22CECBAA100607BBA /* MapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinator.swift; sourceTree = "<group>"; };
 		5929D0AF2C6731F800A23407 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		5929D0B12C6739B700A23407 /* PhotosRepositoryInMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosRepositoryInMemoryStorage.swift; sourceTree = "<group>"; };
 		5929D0B32C67589600A23407 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +207,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		592287EF2CECB84900607BBA /* MapModule */ = {
+			isa = PBXGroup;
+			children = (
+				592287F02CECB86C00607BBA /* MapViewController.swift */,
+			);
+			path = MapModule;
+			sourceTree = "<group>";
+		};
 		5931C0222C516EFA009880F1 = {
 			isa = PBXGroup;
 			children = (
@@ -232,6 +244,7 @@
 				5938749D2CB725DF00DE8A86 /* PostsModule */,
 				59EA83C22C554A9300E812AA /* ProfileModule */,
 				593874902CB710EA00DE8A86 /* FeedModule */,
+				592287EF2CECB84900607BBA /* MapModule */,
 				59E9FD452CBAF85900960DFE /* User */,
 				59E9FD3D2CBAF85400960DFE /* Models */,
 				5938746B2CB5B2D200DE8A86 /* Utils */,
@@ -283,6 +296,7 @@
 		593874AA2CB75FB700DE8A86 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				592287F22CECBAA100607BBA /* MapCoordinator.swift */,
 				599CE67C2CC18F6500EE50E2 /* FavoritesCoordinator.swift */,
 				593874AB2CB75FC500DE8A86 /* Coordinator.swift */,
 				593874AD2CB75FE500DE8A86 /* AppCoordinator.swift */,
@@ -564,6 +578,7 @@
 				5929D0B42C67589600A23407 /* PhotosViewController.swift in Sources */,
 				593874942CB7117400DE8A86 /* FeedViewOutput.swift in Sources */,
 				59EA83C92C559E0700E812AA /* UIImageViewExrension.swift in Sources */,
+				592287F32CECBAA700607BBA /* MapCoordinator.swift in Sources */,
 				593874A12CB7268400DE8A86 /* PostViewOutput.swift in Sources */,
 				593874722CB5B47C00DE8A86 /* LoginInspector.swift in Sources */,
 				59E9FD392CBAF67A00960DFE /* NetworkService.swift in Sources */,
@@ -588,6 +603,7 @@
 				593874A32CB7269700DE8A86 /* PostRepository.swift in Sources */,
 				59E9FD4F2CBB20FB00960DFE /* PostCoordinator.swift in Sources */,
 				59A4D8C52CBCCEB00006D4D7 /* CheckerService.swift in Sources */,
+				592287F12CECB87600607BBA /* MapViewController.swift in Sources */,
 				593874B92CB8B2CC00DE8A86 /* StringExtension.swift in Sources */,
 				5938749F2CB7260000DE8A86 /* PostViewController.swift in Sources */,
 				593874B22CB7600900DE8A86 /* ProfileCoordinator.swift in Sources */,

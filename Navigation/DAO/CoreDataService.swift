@@ -11,7 +11,6 @@ import StorageService
 
 final class CoreDataService {
     static let shared = CoreDataService()
-    private init() {}
     
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Navigation") 
@@ -24,25 +23,44 @@ final class CoreDataService {
         return container
     }()
     
-    func fetchPosts() -> [PostEntity] {
+    lazy var backgroundContext: NSManagedObjectContext = {
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
+        return context
+    }()
+    
+    private init() {}
+    
+    func fetchPosts() async -> [PostEntity] {
         let request = PostEntity.fetchRequest()
-        return (try? persistentContainer.viewContext.fetch(request)) ?? []
+        let authorFilter = UserDefaults.standard.string(forKey: "authorFilterFavorite") ?? ""
+        if !authorFilter.isEmpty {
+            let predicate = NSPredicate(format: "author CONTAINS[c] %@", authorFilter)
+            request.predicate = predicate
+        }
+        return await backgroundContext.perform {
+            (try? self.backgroundContext.fetch(request)) ?? []
+        }
     }
     
-    func addPost(post: Post) {
-        let postEntity = PostEntity(context: persistentContainer.viewContext)
+    func addPost(post: Post) async {
+        let postEntity = PostEntity(context: backgroundContext)
         postEntity.id = Int32(post.id)
         postEntity.author = post.author
         postEntity.descriptionPost = post.description
         postEntity.imageSource = post.image
         postEntity.likesCount = Int32(post.likes) ?? 0
         postEntity.viewsCount = Int32(post.views) ?? 0
-        try? persistentContainer.viewContext.save()
+        await backgroundContext.perform {
+            try? self.backgroundContext.save()
+        }
     }
     
-    func deletePost(post: PostEntity) {
-        let context = post.managedObjectContext
-        context?.delete(post)
-        try? context?.save()
+    func deletePost(post: PostEntity) async {
+        let context = post.managedObjectContext ?? backgroundContext
+        await context.perform {
+            context.delete(post)
+            try? context.save()
+        }
     }
 }

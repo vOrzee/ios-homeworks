@@ -20,7 +20,7 @@ class MapCoordinator: Coordinator {
         navigationController.pushViewController(mapViewController, animated: false)
         
         mapViewController.tabBarItem = UITabBarItem(
-            title: "Карта", image: UIImage(systemName: "map"), tag: 0
+            title: NSLocalizedString("Map", comment: ""), image: UIImage(systemName: "map"), tag: 0
         )
     }
 }

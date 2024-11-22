@@ -18,7 +18,7 @@ class FeedViewController: UIViewController {
     
     private lazy var entryField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Пароль"
+        textField.placeholder = NSLocalizedString("password", comment: "")
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -26,7 +26,7 @@ class FeedViewController: UIViewController {
     
     private lazy var checkGuessButton: CustomButton = {
         let button = CustomButton(
-            title: "Проверить", titleColor: .white, backgroundColor: .orange,
+            title: NSLocalizedString("Check", comment: ""), titleColor: .white, backgroundColor: .orange,
             action: { [weak self] in
                 guard let self = self else {return}
                 self.onTapCheckGuessButton()
@@ -38,7 +38,7 @@ class FeedViewController: UIViewController {
     
     private lazy var answerLabel: UILabel = {
         let label = UILabel()
-        label.text = "ОТВЕТ"
+        label.text = NSLocalizedString("ANSWER", comment: "")
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +58,7 @@ class FeedViewController: UIViewController {
     
     private lazy var topButton: CustomButton = {
         let button = CustomButton(
-            title: "Верхняя кнопка", titleColor: .systemTeal, backgroundColor: .blue,
+            title: NSLocalizedString("Top button", comment: ""), titleColor: .systemTeal, backgroundColor: .blue,
             action: { [weak self] in
                 self?.navigateToPost(withId: 0)
             }
@@ -69,7 +69,7 @@ class FeedViewController: UIViewController {
     
     private lazy var bottomButton: CustomButton = {
         let button = CustomButton(
-            title: "Нижняя кнопка", titleColor: .systemTeal, backgroundColor: .red,
+            title: NSLocalizedString("Bottom button", comment: ""), titleColor: .systemTeal, backgroundColor: .red,
             action: { [weak self] in
                 self?.navigateToPost(withId: 1)
             }
@@ -99,12 +99,12 @@ class FeedViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Лента"
+        self.title = NSLocalizedString("Feed", comment: "")
         self.view.backgroundColor = .systemGray
         
         view.addSubview(stackView)
@@ -146,11 +146,11 @@ class FeedViewController: UIViewController {
             case .error(let message, _):
                 self.activityIndicator.stopAnimating()
                 let alert = UIAlertController(
-                    title: "Ошибка",
+                    title: NSLocalizedString("Error", comment: ""),
                     message: message,
                     preferredStyle: .alert
                 )
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }

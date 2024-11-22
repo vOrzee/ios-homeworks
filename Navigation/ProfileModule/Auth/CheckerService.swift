@@ -15,15 +15,15 @@ class CheckerService: CheckerServiceProtocol {
                 
                 switch fbErrorCode {
                 case .userNotFound:
-                    completion(.failure(.userNotFound(message: "Пользователь не найден.")))
+                    completion(.failure(.userNotFound(message: NSLocalizedString("User not found.", comment: ""))))
                 case .wrongPassword:
-                    completion(.failure(.wrongPassword(message: "Неверный пароль.")))
+                    completion(.failure(.wrongPassword(message: NSLocalizedString("Invalid password.", comment: ""))))
                 case .emailAlreadyInUse:
-                    completion(.failure(.emailAlreadyInUse(message: "Email уже используется.")))
+                    completion(.failure(.emailAlreadyInUse(message: NSLocalizedString("Email is already in use.", comment: ""))))
                 case .invalidEmail:
-                    completion(.failure(.invalidEmail(message: "Некорректный email.")))
+                    completion(.failure(.invalidEmail(message: NSLocalizedString("Invalid email.", comment: ""))))
                 case .networkError:
-                    completion(.failure(.networkUnavailable(message: "Ошибка сети.")))
+                    completion(.failure(.networkUnavailable(message: NSLocalizedString("Network error.", comment: ""))))
                 default:
                     completion(.failure(.unknownError(message: error.localizedDescription)))
                 }
@@ -40,15 +40,15 @@ class CheckerService: CheckerServiceProtocol {
                 
                 switch fbErrorCode {
                 case .userNotFound:
-                    completion(.failure(.userNotFound(message: "Пользователь не найден.")))
+                    completion(.failure(.userNotFound(message: NSLocalizedString("User not found.", comment: ""))))
                 case .wrongPassword:
-                    completion(.failure(.wrongPassword(message: "Неверный пароль.")))
+                    completion(.failure(.wrongPassword(message: NSLocalizedString("Invalid password.", comment: ""))))
                 case .emailAlreadyInUse:
-                    completion(.failure(.emailAlreadyInUse(message: "Email уже используется.")))
+                    completion(.failure(.emailAlreadyInUse(message: NSLocalizedString("Email is already in use.", comment: ""))))
                 case .invalidEmail:
-                    completion(.failure(.invalidEmail(message: "Некорректный email.")))
+                    completion(.failure(.invalidEmail(message: NSLocalizedString("Invalid email.", comment: ""))))
                 case .networkError:
-                    completion(.failure(.networkUnavailable(message: "Ошибка сети.")))
+                    completion(.failure(.networkUnavailable(message: NSLocalizedString("Network error.", comment: ""))))
                 default:
                     completion(.failure(.unknownError(message: error.localizedDescription)))
                 }

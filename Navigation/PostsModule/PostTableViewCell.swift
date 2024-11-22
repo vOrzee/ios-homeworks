@@ -72,7 +72,7 @@ class PostTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -98,8 +98,8 @@ class PostTableViewCell: UITableViewCell {
         authorTextView.text = post.author
         pictureImageView.image = UIImage(named: post.image)
         descriptionTextView.text = post.description
-        likesLabelView.text = "Likes: \(post.likes)"
-        viewsLabelView.text = "View: \(post.views)"
+        likesLabelView.text = "\(NSLocalizedString("Likes: ", comment: ""))\(post.likes)"
+        viewsLabelView.text = "\(NSLocalizedString("Views: ", comment: ""))\(post.views)"
     }
     
     func addSubviews() {

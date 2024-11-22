@@ -24,25 +24,25 @@ class InfoCoordinator: Coordinator {
     
     func showAlert() {
         let alertController = UIAlertController(
-            title: "Заголовок предупреждения",
-            message: "Текст предупреждения",
+            title: NSLocalizedString("Alert Header", comment: ""),
+            message: NSLocalizedString("Warning text", comment: ""),
             preferredStyle: .alert
         )
         alertController.addAction(
             UIAlertAction(
-                title: "Первое действие",
+                title: NSLocalizedString("First Act", comment: ""),
                 style: .default,
                 handler: { _ in
-                    print("Выбрано первое действие")
+                    print(NSLocalizedString("First action selected", comment: ""))
                 }
             )
         )
         alertController.addAction(
             UIAlertAction(
-                title: "Второе действие",
+                title: NSLocalizedString("Second Act", comment: ""),
                 style: .default,
                 handler: { _ in
-                    print("Выбрано второе действие")
+                    print(NSLocalizedString("Second action selected", comment: ""))
                 }
             )
         )

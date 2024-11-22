@@ -58,10 +58,10 @@ class PostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Информация"
+        self.title = NSLocalizedString("Information", comment: "")
         self.view.backgroundColor = .lightGray
         let barButtonItem = UIBarButtonItem(
-            title: "Информация",
+            title: NSLocalizedString("Information", comment: ""),
             style: .plain,
             target: self,
             action: #selector(openInfoViewController)
@@ -84,7 +84,7 @@ class PostViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
     
     @objc func openInfoViewController() {
@@ -114,7 +114,7 @@ class PostViewController: UIViewController {
         authorLabel.text = post.author
         postImageView.image = UIImage(named: post.image)
         descriptionLabel.text = post.description
-        likesLabel.text = "Likes: \(post.likes)"
-        viewsLabel.text = "Views: \(post.views)"
+        likesLabel.text = "\(NSLocalizedString("Likes: ", comment: ""))\(post.likes)"
+        viewsLabel.text = "\(NSLocalizedString("Views: ", comment: ""))\(post.views)"
     }
 }

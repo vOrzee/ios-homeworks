@@ -26,7 +26,7 @@ class LoginCoordinator: Coordinator {
         navigationController.pushViewController(loginViewController, animated: false)
         
         loginViewController.tabBarItem = UITabBarItem(
-            title: "Профиль", image: UIImage(systemName: "person.circle"), tag: 3
+            title: NSLocalizedString("Profile", comment: ""), image: UIImage(systemName: "person.circle"), tag: 3
         )
     }
     
@@ -37,7 +37,7 @@ class LoginCoordinator: Coordinator {
     
     func showAuthAlert(message: String) {
         let alert = UIAlertController(
-            title: "Ошибка",
+            title: NSLocalizedString("Error", comment: ""),
             message: message,
             preferredStyle: .alert
         )

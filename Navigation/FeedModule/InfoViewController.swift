@@ -21,7 +21,7 @@ class InfoViewController: UIViewController {
     
     private lazy var responseLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 24.0, y: 104.0, width: UIScreen.main.bounds.width - 48.0, height: 48.0))
-        label.text = "ЗДЕСЬ БУДЕТ ОТВЕТ"
+        label.text = NSLocalizedString("HERE WILL BE THE ANSWER",comment: "")
         label.font = UIFont.systemFont(ofSize: 20.0)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -31,7 +31,7 @@ class InfoViewController: UIViewController {
     
     private lazy var actionButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 24, y: 176, width: UIScreen.main.bounds.width - 48.0, height: 48))
-        button.setTitle("ОТПРАВИТЬ ЗАПРОС", for: .normal)
+        button.setTitle(NSLocalizedString("SEND REQUEST",comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .orange
         button.addTarget(self, action: #selector(actionSelector), for: .touchUpInside)
@@ -41,8 +41,8 @@ class InfoViewController: UIViewController {
     
     private lazy var taskSelectorField: UITextField = {
         let textField = UITextField(frame: CGRect(x: 24, y: 240, width: UIScreen.main.bounds.width - 48.0, height: 48))
-        textField.placeholder = "Введите номер задачи"
-        textField.text = "Выполнить задачу номер: 1"
+        textField.placeholder = NSLocalizedString("Enter task number",comment: "")
+        textField.text = NSLocalizedString("Complete task number: 1", comment: "")
         textField.borderStyle = .roundedRect
         textField.font = UIFont.systemFont(ofSize: 16.0)
         textField.layer.cornerRadius = 8.0
@@ -72,7 +72,7 @@ class InfoViewController: UIViewController {
             taskSelectorField.text = text
             tapActionButtonTaskTwo()
         default:
-            taskSelectorField.text = "Выполнить задачу номер: 1"
+            taskSelectorField.text = NSLocalizedString("Complete task number: 1", comment: "")
             tapActionButtonDefault()
         }
     }
@@ -87,16 +87,16 @@ class InfoViewController: UIViewController {
                 guard let self else { return }
                 switch result {
                 case .success(let task):
-                    self.infoLabel.text = "Поставлена цель:"
+                    self.infoLabel.text = NSLocalizedString("Goal set:", comment: "")
                     self.responseLabel.text = task.title
                 case .failure(let error):
                     switch error {
                     case .networkUnavailable(let code):
-                        self.responseLabel.text = "Ошибка сети. Код: \(code)"
+                        self.responseLabel.text = "\(NSLocalizedString("Network error. Code:", comment: "")) \(code)"
                     case .dataNotFound:
-                        self.responseLabel.text = "Задача не найдена"
+                        self.responseLabel.text = NSLocalizedString("Task not found", comment: "")
                     default:
-                        self.responseLabel.text = "Что-то пошло не так"
+                        self.responseLabel.text = NSLocalizedString("Something went wrong", comment: "")
                     }
                 }
             }
@@ -110,19 +110,19 @@ class InfoViewController: UIViewController {
                 switch result {
                 case .success(let planet):
                     if planet.name == "Tatooine" {
-                        self.infoLabel.text = "Период обращения планеты Татуин:"
+                        self.infoLabel.text = NSLocalizedString("The orbital period of the planet Tatooine:", comment: "")
                         self.responseLabel.text = planet.orbitalPeriod
                     } else {
-                        self.responseLabel.text = "Мы попали не на ту планету"
+                        self.responseLabel.text = NSLocalizedString("We're on the wrong planet", comment: "")
                     }
                 case .failure(let error):
                     switch error {
                     case .networkUnavailable(let code):
-                        self.responseLabel.text = "Ошибка сети. Код: \(code)"
+                        self.responseLabel.text = "\(NSLocalizedString("Network error. Code:", comment: "")) \(code)"
                     case .dataNotFound:
-                        self.responseLabel.text = "Задача не найдена"
+                        self.responseLabel.text = NSLocalizedString("Task not found", comment: "")
                     default:
-                        self.responseLabel.text = "Что-то пошло не так"
+                        self.responseLabel.text = NSLocalizedString("Something went wrong", comment: "")
                     }
                 }
             })

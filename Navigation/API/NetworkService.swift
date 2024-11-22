@@ -8,22 +8,6 @@ import Foundation
 import UIKit
 
 struct NetworkService {
-    static func request(with url: URL?) async {
-        guard let url else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
-            guard let data, let response = response as? HTTPURLResponse else {return}
-            print("Вывод результата для \"a. data — в доступном для понимания виде, то есть String в стандартной кодировке\":")
-            let outputString = String(data: data, encoding: .utf8) ?? "Получить строку не удалось"
-            print(outputString)
-            print("Вывод результата для \"b. свойство .allHeaderFields и .statusCode у response\":")
-            print("response.allHeaderFields: \(response.allHeaderFields)")
-            print("response.statusCode: \(response.statusCode)")
-        }.resume()
-    }
     
     static func getToDoTask(withId id: Int, completion: @escaping (Result<TodoTask, AppError>) -> Void) async {
         let urlString = "https://jsonplaceholder.typicode.com/todos/\(id)"
@@ -31,7 +15,7 @@ struct NetworkService {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
                 if let error {
-                    completion(.failure(.networkUnavailable("Сеть недоступна")))
+                    completion(.failure(.networkUnavailable(NSLocalizedString("Network unavailable", comment: ""))))
                     print(error.localizedDescription)
                     return
                 }
@@ -40,7 +24,7 @@ struct NetworkService {
                     return
                 }
                 guard let response = response as? HTTPURLResponse else {
-                    completion(.failure(.networkUnavailable("Некорректный тип ответа")))
+                    completion(.failure(.networkUnavailable(NSLocalizedString("Invalid response type", comment: ""))))
                     return
                 }
                 if !(200..<300).contains(response.statusCode) {
@@ -72,7 +56,7 @@ struct NetworkService {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
                 if let error {
-                    completion(.failure(.networkUnavailable("Сеть недоступна")))
+                    completion(.failure(.networkUnavailable(NSLocalizedString("Network unavailable", comment: ""))))
                     print(error.localizedDescription)
                     return
                 }
@@ -81,7 +65,7 @@ struct NetworkService {
                     return
                 }
                 guard let response = response as? HTTPURLResponse else {
-                    completion(.failure(.networkUnavailable("Некорректный тип ответа")))
+                    completion(.failure(.networkUnavailable(NSLocalizedString("Invalid response type", comment: ""))))
                     return
                 }
                 if !(200..<300).contains(response.statusCode) {

@@ -48,7 +48,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Карта"
+        title = NSLocalizedString("Map", comment: "")
         view.backgroundColor = .systemBackground
         
         view.addSubview(mapView)
@@ -79,17 +79,17 @@ class MapViewController: UIViewController {
         let pointTap = gr.location(in: mapView)
         let coordinate = mapView.convert(pointTap, toCoordinateFrom: mapView)
         
-        let alertController = UIAlertController(title: "Добавление точки", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Adding a point", comment: ""), message: nil, preferredStyle: .alert)
         alertController.addTextField { textField in
-            textField.placeholder = "Введите название"
+            textField.placeholder = NSLocalizedString("Enter a title", comment: "")
         }
-        let namingAction = UIAlertAction(title: "Применить", style: .default) { [weak self] _ in
+        let namingAction = UIAlertAction(title: NSLocalizedString("Apply", comment: ""), style: .default) { [weak self] _ in
             guard let self = self, let title = alertController.textFields?.first?.text else {
                 return
             }
             addUserAnnotation(title: title, coordinate: coordinate)
         }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
         alertController.addAction(namingAction)
         alertController.addAction(cancelAction)
         
@@ -136,14 +136,14 @@ extension MapViewController: MKMapViewDelegate {
         guard let coordinateFrom = currentLocation, let coordinateTo = view.annotation?.coordinate else {
             return
         }
-        let alertController = UIAlertController(title: "Построить маршрут", message: nil, preferredStyle: .alert)
-        let namingAction = UIAlertAction(title: "Построить", style: .default) { [weak self] _ in
+        let alertController = UIAlertController(title: NSLocalizedString("Build a route", comment: ""), message: nil, preferredStyle: .alert)
+        let namingAction = UIAlertAction(title: NSLocalizedString("Build", comment: ""), style: .default) { [weak self] _ in
             guard let self else {
                 return
             }
             buildRoute(from: coordinateFrom, to: coordinateTo)
         }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
         alertController.addAction(namingAction)
         alertController.addAction(cancelAction)
         

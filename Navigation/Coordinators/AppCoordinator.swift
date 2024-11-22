@@ -14,6 +14,7 @@ class AppCoordinator: Coordinator {
     var profileCoordinator: ProfileCoordinator
     var loginCoordinator: LoginCoordinator
     var favoritesCoordinator: FavoritesCoordinator
+    var mapCoordinator: MapCoordinator
     
     init() {
         self.tabBarController = UITabBarController()
@@ -22,6 +23,7 @@ class AppCoordinator: Coordinator {
         self.profileCoordinator = ProfileCoordinator(navigationController: UINavigationController())
         self.loginCoordinator = LoginCoordinator(navigationController: UINavigationController())
         self.favoritesCoordinator = FavoritesCoordinator(navigationController: UINavigationController())
+        self.mapCoordinator = MapCoordinator(navigationController: UINavigationController())
     }
     
     func start() {
@@ -29,14 +31,16 @@ class AppCoordinator: Coordinator {
         profileCoordinator.start()
         loginCoordinator.start()
         favoritesCoordinator.start()
+        mapCoordinator.start()
         
         tabBarController.viewControllers = [
+            mapCoordinator.navigationController,
             feedCoordinator.navigationController,
             favoritesCoordinator.navigationController,
             loginCoordinator.navigationController
         ]
         
-        tabBarController.selectedIndex = 2
+        tabBarController.selectedIndex = 3
     }
 }
 

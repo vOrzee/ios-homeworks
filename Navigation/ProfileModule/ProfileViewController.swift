@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController {
             style: .grouped
         )
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.backgroundColor = .lightGray
+        table.backgroundColor = UIColor.createColor(lightMode: .lightGray, darkMode: .darkGray)
         return table
     }()
     

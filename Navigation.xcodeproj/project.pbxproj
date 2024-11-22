@@ -45,6 +45,7 @@
 		593874B92CB8B2CC00DE8A86 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874B82CB8B2C200DE8A86 /* StringExtension.swift */; };
 		593874BB2CB8BDEB00DE8A86 /* BruteForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874BA2CB8BDDB00DE8A86 /* BruteForce.swift */; };
 		593874BD2CB9ABA100DE8A86 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874BC2CB9AB9300DE8A86 /* AppError.swift */; };
+		59530F122CF11173002C9474 /* ThemeUIColorCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59530F112CF1115A002C9474 /* ThemeUIColorCreator.swift */; };
 		5964922A2CBCBCA50055E348 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 596492292CBCBCA50055E348 /* GoogleService-Info.plist */; };
 		5964922B2CBCBCA50055E348 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 596492292CBCBCA50055E348 /* GoogleService-Info.plist */; };
 		5978BFA12C7A514A00C39F24 /* StorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = 5978BFA02C7A514A00C39F24 /* StorageService.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -155,6 +156,7 @@
 		593874B82CB8B2C200DE8A86 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		593874BA2CB8BDDB00DE8A86 /* BruteForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BruteForce.swift; sourceTree = "<group>"; };
 		593874BC2CB9AB9300DE8A86 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		59530F112CF1115A002C9474 /* ThemeUIColorCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeUIColorCreator.swift; sourceTree = "<group>"; };
 		596492292CBCBCA50055E348 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5978BF9E2C7A514A00C39F24 /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5978BFA02C7A514A00C39F24 /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 		59EA83C72C559DE200E812AA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				59530F112CF1115A002C9474 /* ThemeUIColorCreator.swift */,
 				593874B82CB8B2C200DE8A86 /* StringExtension.swift */,
 				59EA83C82C559E0700E812AA /* UIImageViewExrension.swift */,
 				593874802CB5FEFD00DE8A86 /* CustomButton.swift */,
@@ -625,6 +628,7 @@
 				593874B22CB7600900DE8A86 /* ProfileCoordinator.swift in Sources */,
 				59EA83C62C554C0000E812AA /* ProfileTableHeaderView.swift in Sources */,
 				5931C0442C51774B009880F1 /* ProfileViewController.swift in Sources */,
+				59530F122CF11173002C9474 /* ThemeUIColorCreator.swift in Sources */,
 				59A4D8C32CBCCEA70006D4D7 /* CheckerServiceProtocol.swift in Sources */,
 				593874742CB5BE8E00DE8A86 /* LoginFactory.swift in Sources */,
 				5938749A2CB7232B00DE8A86 /* SceneDelegate.swift in Sources */,

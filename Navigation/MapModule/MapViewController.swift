@@ -14,6 +14,7 @@ class MapViewController: UIViewController {
     var coordinator: MapCoordinator?
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocationCoordinate2D?
+    private var overlays = [MKOverlay]()
     
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
@@ -97,6 +98,8 @@ class MapViewController: UIViewController {
     
     @objc func clearUserPoints() {
         mapView.removeAnnotations(mapView.annotations.filter( {$0 is UserMapPointAnnotation} ))
+        mapView.removeOverlays(overlays) // удаляем маршруты
+        overlays.removeAll() // и массив чистим
     }
     
     private func addUserAnnotation(title: String, coordinate: CLLocationCoordinate2D) {
@@ -114,6 +117,7 @@ class MapViewController: UIViewController {
         
         direction.calculate { [weak self] responсe, error in
             if let responсe, let route = responсe.routes.first {
+                self?.overlays.append(route.polyline) // добавляем в массив маршрутов
                 self?.mapView.addOverlay(route.polyline)
                 self?.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }

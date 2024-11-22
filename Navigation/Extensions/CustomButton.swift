@@ -22,7 +22,7 @@ class CustomButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
     
     @objc private func buttonTapped() {

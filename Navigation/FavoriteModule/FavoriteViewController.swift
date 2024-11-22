@@ -64,7 +64,7 @@ class FavoriteViewController: UITableViewController {
             withIdentifier: CellReuseID.post.rawValue,
             for: indexPath
         ) as? PostTableViewCell else {
-            fatalError("could not dequeueReusableCell")
+            fatalError(NSLocalizedString("could not dequeueReusableCell", comment: ""))
         }
         let postEntity = fetchedResultsController.object(at: indexPath)
         viewHolder.bind(PostMapper.mapFromEntityToModel(postEntity))
@@ -73,7 +73,7 @@ class FavoriteViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (_, _, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: NSLocalizedString("Remove", comment: "")) { [weak self] (_, _, completionHandler) in
             guard let self = self else { return }
             let postToDelete = self.fetchedResultsController.object(at: indexPath)
             Task {
@@ -89,7 +89,7 @@ class FavoriteViewController: UITableViewController {
     
     
     private func setupUI() {
-        title = "Сохранённое"
+        title = NSLocalizedString("Saving", comment: "")
         view.backgroundColor = .systemGray6
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
         
@@ -126,17 +126,17 @@ class FavoriteViewController: UITableViewController {
         authorFilterFavorite = ""
     }
     @objc func applyFilter() {
-        let alertController = UIAlertController(title: "Поиск по автору", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("Search by author", comment: ""), message: nil, preferredStyle: .alert)
         alertController.addTextField { textField in
-            textField.placeholder = "Введите имя автора"
+            textField.placeholder = NSLocalizedString("Enter the author's name", comment: "")
         }
-        let searchAction = UIAlertAction(title: "Применить", style: .default) { [weak self] _ in
+        let searchAction = UIAlertAction(title: NSLocalizedString("Apply", comment: ""), style: .default) { [weak self] _ in
             guard let self = self, let authorName = alertController.textFields?.first?.text, !authorName.isEmpty else {
                 return
             }
             authorFilterFavorite = authorName
         }
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
         alertController.addAction(searchAction)
         alertController.addAction(cancelAction)
         

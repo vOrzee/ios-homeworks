@@ -48,7 +48,7 @@ class PostViewModel: PostViewOutput {
             switch result {
             case .success: self._state = .idle
             case .failure(let error):
-                self._state = .error("Ошибка при загрузке постов: \(error)", error)
+                self._state = .error("\(NSLocalizedString("Error loading posts:", comment: "")) \(error)", error)
             }
         }
     }
@@ -63,10 +63,10 @@ class PostViewModel: PostViewOutput {
             case .failure(let error):
                 switch error {
                 case .dataNotFound:
-                    self._state = .error("Пост с таким id не найден", error)
+                    self._state = .error(NSLocalizedString("Post with this id was not found", comment: ""), error)
                     completion(nil)
                 case .networkUnavailable:
-                    self._state = .error("Ошибка при загрузке поста: \(error)", error)
+                    self._state = .error("\(NSLocalizedString("Error loading post:", comment: "")) \(error)", error)
                     completion(nil)
                 default: completion(nil)
                 }
@@ -83,8 +83,8 @@ class PostViewModel: PostViewOutput {
                 self._state = .idle
             case .failure(let error):
                 switch error {
-                case .dataNotFound: self._state = .error("Новых постов не найдено", error)
-                case .networkUnavailable: self._state = .error("Ошибка при загрузке постов: \(error)", error)
+                case .dataNotFound: self._state = .error(NSLocalizedString("No new posts found", comment: ""), error)
+                case .networkUnavailable: self._state = .error("\(NSLocalizedString("Error loading posts:", comment: "")) \(error)", error)
                 default: break
                 }
             }

@@ -23,8 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         appCoordinator.start()
         
-        let appConfig = AppConfiguration.allCases.randomElement()
-        
         window.rootViewController = appCoordinator.tabBarController
         window.makeKeyAndVisible()
         

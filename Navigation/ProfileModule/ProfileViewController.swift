@@ -49,7 +49,7 @@ class ProfileViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
 
     override func viewDidLoad() {
@@ -59,7 +59,7 @@ class ProfileViewController: UIViewController {
         #else
         view.backgroundColor = .lightGray
         #endif
-        navigationItem.title = "TableView example"
+        navigationItem.title = NSLocalizedString("TableView example", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = false
         addSubviews()
         setupConstraints()
@@ -101,17 +101,17 @@ class ProfileViewController: UIViewController {
             guard let self else { return }
             
             let alert = UIAlertController(
-                title: "Новые посты",
-                message: "Появились новые посты. Хотите обновить список?",
+                title: NSLocalizedString("New posts", comment: ""),
+                message: NSLocalizedString("New posts have appeared. Do you want to update the list?", comment: ""),
                 preferredStyle: .alert
             )
             
-            let refreshAction = UIAlertAction(title: "Обновить", style: .default) { [weak self] _ in
+            let refreshAction = UIAlertAction(title: NSLocalizedString("Update", comment: ""), style: .default) { [weak self] _ in
                 guard let self else { return }
                 print(self.postViewModel.getAllPosts())
             }
             
-            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
             
             alert.addAction(refreshAction)
             alert.addAction(cancelAction)
@@ -133,11 +133,11 @@ class ProfileViewController: UIViewController {
                     break
                 }
                 let alert = UIAlertController(
-                    title: "Ошибка",
+                    title: NSLocalizedString("Error", comment: ""),
                     message: message,
                     preferredStyle: .alert
                 )
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -199,7 +199,6 @@ class ProfileViewController: UIViewController {
     @objc func handleDoubleTapOnPost(_ gestureRecognizer: UITapGestureRecognizer) {
         let tapLocation = gestureRecognizer.location(in: profileTable)
         if let tappedIndexPath = profileTable.indexPathForRow(at: tapLocation) {
-            print("Double tapped row: \(tappedIndexPath.row)")
             let post = postViewModel.data[tappedIndexPath.row - 1]
             Task {
                 await CoreDataService.shared.addPost(post: post)
@@ -296,7 +295,7 @@ extension ProfileViewController: UITableViewDataSource {
                 withIdentifier: CellReuseID.photos.rawValue,
                 for: indexPath
             ) as? PhotosTableViewCell else {
-                fatalError("could not dequeueReusableCell")
+                fatalError(NSLocalizedString("could not dequeueReusableCell", comment: ""))
             }
             viewHolder.bind(photos: PhotosRepositoryInMemoryStorage.make())
             return viewHolder
@@ -306,7 +305,7 @@ extension ProfileViewController: UITableViewDataSource {
             withIdentifier: CellReuseID.post.rawValue,
             for: indexPath
         ) as? PostTableViewCell else {
-            fatalError("could not dequeueReusableCell")
+            fatalError(NSLocalizedString("could not dequeueReusableCell", comment: ""))
         }
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapOnPost))
         doubleTapGesture.numberOfTapsRequired = 2
@@ -333,9 +332,6 @@ extension ProfileViewController: UITableViewDelegate {
     ) {
         if indexPath.row == 0 {
             coordinator?.showPhotos(photos: PhotosRepositoryInMemoryStorage.make())
-        } else {
-            let post = postViewModel.data[indexPath.row - 1]
-            
         }
     }
 }

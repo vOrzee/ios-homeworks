@@ -68,7 +68,7 @@ class PostRepositoryInMemory: PostRepository {
 //        if Int.random(in: 1...100) <= 25 {
 //            return completion(.failure(.networkUnavailable("500")))
 //        }
-        print("Not yet implemented")
+        print(NSLocalizedString("Not yet implemented", comment: ""))
     }
     
     func delete(id: Int, completion: @escaping (Result<Bool, AppError>) -> Void) {
@@ -76,7 +76,7 @@ class PostRepositoryInMemory: PostRepository {
 //        if Int.random(in: 1...100) <= 40 {
 //            return completion(.failure(.networkUnavailable("502")))
 //        }
-        print("Not yet implemented")
+        print(NSLocalizedString("Not yet implemented", comment: ""))
         return completion(.success(true))
     }
     
@@ -91,7 +91,7 @@ class PostRepositoryInMemory: PostRepository {
                     }
                 DispatchQueue.main.async {
                     if !newPosts.isEmpty {
-                        print("Новые посты переданы в замыкание")
+                        print(NSLocalizedString("New posts transferred to closure", comment: ""))
                         completion(.success(newPosts))
                     } else { completion(.failure(.dataNotFound)) }
                 }

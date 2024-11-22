@@ -35,7 +35,6 @@ class PhotosViewController: UIViewController {
         self.photos = photos.compactMap { $0 }
         super.init(nibName: nil, bundle: nil)
         let qos: QualityOfService = .userInteractive
-        let startTime = DispatchTime.now().uptimeNanoseconds / 1_000_000
         imageProcessor.processImagesOnThread(
             sourceImages: self.photos,
             filter: .chrome,
@@ -48,8 +47,6 @@ class PhotosViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.photos = photosWithFilter
                     self.collectionView.reloadData()
-                    let completionTime = DispatchTime.now().uptimeNanoseconds / 1_000_000 - startTime
-                    print("Применение фильтров с qos \(qos.rawValue) заняло \(completionTime) мс")
                 }
             }
         )
@@ -57,7 +54,7 @@ class PhotosViewController: UIViewController {
 
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
 
     override func viewDidLoad() {
@@ -83,7 +80,7 @@ class PhotosViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        title = "Photo Gallery"
+        title = NSLocalizedString("Photo Gallery", comment: "")
         navigationController?.navigationBar.isHidden = false
     }
     
@@ -104,7 +101,7 @@ extension PhotosViewController: UICollectionViewDataSource {
             withReuseIdentifier: String(describing: PhotosCollectionViewCell.self),
             for: indexPath
         ) as? PhotosCollectionViewCell else {
-            fatalError("Unable to dequeue PhotosCollectionViewCell")
+            fatalError(NSLocalizedString("Unable to dequeue PhotosCollectionViewCell", comment: ""))
         }
         
         cell.bind(uiImage: photos[indexPath.item])

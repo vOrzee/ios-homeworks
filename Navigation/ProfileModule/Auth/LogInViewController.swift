@@ -46,7 +46,7 @@ class LogInViewController: UIViewController {
     lazy var emailOrPhoneTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Email or phone"
+        textField.placeholder = NSLocalizedString("Email or phone", comment: "")
         textField.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         textField.autocapitalizationType = .none
         textField.tintColor = .vkBlue
@@ -69,7 +69,7 @@ class LogInViewController: UIViewController {
     lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Password"
+        textField.placeholder = NSLocalizedString("Password", comment: "")
         textField.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         textField.autocapitalizationType = .none
         textField.isSecureTextEntry = true
@@ -267,14 +267,14 @@ class LogInViewController: UIViewController {
         }
         if login.isEmpty {
             self.emailOrPhoneTextField.backgroundColor = .red
-            coordinator?.showAuthAlert(message: "Введите email")
+            coordinator?.showAuthAlert(message: NSLocalizedString("Enter email", comment: ""))
             return
         } else {
             self.emailOrPhoneTextField.backgroundColor = .systemGray6
         }
         if password.isEmpty {
             self.passwordTextField.backgroundColor = .red
-            coordinator?.showAuthAlert(message: "Введите пароль")
+            coordinator?.showAuthAlert(message: NSLocalizedString("Enter password", comment: ""))
             return
         } else {
             self.passwordTextField.backgroundColor = .systemGray6
@@ -285,7 +285,7 @@ class LogInViewController: UIViewController {
             switch result {
             case .success(let userFb):
                 guard let email = userFb.email else {return}
-                let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: "placeholder status")
+                let user = StorageService.User(login: email, fullName: email, avatar: UIImage(named: "TestUser")!, status: NSLocalizedString("placeholder status", comment: ""))
                 authService.saveCredentials(email: email, password: password)
                 coordinator?.showProfileAfterLogin(user: user)
             case .failure(let error):
@@ -293,11 +293,11 @@ class LogInViewController: UIViewController {
                 switch error {
                 //case .userNotFound(message: let message):
                     // Пока не ловится, но здесь самое место для delegate.signUp
-                case .unknownError(message: let message):
+                case .unknownError(message: _):
                     delegate.signUp(withEmail: login, password: password) { [weak self] result in
                         guard let self else {return}
                         switch result {
-                        case .success(let userFb):
+                        case .success(_):
                             delegate.checkCredentials(withEmail: login, password: password) { [weak self] result in
                                 guard let self else {return}
                                 switch result {
@@ -316,7 +316,7 @@ class LogInViewController: UIViewController {
                                 // И тут в случае короткого пароль приходит 17004
                                 coordinator?.showAuthAlert(message: message)
                             default:
-                                coordinator?.showAuthAlert(message: "Введён неверный пароль")
+                                coordinator?.showAuthAlert(message: NSLocalizedString("Invalid password entered", comment: ""))
                             }
                         }
                     }

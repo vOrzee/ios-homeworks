@@ -24,7 +24,7 @@ class FeedCoordinator: Coordinator {
         navigationController.pushViewController(feedViewController, animated: false)
         
         feedViewController.tabBarItem = UITabBarItem(
-            title: "Лента", image: UIImage(systemName: "list.bullet"), tag: 1
+            title: NSLocalizedString("Feed", comment: ""), image: UIImage(systemName: "list.bullet"), tag: 1
         )
     }
     

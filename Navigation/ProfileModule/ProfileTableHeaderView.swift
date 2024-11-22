@@ -10,7 +10,7 @@ import StorageService
 
 class ProfileHeaderView: UIView {
     
-    private var statusText: String = "Waiting for something..."
+    private var statusText: String = NSLocalizedString("Waiting for something...", comment: "")
     
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -31,7 +31,6 @@ class ProfileHeaderView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18.0, weight: .bold)
         label.textColor = .black
-        label.text = "Hipster Cat"
         return label
     }()
     
@@ -69,7 +68,7 @@ class ProfileHeaderView: UIView {
     
     lazy var setStatusButton: CustomButton = {
         let button = CustomButton(
-            title: "Set status",
+            title: NSLocalizedString("Set status", comment: ""),
             titleColor: .white,
             backgroundColor: .blue,
             action: { [weak self] in

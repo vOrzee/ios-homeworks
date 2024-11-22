@@ -27,7 +27,7 @@ class PhotosTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24.0, weight: .bold)
         label.textColor = .black
-        label.text = "Photos"
+        label.text = NSLocalizedString("Photos", comment: "")
         return label
     }()
     
@@ -78,7 +78,7 @@ class PhotosTableViewCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(NSLocalizedString("init(coder:) has not been implemented", comment: ""))
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

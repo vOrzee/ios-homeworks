@@ -13,7 +13,7 @@ class MockNetworkLoader: NetworkLoaderProtocol {
     var mockResponse: URLResponse?
     var error: Error?
     
-    func dataTask(with url: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTask {
+    func dataTask(with url: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         MockURLSessionDataTask {
             completionHandler(self.mockData, self.mockResponse, self.error)
         }
@@ -21,13 +21,13 @@ class MockNetworkLoader: NetworkLoaderProtocol {
 }
 
 class MockURLSessionDataTask: URLSessionDataTask {
-    private let competion: () -> Void
+    private let completion: () -> Void
     
-    init(competion: @escaping () -> Void) {
-        self.competion = competion
+    init(completion: @escaping () -> Void) {
+        self.completion = completion
     }
     
     override func resume() {
-        competion()
+        completion()
     }
 }

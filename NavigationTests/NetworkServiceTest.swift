@@ -15,7 +15,7 @@ class NetworkServiceTest: XCTestCase {
     override func setUp() {
         super.setUp()
         mockLoader = MockNetworkLoader()
-        NetworkService.loader = MockNetworkLoader()
+        NetworkService.loader = mockLoader
     }
     
     override func tearDown() {
@@ -58,7 +58,7 @@ class NetworkServiceTest: XCTestCase {
             case .success:
                 XCTFail("Результат должен был быть провальным")
             case .failure(let error):
-                XCTAssertEqual(AppError.networkUnavailable("Network unavailable"), error)
+                XCTAssertEqual(AppError.networkUnavailable(NSLocalizedString("Network unavailable", comment: "")), error)
                 expectation.fulfill()
             }
         }

@@ -9,10 +9,12 @@ import UIKit
 
 struct NetworkService {
     
+    static var loader: NetworkLoaderProtocol = NetworkLoader()
+    
     static func getToDoTask(withId id: Int, completion: @escaping (Result<TodoTask, AppError>) -> Void) async {
         let urlString = "https://jsonplaceholder.typicode.com/todos/\(id)"
         guard let url = URL(string: urlString) else {return}
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        loader.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
                 if let error {
                     completion(.failure(.networkUnavailable(NSLocalizedString("Network unavailable", comment: ""))))
@@ -53,7 +55,7 @@ struct NetworkService {
     static func getTatooinePlanetInfo(completion: @escaping (Result<PlanetModel, AppError>) -> Void) async {
         let urlString = "https://swapi.dev/api/planets/1"
         guard let url = URL(string: urlString) else {return}
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        loader.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
                 if let error {
                     completion(.failure(.networkUnavailable(NSLocalizedString("Network unavailable", comment: ""))))

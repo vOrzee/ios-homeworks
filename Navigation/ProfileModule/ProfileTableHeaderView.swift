@@ -30,7 +30,7 @@ class ProfileHeaderView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18.0, weight: .bold)
-        label.textColor = .black
+        label.textColor = UIColor.createColor(lightMode: .black, darkMode: .lightGray)
         return label
     }()
     
@@ -38,7 +38,7 @@ class ProfileHeaderView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-        label.textColor = .gray
+        label.textColor = UIColor.createColor(lightMode: .darkGray, darkMode: .lightGray)
         label.text = statusText
         return label
     }()
@@ -53,11 +53,11 @@ class ProfileHeaderView: UIView {
         )
         textField.placeholder = statusText
         textField.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
-        textField.textColor = .black
+        textField.textColor = UIColor.createColor(lightMode: .darkGray, darkMode: .lightGray)
+        textField.backgroundColor = UIColor.createColor(lightMode: .lightGray, darkMode: .darkGray)
         textField.layer.borderWidth = 1.0
         textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.cornerRadius = 12.0
-        textField.backgroundColor = .white
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: textField.frame.height))
         textField.leftViewMode = .always
         textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: textField.frame.height))
@@ -94,7 +94,7 @@ class ProfileHeaderView: UIView {
         self.addSubview(statusLabel)
         self.addSubview(statusTextField)
         self.addSubview(setStatusButton)
-        self.backgroundColor = .lightGray
+        self.backgroundColor = UIColor.createColor(lightMode: .lightGray, darkMode: .darkGray)
         setupConstraints()
         avatarTapEvent(avatarImageView)
     }

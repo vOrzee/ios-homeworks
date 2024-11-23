@@ -50,8 +50,8 @@ class LogInViewController: UIViewController {
         textField.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         textField.autocapitalizationType = .none
         textField.tintColor = .vkBlue
-        textField.textColor = .black
-        textField.backgroundColor = .systemGray6
+        textField.textColor = UIColor.createColor(lightMode: .darkGray, darkMode: .lightGray)
+        textField.backgroundColor = UIColor.createColor(lightMode: .lightGray, darkMode: .darkGray)
         textField.layer.borderWidth = 0.5
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.cornerRadius = 10
@@ -74,8 +74,8 @@ class LogInViewController: UIViewController {
         textField.autocapitalizationType = .none
         textField.isSecureTextEntry = true
         textField.tintColor = .vkBlue
-        textField.textColor = .black
-        textField.backgroundColor = .systemGray6
+        textField.textColor = UIColor.createColor(lightMode: .darkGray, darkMode: .lightGray)
+        textField.backgroundColor = UIColor.createColor(lightMode: .lightGray, darkMode: .darkGray)
         textField.layer.borderWidth = 0.5
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.cornerRadius = 10
@@ -157,7 +157,7 @@ class LogInViewController: UIViewController {
     
     private func setupView() {
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.createColor(lightMode: .white, darkMode: .black)
     }
     
     private func addSubviews() {

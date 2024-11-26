@@ -18,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         localNotificationService = LocalNotificationService()
-        localNotificationService.registeForLatestUpdatesIfPossible()
+        Task {
+            await localNotificationService.registeForLatestUpdatesIfPossible()
+        }
         return true
     }
 

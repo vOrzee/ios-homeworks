@@ -36,35 +36,33 @@ class LocalNotificationService: NSObject, UNUserNotificationCenterDelegate {
         center.setNotificationCategories([updatesCategory])
     }
     
-    func registeForLatestUpdatesIfPossible() {
-        registerUpdatesCategory()
+    func requestNotification() async -> Bool {
+        let center = UNUserNotificationCenter.current()
+        return (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+    }
+    
+    func registeForLatestUpdatesIfPossible() async {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error = error {
-                print("Ошибка при запросе разрешения на уведомления: \(error.localizedDescription)")
-                return
-            }
-            if granted {
-                let content = UNMutableNotificationContent()
-                
-                content.title = "Добрый вечер!"
-                content.body = "Посмотрите последние обновления"
-                content.sound = .default
-                content.categoryIdentifier = "updates"
-                
-                var dateComponents = DateComponents()
-                dateComponents.hour = 19
-                dateComponents.minute = 0
-                
-                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                center.add(request)
-            }
-            else {
-                print("Доступ не получен")
-            }
+        registerUpdatesCategory()
+        let settings = await center.notificationSettings()
+        if settings.authorizationStatus != .authorized, !(await requestNotification()) {
+            return
         }
         
+        let content = UNMutableNotificationContent()
+        
+        content.title = "Добрый вечер!"
+        content.body = "Посмотрите последние обновления"
+        content.sound = .default
+        content.categoryIdentifier = "updates"
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 19
+        dateComponents.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        try? await center.add(request)
     }
 }

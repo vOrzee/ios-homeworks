@@ -4,7 +4,7 @@
 //
 //  Created by Роман Лешин on 24.11.2024.
 //
-
+#if !NO_TESTS
 @testable import Navigation
 import Foundation
 
@@ -31,3 +31,4 @@ class MockURLSessionDataTask: URLSessionDataTask {
         completion()
     }
 }
+#endif

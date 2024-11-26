@@ -26,6 +26,6 @@ jobs:
       - name: Run tests
         run: |
           xcodebuild test \
-            -scheme Release \
+            -scheme Test \
             -destination 'platform=iOS Simulator,name=iPhone SE (3rd generation),OS=17.2' \
             -derivedDataPath build

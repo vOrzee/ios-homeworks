@@ -18,6 +18,7 @@
 		5931C03B2C516EFC009880F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5931C0392C516EFC009880F1 /* LaunchScreen.storyboard */; };
 		5931C0442C51774B009880F1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C0432C51774B009880F1 /* ProfileViewController.swift */; };
 		5931C04D2C5182B8009880F1 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931C04C2C5182B8009880F1 /* InfoViewController.swift */; };
+		59322B842CF64837004522FC /* LocalNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59322B832CF64835004522FC /* LocalNotificationsService.swift */; };
 		593874572CB3E00800DE8A86 /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 593874562CB3E00800DE8A86 /* iOSIntPackage */; };
 		593874632CB5A51000DE8A86 /* UsersRepositoryInMemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874622CB5A50600DE8A86 /* UsersRepositoryInMemoryStorage.swift */; };
 		593874672CB5A5CC00DE8A86 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593874662CB5A59F00DE8A86 /* User.swift */; };
@@ -141,6 +142,7 @@
 		5931C0432C51774B009880F1 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5931C04A2C518066009880F1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5931C04C2C5182B8009880F1 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		59322B832CF64835004522FC /* LocalNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsService.swift; sourceTree = "<group>"; };
 		593874622CB5A50600DE8A86 /* UsersRepositoryInMemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRepositoryInMemoryStorage.swift; sourceTree = "<group>"; };
 		593874662CB5A59F00DE8A86 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5938746C2CB5B2DC00DE8A86 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 		5931C02D2C516EFA009880F1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				59322B822CF64816004522FC /* Notification */,
 				59EF8F032CC199D0001098CE /* Mappers */,
 				599CE67E2CC1953500EE50E2 /* DAO */,
 				599CE6772CC1874700EE50E2 /* FavoriteModule */,
@@ -297,6 +300,14 @@
 				59BE0D062CF06E5100B1D99E /* Localizable.xcstrings */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		59322B822CF64816004522FC /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				59322B832CF64835004522FC /* LocalNotificationsService.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		5938746B2CB5B2D200DE8A86 /* Utils */ = {
@@ -684,6 +695,7 @@
 				59E9FD542CBB3FBB00960DFE /* TodoTask.swift in Sources */,
 				593874962CB7118400DE8A86 /* FeedViewModel.swift in Sources */,
 				593874BB2CB8BDEB00DE8A86 /* BruteForce.swift in Sources */,
+				59322B842CF64837004522FC /* LocalNotificationsService.swift in Sources */,
 				5938746D2CB5B2DF00DE8A86 /* Checker.swift in Sources */,
 				593874A32CB7269700DE8A86 /* PostRepository.swift in Sources */,
 				59E9FD4F2CBB20FB00960DFE /* PostCoordinator.swift in Sources */,
@@ -926,6 +938,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9JFZ7SN6JA;
+				ENABLE_TESTABILITY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow the use of your geolocation information";
@@ -938,6 +951,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = NO_TESTS;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.netology.jomarzka.Navigation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

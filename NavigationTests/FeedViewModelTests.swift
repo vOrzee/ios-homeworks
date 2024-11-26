@@ -4,7 +4,7 @@
 //
 //  Created by Роман Лешин on 24.11.2024.
 //
-
+#if !NO_TESTS
 import XCTest
 @testable import Navigation
 
@@ -42,3 +42,4 @@ class FeedViewModelTests: XCTestCase {
         XCTAssertTrue(isCalled)
     }
 }
+#endif

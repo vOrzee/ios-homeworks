@@ -4,7 +4,7 @@
 //
 //  Created by Роман Лешин on 24.11.2024.
 //
-
+#if !NO_TESTS
 import XCTest
 @testable import Navigation
 
@@ -90,3 +90,4 @@ class NetworkServiceTest: XCTestCase {
         await fulfillment(of: [expectation], timeout: 5.0)
     }
 }
+#endif

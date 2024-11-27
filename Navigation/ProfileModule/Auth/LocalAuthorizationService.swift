@@ -10,18 +10,24 @@ import LocalAuthentication
 
 class LocalAuthorizationService {
     
-    static func authorizeIfPossible(_ authorizationFinished: @escaping (Bool) -> Void) async {
+    static var biometryType: LABiometryType {
+        let laContext = LAContext()
+        laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        return laContext.biometryType
+    }
+    
+    static func authorizeIfPossible(_ authorizationFinished: @escaping (Bool, Error?) -> Void) async {
         let laContext = LAContext()
         var error: NSError?
         if !laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            authorizationFinished(false)
+            authorizationFinished(false, error)
             return
         }
-        laContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("To access data", comment: "")) { success, _ in
+        laContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("To access data", comment: "")) { success, error in
             if success {
-                authorizationFinished(true)
+                authorizationFinished(true, nil)
             } else {
-                authorizationFinished(false)
+                authorizationFinished(false, error)
             }
         }
     }

@@ -124,14 +124,23 @@ class LogInViewController: UIViewController {
     
     private lazy var faceIDButton: UIButton = {
         let button = UIButton(type: .system)
-        let faceIDImage = UIImage(systemName: "faceid")
+        let iconName: String
+        switch LocalAuthorizationService.biometryType {
+        case .faceID:
+            iconName = "faceid"
+        case .touchID:
+            iconName = "touchid"
+        default:
+            iconName = "lock.fill"
+        }
+        let iconImage = UIImage(systemName: iconName)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(faceIDImage, for: .normal)
+        button.setImage(iconImage, for: .normal)
         button.tintColor = .systemBlue
         button.backgroundColor = .white
         button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
-        button.addTarget(self, action: #selector(faceIDButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(biometricButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -280,10 +289,15 @@ class LogInViewController: UIViewController {
         }
     }
     
-    @objc func faceIDButtonTapped() {
+    @objc func biometricButtonTapped() {
         Task {
-            await LocalAuthorizationService.authorizeIfPossible { [weak self] isSuccess in
+            await LocalAuthorizationService.authorizeIfPossible { [weak self] isSuccess, error in
                 guard let self else {return}
+                if let error = error {
+                    let alert = UIAlertController(title: NSLocalizedString("Authorization error", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+                    present(alert, animated: true)
+                }
                 if isSuccess {
                     DispatchQueue.main.async {
                         self.auth()

@@ -41,6 +41,16 @@
         }
       }
     },
+    "Authorization error" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка авторизации"
+          }
+        }
+      }
+    },
     "Bottom button" : {
       "localizations" : {
         "ru" : {
@@ -622,7 +632,14 @@
       }
     },
     "To access data" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Получить доступ к данным"
+          }
+        }
+      }
     },
     "Top button" : {
       "localizations" : {

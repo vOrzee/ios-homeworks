@@ -26,7 +26,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Allow access to Face ID"
+            "value" : "Allow access to biometrics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешите доступ к биометрии"
           }
         }
       }

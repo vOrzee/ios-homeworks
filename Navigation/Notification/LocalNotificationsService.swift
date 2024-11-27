@@ -45,6 +45,7 @@ class LocalNotificationService: NSObject, UNUserNotificationCenterDelegate {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         registerUpdatesCategory()
+        center.removeDeliveredNotifications(withIdentifiers: ["updates subscription"])
         let settings = await center.notificationSettings()
         if settings.authorizationStatus != .authorized, !(await requestNotification()) {
             return
@@ -62,7 +63,7 @@ class LocalNotificationService: NSObject, UNUserNotificationCenterDelegate {
         dateComponents.minute = 0
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: "updates subscription", content: content, trigger: trigger)
         try? await center.add(request)
     }
 }

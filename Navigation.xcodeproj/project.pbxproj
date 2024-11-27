@@ -910,7 +910,7 @@
 				DEVELOPMENT_TEAM = 9JFZ7SN6JA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow access to Face ID";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow access to biometrics";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow the use of your geolocation information";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -946,7 +946,7 @@
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow access to Face ID";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow access to biometrics";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow the use of your geolocation information";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

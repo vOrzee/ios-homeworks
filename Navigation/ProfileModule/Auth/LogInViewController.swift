@@ -122,6 +122,19 @@ class LogInViewController: UIViewController {
         return contentView
     }()
     
+    private lazy var faceIDButton: UIButton = {
+        let button = UIButton(type: .system)
+        let faceIDImage = UIImage(systemName: "faceid")
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(faceIDImage, for: .normal)
+        button.tintColor = .systemBlue
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(faceIDButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -133,7 +146,7 @@ class LogInViewController: UIViewController {
         if let authState = authService.getCredentials() {
             emailOrPhoneTextField.text = authState.email
             passwordTextField.text = authState.password
-            auth() // Можно прятать вью пока идёт авторизация в FB, или индикатор показывать, но пока не стал
+            //auth() // Можно прятать вью пока идёт авторизация в FB, или индикатор показывать, но пока не стал
         }
     }
     
@@ -187,6 +200,7 @@ class LogInViewController: UIViewController {
         pageAutorizationView.addSubview(passwordTextField)
         pageAutorizationView.addSubview(loginButton)
         pageAutorizationView.addSubview(activityIndicator)
+        pageAutorizationView.addSubview(faceIDButton)
     }
     
     private func setupConstraintsIntoPageAutorizationView() {
@@ -206,7 +220,12 @@ class LogInViewController: UIViewController {
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16.0),
             loginButton.heightAnchor.constraint(equalToConstant: 50.0),
             loginButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
-            loginButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
+            loginButton.trailingAnchor.constraint(equalTo: faceIDButton.leadingAnchor, constant: -16),
+            faceIDButton.heightAnchor.constraint(equalToConstant: 50.0),
+            faceIDButton.widthAnchor.constraint(equalToConstant: 50.0),
+            faceIDButton.leadingAnchor.constraint(equalTo: loginButton.trailingAnchor, constant: 16.0),
+            faceIDButton.topAnchor.constraint(equalTo: loginButton.topAnchor),
+            faceIDButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
             activityIndicator.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             activityIndicator.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
             activityIndicator.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
@@ -258,6 +277,19 @@ class LogInViewController: UIViewController {
             button.alpha = 0.8
         default:
             button.alpha = 1.0
+        }
+    }
+    
+    @objc func faceIDButtonTapped() {
+        Task {
+            await LocalAuthorizationService.authorizeIfPossible { [weak self] isSuccess in
+                guard let self else {return}
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.auth()
+                    }
+                }
+            }
         }
     }
     

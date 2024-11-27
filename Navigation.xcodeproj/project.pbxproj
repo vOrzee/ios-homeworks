@@ -65,6 +65,7 @@
 		59A4D8C32CBCCEA70006D4D7 /* CheckerServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4D8C22CBCCE9E0006D4D7 /* CheckerServiceProtocol.swift */; };
 		59A4D8C52CBCCEB00006D4D7 /* CheckerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4D8C42CBCCEAB0006D4D7 /* CheckerService.swift */; };
 		59A4D8C72CBD399D0006D4D7 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A4D8C62CBD39980006D4D7 /* AuthError.swift */; };
+		59A5A8CA2CF748DB006D57FA /* LocalAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A5A8C92CF748DA006D57FA /* LocalAuthorizationService.swift */; };
 		59BE0D072CF06E5100B1D99E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 59BE0D062CF06E5100B1D99E /* Localizable.xcstrings */; };
 		59BE0D082CF06E5100B1D99E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 59BE0D062CF06E5100B1D99E /* Localizable.xcstrings */; };
 		59BE0D162CF09F0300B1D99E /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 59BE0D152CF09F0300B1D99E /* InfoPlist.xcstrings */; };
@@ -181,6 +182,7 @@
 		59A4D8C22CBCCE9E0006D4D7 /* CheckerServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckerServiceProtocol.swift; sourceTree = "<group>"; };
 		59A4D8C42CBCCEAB0006D4D7 /* CheckerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckerService.swift; sourceTree = "<group>"; };
 		59A4D8C62CBD39980006D4D7 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		59A5A8C92CF748DA006D57FA /* LocalAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthorizationService.swift; sourceTree = "<group>"; };
 		59BE0D062CF06E5100B1D99E /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		59BE0D152CF09F0300B1D99E /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 		59E9FD4D2CBB1E1D00960DFE /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				59A5A8C92CF748DA006D57FA /* LocalAuthorizationService.swift */,
 				59A4D8C42CBCCEAB0006D4D7 /* CheckerService.swift */,
 				59A4D8C22CBCCE9E0006D4D7 /* CheckerServiceProtocol.swift */,
 				59C5A72E2C5D5B5B00200942 /* LogInViewController.swift */,
@@ -717,6 +720,7 @@
 				5938749C2CB7238A00DE8A86 /* FeedViewController.swift in Sources */,
 				59E9FD3E2CBAF85400960DFE /* AppConfiguration.swift in Sources */,
 				592287F62CECD99900607BBA /* UserMapPointAnnotation.swift in Sources */,
+				59A5A8CA2CF748DB006D57FA /* LocalAuthorizationService.swift in Sources */,
 				59E9FD3F2CBAF85400960DFE /* FeedModelSecretWord.swift in Sources */,
 				59EF8F052CC199E0001098CE /* PostMapper.swift in Sources */,
 				59E9FD402CBAF85400960DFE /* FeedViewModelState.swift in Sources */,
@@ -906,6 +910,7 @@
 				DEVELOPMENT_TEAM = 9JFZ7SN6JA;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow access to Face ID";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow the use of your geolocation information";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -941,6 +946,7 @@
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Allow access to Face ID";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow the use of your geolocation information";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

@@ -122,7 +122,7 @@ class LogInViewController: UIViewController {
         return contentView
     }()
     
-    private lazy var faceIDButton: UIButton = {
+    private lazy var biometricButton: UIButton = {
         let button = UIButton(type: .system)
         let iconName: String
         switch LocalAuthorizationService.biometryType {
@@ -209,7 +209,7 @@ class LogInViewController: UIViewController {
         pageAutorizationView.addSubview(passwordTextField)
         pageAutorizationView.addSubview(loginButton)
         pageAutorizationView.addSubview(activityIndicator)
-        pageAutorizationView.addSubview(faceIDButton)
+        pageAutorizationView.addSubview(biometricButton)
     }
     
     private func setupConstraintsIntoPageAutorizationView() {
@@ -229,12 +229,12 @@ class LogInViewController: UIViewController {
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16.0),
             loginButton.heightAnchor.constraint(equalToConstant: 50.0),
             loginButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
-            loginButton.trailingAnchor.constraint(equalTo: faceIDButton.leadingAnchor, constant: -16),
-            faceIDButton.heightAnchor.constraint(equalToConstant: 50.0),
-            faceIDButton.widthAnchor.constraint(equalToConstant: 50.0),
-            faceIDButton.leadingAnchor.constraint(equalTo: loginButton.trailingAnchor, constant: 16.0),
-            faceIDButton.topAnchor.constraint(equalTo: loginButton.topAnchor),
-            faceIDButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
+            loginButton.trailingAnchor.constraint(equalTo: biometricButton.leadingAnchor, constant: -16),
+            biometricButton.heightAnchor.constraint(equalToConstant: 50.0),
+            biometricButton.widthAnchor.constraint(equalToConstant: 50.0),
+            biometricButton.leadingAnchor.constraint(equalTo: loginButton.trailingAnchor, constant: 16.0),
+            biometricButton.topAnchor.constraint(equalTo: loginButton.topAnchor),
+            biometricButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
             activityIndicator.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             activityIndicator.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
             activityIndicator.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),

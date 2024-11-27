@@ -296,7 +296,9 @@ class LogInViewController: UIViewController {
                 if let error = error {
                     let alert = UIAlertController(title: NSLocalizedString("Authorization error", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
-                    present(alert, animated: true)
+                    Task {
+                        self.present(alert, animated: true)
+                    }
                 }
                 if isSuccess {
                     DispatchQueue.main.async {

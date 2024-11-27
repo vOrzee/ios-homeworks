@@ -41,6 +41,16 @@
         }
       }
     },
+    "Authorization error" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка авторизации"
+          }
+        }
+      }
+    },
     "Bottom button" : {
       "localizations" : {
         "ru" : {
@@ -617,6 +627,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Орбитальный период планеты Татуин:"
+          }
+        }
+      }
+    },
+    "To access data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Получить доступ к данным"
           }
         }
       }

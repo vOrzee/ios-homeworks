@@ -122,6 +122,28 @@ class LogInViewController: UIViewController {
         return contentView
     }()
     
+    private lazy var biometricButton: UIButton = {
+        let button = UIButton(type: .system)
+        let iconName: String
+        switch LocalAuthorizationService.biometryType {
+        case .faceID:
+            iconName = "faceid"
+        case .touchID:
+            iconName = "touchid"
+        default:
+            iconName = "lock.fill"
+        }
+        let iconImage = UIImage(systemName: iconName)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(iconImage, for: .normal)
+        button.tintColor = .systemBlue
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(biometricButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -133,7 +155,7 @@ class LogInViewController: UIViewController {
         if let authState = authService.getCredentials() {
             emailOrPhoneTextField.text = authState.email
             passwordTextField.text = authState.password
-            auth() // Можно прятать вью пока идёт авторизация в FB, или индикатор показывать, но пока не стал
+            //auth() // Можно прятать вью пока идёт авторизация в FB, или индикатор показывать, но пока не стал
         }
     }
     
@@ -187,6 +209,7 @@ class LogInViewController: UIViewController {
         pageAutorizationView.addSubview(passwordTextField)
         pageAutorizationView.addSubview(loginButton)
         pageAutorizationView.addSubview(activityIndicator)
+        pageAutorizationView.addSubview(biometricButton)
     }
     
     private func setupConstraintsIntoPageAutorizationView() {
@@ -206,7 +229,12 @@ class LogInViewController: UIViewController {
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16.0),
             loginButton.heightAnchor.constraint(equalToConstant: 50.0),
             loginButton.leadingAnchor.constraint(equalTo: pageAutorizationView.leadingAnchor, constant: 16.0),
-            loginButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
+            loginButton.trailingAnchor.constraint(equalTo: biometricButton.leadingAnchor, constant: -16),
+            biometricButton.heightAnchor.constraint(equalToConstant: 50.0),
+            biometricButton.widthAnchor.constraint(equalToConstant: 50.0),
+            biometricButton.leadingAnchor.constraint(equalTo: loginButton.trailingAnchor, constant: 16.0),
+            biometricButton.topAnchor.constraint(equalTo: loginButton.topAnchor),
+            biometricButton.trailingAnchor.constraint(equalTo: pageAutorizationView.trailingAnchor, constant: -16.0),
             activityIndicator.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             activityIndicator.topAnchor.constraint(equalTo: passwordTextField.topAnchor),
             activityIndicator.bottomAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
@@ -258,6 +286,26 @@ class LogInViewController: UIViewController {
             button.alpha = 0.8
         default:
             button.alpha = 1.0
+        }
+    }
+    
+    @objc func biometricButtonTapped() {
+        Task {
+            await LocalAuthorizationService.authorizeIfPossible { [weak self] isSuccess, error in
+                guard let self else {return}
+                if let error = error {
+                    let alert = UIAlertController(title: NSLocalizedString("Authorization error", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+                    Task {
+                        self.present(alert, animated: true)
+                    }
+                }
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.auth()
+                    }
+                }
+            }
         }
     }
     
